@@ -66,7 +66,7 @@ struct RecipeDetail: View {
             }
         }
         .if(recipe.image?.first != nil || recipe.thumbnailUrl != nil) { view in
-            view.ignoresSafeArea()
+            view.ignoresSafeArea(.all, edges: .top)
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
