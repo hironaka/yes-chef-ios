@@ -1,0 +1,231 @@
+{
+  "name": "Creamy Homemade Baked Mac and Cheese",
+  "author": {
+    "@id": "https://www.thechunkychef.com/#/schema/person/f035b2e4119e88a9b7167960b705023f"
+  },
+  "description": "This baked mac and cheese is a family favorite recipe, loved by children and adults.",
+  "datePublished": "2019-09-30T20:49:54+00:00",
+  "image": [
+    "https://www.thechunkychef.com/wp-content/uploads/2018/02/Ultimate-Creamy-Baked-Mac-and-Cheese-feat-1.jpg",
+    "https://www.thechunkychef.com/wp-content/uploads/2018/02/Ultimate-Creamy-Baked-Mac-and-Cheese-feat-1-440x500.jpg",
+    "https://www.thechunkychef.com/wp-content/uploads/2018/02/Ultimate-Creamy-Baked-Mac-and-Cheese-feat-1-440x375.jpg",
+    "https://www.thechunkychef.com/wp-content/uploads/2018/02/Ultimate-Creamy-Baked-Mac-and-Cheese-feat-1-440x270.jpg"
+  ],
+  "video": {
+    "name": "Mac n Cheese Rec",
+    "description": "This baked mac and cheese is a family favorite recipe, loved by both children and adults.  My version uses a combination of cheeses for a gloriously cheesy dish!",
+    "thumbnailUrl": "https://mediavine-res.cloudinary.com/image/upload/s--qLhBiqEp--/c_limit,f_auto,fl_lossy,h_1080,q_auto,w_1920/v1616078221/nijjpdbtgxd0m7cszaiz.jpg",
+    "embedUrl": "https://video.mediavine.com/videos/iVcxSy8F4.js",
+    "contentUrl": "https://mediavine-res.cloudinary.com/video/upload/t_original/v1616078219/iVcxSy8F4.mp4",
+    "uploadDate": "2018-03-27T00:33:21+00:00",
+    "duration": "PT105S",
+    "@type": "VideoObject"
+  },
+  "recipeYield": [
+    "8",
+    "8 - 10 servings"
+  ],
+  "prepTime": "PT20M",
+  "cookTime": "PT15M",
+  "totalTime": "PT35M",
+  "recipeIngredient": [
+    "1 lb. dried elbow pasta",
+    "1/2 cup unsalted butter",
+    "1/2 cup all purpose flour",
+    "1 1/2 cups whole milk",
+    "2 1/2 cups half and half (**see chef tips #1 below**)",
+    "4 cups shredded medium cheddar cheese (divided (measured after shredding))",
+    "2 cups shredded Gruyere cheese (divided (measured after shredding))",
+    "1/2 Tbsp. salt",
+    "1/2 tsp. black pepper",
+    "1/4 tsp. paprika (smoked paprika is our favorite!)"
+  ],
+  "recipeInstructions": [
+    {
+      "@type": "HowToStep",
+      "text": "Preheat oven to 325 degrees F and grease a 3 qt baking dish (9x13\\\"). &nbsp;Set aside.",
+      "name": "Preheat oven to 325 degrees F and grease a 3 qt baking dish (9x13\\\"). &nbsp;Set aside.",
+      "url": "https://www.thechunkychef.com/family-favorite-baked-mac-and-cheese/#wprm-recipe-9151-step-0-0"
+    },
+    {
+      "@type": "HowToStep",
+      "text": "Bring a large pot of salted water to a boil. &nbsp;When boiling, add dried pasta and cook 1 minute less than the package directs for al dente. &nbsp;Drain and drizzle with a little bit of olive oil to keep from sticking.",
+      "name": "Bring a large pot of salted water to a boil. &nbsp;When boiling, add dried pasta and cook 1 minute less than the package directs for al dente. &nbsp;Drain and drizzle with a little bit of olive oil to keep from sticking.",
+      "url": "https://www.thechunkychef.com/family-favorite-baked-mac-and-cheese/#wprm-recipe-9151-step-0-1"
+    },
+    {
+      "@type": "HowToStep",
+      "text": "While water is coming up to a boil, shred cheeses and toss together to mix, then divide into three piles.  Approximately 3 cups for the sauce, 1 1/2 cups for the inner layer, and 1 1/2 cups for the topping.",
+      "name": "While water is coming up to a boil, shred cheeses and toss together to mix, then divide into three piles.  Approximately 3 cups for the sauce, 1 1/2 cups for the inner layer, and 1 1/2 cups for the topping.",
+      "url": "https://www.thechunkychef.com/family-favorite-baked-mac-and-cheese/#wprm-recipe-9151-step-0-2"
+    },
+    {
+      "@type": "HowToStep",
+      "text": "Melt butter in a large saucepan over MED heat.  Sprinkle in flour and whisk to combine.  Mixture will look like very wet sand.  Cook for approximately 1 minute, whisking often.  Slowly pour in about 2 cups or so of the half and half, while whisking constantly, until smooth.  Slowly pour in the remaining half and half plus the whole milk, while whisking constantly, until combined and smooth.",
+      "name": "Melt butter in a large saucepan over MED heat.  Sprinkle in flour and whisk to combine.  Mixture will look like very wet sand.  Cook for approximately 1 minute, whisking often.  Slowly pour in about 2 cups or so of the half and half, while whisking constantly, until smooth.  Slowly pour in the remaining half and half plus the whole milk, while whisking constantly, until combined and smooth.",
+      "url": "https://www.thechunkychef.com/family-favorite-baked-mac-and-cheese/#wprm-recipe-9151-step-0-3"
+    },
+    {
+      "@type": "HowToStep",
+      "text": "Continue to heat over MED heat, whisking very often, until thickened to a very thick consistency. &nbsp;It should almost be the consistency of a semi thinned out condensed soup.",
+      "name": "Continue to heat over MED heat, whisking very often, until thickened to a very thick consistency. &nbsp;It should almost be the consistency of a semi thinned out condensed soup.",
+      "url": "https://www.thechunkychef.com/family-favorite-baked-mac-and-cheese/#wprm-recipe-9151-step-0-4"
+    },
+    {
+      "@type": "HowToStep",
+      "text": "Remove from the heat and stir in spices and 1 1/2 cups of the cheeses, stirring to melt and combine.  Stir in another 1 1/2 cups of cheese, and stir until completely melted and smooth.",
+      "name": "Remove from the heat and stir in spices and 1 1/2 cups of the cheeses, stirring to melt and combine.  Stir in another 1 1/2 cups of cheese, and stir until completely melted and smooth.",
+      "url": "https://www.thechunkychef.com/family-favorite-baked-mac-and-cheese/#wprm-recipe-9151-step-0-5"
+    },
+    {
+      "@type": "HowToStep",
+      "text": "In a large mixing bowl, combine drained pasta with cheese sauce, stirring to combine fully.  Pour half of the pasta mixture into the prepared baking dish.  Top with 1 1/2 cups of shredded cheeses, then top that with the remaining pasta mixture.",
+      "name": "In a large mixing bowl, combine drained pasta with cheese sauce, stirring to combine fully.  Pour half of the pasta mixture into the prepared baking dish.  Top with 1 1/2 cups of shredded cheeses, then top that with the remaining pasta mixture.",
+      "url": "https://www.thechunkychef.com/family-favorite-baked-mac-and-cheese/#wprm-recipe-9151-step-0-6"
+    },
+    {
+      "@type": "HowToStep",
+      "text": "Sprinkle the top with the last 1 1/2 cups of cheese and bake for 15 minutes, until cheesy is bubbly and lightly golden brown.  ",
+      "name": "Sprinkle the top with the last 1 1/2 cups of cheese and bake for 15 minutes, until cheesy is bubbly and lightly golden brown.  ",
+      "url": "https://www.thechunkychef.com/family-favorite-baked-mac-and-cheese/#wprm-recipe-9151-step-0-7"
+    }
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.88",
+    "ratingCount": "3595",
+    "reviewCount": "8"
+  },
+  "review": [
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5"
+      },
+      "reviewBody": "This was so great, one of the best mac and cheeses I've ever had. I usually prefer my baked mac and cheeses with a crunchy topping adding, would that be possible with this recipe or would adding crackers ruin it?",
+      "author": {
+        "@type": "Person",
+        "name": "Morgan"
+      },
+      "datePublished": "2025-11-01"
+    },
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5"
+      },
+      "reviewBody": "I made it exactly how it says and let me tell you, the BEST Mac and cheese I've ever had, it was a huge hit at Thanksgiving! (It was the best dish there)!!! Thank you! 👍👍👍👍👍👍😁",
+      "author": {
+        "@type": "Person",
+        "name": "Diena"
+      },
+      "datePublished": "2025-10-30"
+    },
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5"
+      },
+      "reviewBody": "LOVE LOVE LOVE this!!! I have a friend requesting it again but I'd have to make it 4 days ahead of time.. is this freezable before baking or do you think I can make it and it will still be ok with the make ahead option 4 days later when they bake it? Or should I bake it and then refrigerate it and they can just reheat it? Please help with what you think my best option is! Thank you so much for the recipe that people are still craving from weeks ago!!!!",
+      "author": {
+        "@type": "Person",
+        "name": "Candi"
+      },
+      "datePublished": "2025-10-28"
+    },
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5"
+      },
+      "reviewBody": "I made the recipe exactly as directed and it was delicious. Next time I will experiment with bacon and jalapeños.",
+      "author": {
+        "@type": "Person",
+        "name": "Sue"
+      },
+      "datePublished": "2025-10-26"
+    },
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5"
+      },
+      "reviewBody": "Best ever mac & cheese!",
+      "author": {
+        "@type": "Person",
+        "name": "Linda Matteson"
+      },
+      "datePublished": "2025-10-24"
+    },
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5"
+      },
+      "reviewBody": "When I make Mac n. Cheese this is the only recipe I use. It will go into my recipe book. Im grateful to have found it. I make it for any gathering I attend and it's gone SO fast. Thank you.",
+      "author": {
+        "@type": "Person",
+        "name": "Kim Maxwell"
+      },
+      "datePublished": "2025-10-23"
+    },
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5"
+      },
+      "reviewBody": "Excellent!",
+      "author": {
+        "@type": "Person",
+        "name": "Wayne"
+      },
+      "datePublished": "2025-10-18"
+    },
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5"
+      },
+      "reviewBody": "Made a half recipe using the panko/butter topping and smoked paprika, with mostly cheddar cheese.  I didn't have half and half but used evaporated milk to add some of the same mouth-feel.  A rich and cheesy casserole much less fussy than some recipes.",
+      "author": {
+        "@type": "Person",
+        "name": "Sylvia Fedyk"
+      },
+      "datePublished": "2025-10-18"
+    }
+  ],
+  "recipeCategory": [
+    "Main Course",
+    "Side Dish"
+  ],
+  "recipeCuisine": [
+    "American"
+  ],
+  "keywords": "mac and cheese, macaroni and cheese",
+  "nutrition": {
+    "@type": "NutritionInformation",
+    "calories": "665 kcal",
+    "carbohydrateContent": "43 g",
+    "proteinContent": "28 g",
+    "fatContent": "41 g",
+    "saturatedFatContent": "25 g",
+    "cholesterolContent": "126 mg",
+    "sodiumContent": "700 mg",
+    "fiberContent": "1 g",
+    "sugarContent": "3 g",
+    "servingSize": "1 serving"
+  },
+  "@id": "https://www.thechunkychef.com/family-favorite-baked-mac-and-cheese/#recipe",
+  "isPartOf": {
+    "@id": "https://www.thechunkychef.com/family-favorite-baked-mac-and-cheese/#article"
+  },
+  "mainEntityOfPage": "https://www.thechunkychef.com/family-favorite-baked-mac-and-cheese/"
+}
