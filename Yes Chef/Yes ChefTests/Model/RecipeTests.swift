@@ -25,6 +25,7 @@ class RecipeTests {
         let recipe = try decoder.decode(Recipe.self, from: data)
 
         #expect(recipe.name == "Creamy Homemade Baked Mac and Cheese")
+        #expect(recipe.thumbnailUrl == "https://www.thechunkychef.com/wp-content/uploads/2018/02/Ultimate-Creamy-Baked-Mac-and-Cheese-feat.jpg")
         #expect(recipe.recipeIngredient.count == 10)
         #expect(recipe.recipeInstructions.count == 8)
     }
