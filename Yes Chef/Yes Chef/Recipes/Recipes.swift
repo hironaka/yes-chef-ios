@@ -6,10 +6,18 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct Recipes: View {
+    @Query private var recipes: [Recipe]
+
     var body: some View {
-        Text("Recipes")
+        NavigationView {
+            List(recipes) { recipe in
+                Text(recipe.name ?? "Untitled Recipe")
+            }
+            .navigationTitle("Recipes")
+        }
     }
 }
 

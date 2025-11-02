@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct Yes_ChefApp: App {
@@ -14,5 +15,6 @@ struct Yes_ChefApp: App {
             ContentView()
                 .preferredColorScheme(.light)
         }
+        .modelContainer(for: Recipe.self)
     }
 }

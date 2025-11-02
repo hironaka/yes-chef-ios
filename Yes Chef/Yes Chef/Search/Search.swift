@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 import WebKit
 
 class WebViewManager: ObservableObject {
@@ -35,16 +36,30 @@ class WebViewManager: ObservableObject {
     func goForward() {
         webView.goForward()
     }
+    
+    func download(completion: @escaping (Recipe?) -> Void) {
+        guard let recipeJSON = self.recipeFound,
+              let data = recipeJSON.data(using: .utf8) else {
+            completion(nil)
+            return
+        }
+        
+        do {
+            let recipe = try JSONDecoder().decode(Recipe.self, from: data)
+            completion(recipe)
+        } catch {
+            print("Failed to decode recipe: \(error)")
+            completion(nil)
+        }
+    }
 }
 
 struct WebView: UIViewRepresentable {
     let url: URL
-    var onRecipeFound: (String) -> Void
     @ObservedObject var webViewManager: WebViewManager
 
-    init(url: URL, onRecipeFound: @escaping (String) -> Void, webViewManager: WebViewManager) {
+    init(url: URL, webViewManager: WebViewManager) {
         self.url = url
-        self.onRecipeFound = onRecipeFound
         self.webViewManager = webViewManager
     }
 
@@ -61,18 +76,16 @@ struct WebView: UIViewRepresentable {
     func updateUIView(_ uiView: WKWebView, context: Context) {}
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self, webViewManager: webViewManager, onRecipeFound: onRecipeFound)
+        Coordinator(self, webViewManager: webViewManager)
     }
 
     class Coordinator: NSObject, WKUIDelegate, WKNavigationDelegate {
         var parent: WebView
-        var onRecipeFound: (String) -> Void
         @ObservedObject var webViewManager: WebViewManager
 
-        init(_ parent: WebView, webViewManager: WebViewManager, onRecipeFound: @escaping (String) -> Void) {
+        init(_ parent: WebView, webViewManager: WebViewManager) {
             self.parent = parent
             self.webViewManager = webViewManager
-            self.onRecipeFound = onRecipeFound
         }
 
         func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
@@ -128,7 +141,6 @@ struct WebView: UIViewRepresentable {
                 }
                 
                 if let recipeJSON = result as? String {
-                    self?.onRecipeFound(recipeJSON)
                     self?.webViewManager.recipeFound = recipeJSON
                 } else {
                     self?.webViewManager.recipeFound = nil
@@ -142,6 +154,7 @@ struct WebView: UIViewRepresentable {
 }
 
 struct Search: View {
+    @Environment(\.modelContext) private var modelContext
     @StateObject private var webViewManager = WebViewManager()
 
     var body: some View {
@@ -164,7 +177,11 @@ struct Search: View {
                 Spacer()
                 
                 Button(action: {
-                    // download action
+                    webViewManager.download { recipe in
+                        if let recipe = recipe {
+                            modelContext.insert(recipe)
+                        }
+                    }
                 }) {
                     Image(systemName: "square.and.arrow.down")
                 }
@@ -174,9 +191,6 @@ struct Search: View {
             
             WebView(
                 url: URL(string: "https://yes-chef.ai/search")!,
-                onRecipeFound: { recipeJSON in
-                    print("Found recipe: \(recipeJSON)")
-                },
                 webViewManager: webViewManager
             )
         }

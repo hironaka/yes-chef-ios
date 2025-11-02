@@ -6,18 +6,38 @@
 //
 
 import Foundation
+import SwiftData
 
 // MARK: - Recipe Data Structures
 
-struct Recipe: Codable {
-    let name: String?
-    let source: String?
-    let thumbnailUrl: String?
-    let recipeIngredient: [String]?
-    let recipeInstructions: [Instruction]?
+@Model
+class Recipe: Codable {
+    var name: String?
+    var recipeIngredient: [String]
+    var recipeInstructions: [Instruction]
 
     enum CodingKeys: String, CodingKey {
         case name, source, thumbnailUrl, recipeIngredient, recipeInstructions
+    }
+
+    init(name: String, recipeIngredient: [String], recipeInstructions: [Instruction]) {
+        self.name = name
+        self.recipeIngredient = recipeIngredient
+        self.recipeInstructions = recipeInstructions
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(String.self, forKey: .name)
+        recipeIngredient = try container.decode([String].self, forKey: .recipeIngredient)
+        recipeInstructions = try container.decode([Instruction].self, forKey: .recipeInstructions)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(name, forKey: .name)
+        try container.encode(recipeIngredient, forKey: .recipeIngredient)
+        try container.encode(recipeInstructions, forKey: .recipeInstructions)
     }
 }
 
@@ -57,8 +77,8 @@ enum Instruction: Codable {
 }
 
 struct HowToSection: Codable {
-    let type: String
-    let name: String
+    let type: String?
+    let name: String?
     let itemListElement: [HowToStep]
 
     enum CodingKeys: String, CodingKey {
@@ -68,8 +88,8 @@ struct HowToSection: Codable {
 }
 
 struct HowToStep: Codable {
-    let type: String
-    let text: String
+    let type: String?
+    let text: String?
 
     enum CodingKeys: String, CodingKey {
         case type = "@type"
@@ -80,25 +100,23 @@ struct HowToStep: Codable {
 // MARK: - Recipe Processing
 
 func extractInstructions(from recipeData: Recipe) -> [String] {
-    guard let instructions = recipeData.recipeInstructions else { return [] }
-
-    return instructions.flatMap { instruction -> [String] in
+    return recipeData.recipeInstructions.flatMap { instruction -> [String] in
         switch instruction {
         case .string(let text):
             return [text]
         case .howToSection(let section):
             if section.name == "Recipe Instructions" {
-                return section.itemListElement.map { $0.text }
+                return section.itemListElement.map { $0.text ?? "" }
             }
             return []
         case .howToStep(let step):
-            return [step.text]
+            return [step.text ?? ""]
         }
     }
 }
 
 func extractIngredients(from recipeData: Recipe) -> [String] {
-    return recipeData.recipeIngredient ?? []
+    return recipeData.recipeIngredient
 }
 
 func convertRecipeToPlainText(from data: Data) -> String {

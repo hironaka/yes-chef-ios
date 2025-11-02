@@ -13,21 +13,21 @@ struct ContentView: View {
                 .tabItem {
                     Label("Recipes", systemImage: "list.bullet")
                 }
-            
-            Meals()
-                .tabItem {
-                    Label("Meals", systemImage: "fork.knife")
-                }
-            
-            Groceries()
-                .tabItem {
-                    Label("Groceries", systemImage: "cart")
-                }
-            
-            Settings()
-                .tabItem {
-                    Label("Account", systemImage: "person.crop.circle")
-                }
+//            
+//            Meals()
+//                .tabItem {
+//                    Label("Meals", systemImage: "fork.knife")
+//                }
+//            
+//            Groceries()
+//                .tabItem {
+//                    Label("Groceries", systemImage: "cart")
+//                }
+//            
+//            Settings()
+//                .tabItem {
+//                    Label("Account", systemImage: "person.crop.circle")
+//                }
         }
     }
 }
