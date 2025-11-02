@@ -13,7 +13,6 @@ struct Yes_ChefApp: App {
         WindowGroup {
             ContentView()
                 .preferredColorScheme(.light)
-                .background(Color(hex: "#fafafa").ignoresSafeArea())
         }
     }
 }

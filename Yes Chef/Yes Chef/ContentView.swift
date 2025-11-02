@@ -29,10 +29,6 @@ struct ContentView: View {
                     Label("Account", systemImage: "person.crop.circle")
                 }
         }
-        .background(Color(hex: "#fafafa").ignoresSafeArea())
-        .onAppear {
-            UITabBar.appearance().backgroundColor = UIColor(Color(hex: "#fafafa"))
-        }
     }
 }
 
