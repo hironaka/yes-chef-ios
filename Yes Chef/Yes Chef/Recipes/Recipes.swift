@@ -14,7 +14,18 @@ struct Recipes: View {
     var body: some View {
         NavigationView {
             List(recipes) { recipe in
-                Text(recipe.name ?? "Untitled Recipe")
+                HStack {
+                    if let imageUrl = recipe.thumbnailUrl ?? recipe.image?.first, let url = URL(string: imageUrl) {
+                        AsyncImage(url: url) { image in
+                            image.resizable()
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .frame(width: 50, height: 50)
+                        .cornerRadius(8)
+                    }
+                    Text(recipe.name ?? "Untitled Recipe")
+                }
             }
             .navigationTitle("Recipes")
         }

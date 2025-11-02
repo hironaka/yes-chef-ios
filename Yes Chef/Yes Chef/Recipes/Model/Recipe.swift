@@ -13,15 +13,19 @@ import SwiftData
 @Model
 class Recipe: Codable {
     var name: String?
+    var thumbnailUrl: String?
+    var image: [String]?
     var recipeIngredient: [String]
     var recipeInstructions: [Instruction]
 
     enum CodingKeys: String, CodingKey {
-        case name, source, thumbnailUrl, recipeIngredient, recipeInstructions
+        case name, thumbnailUrl, image, recipeIngredient, recipeInstructions
     }
 
-    init(name: String, recipeIngredient: [String], recipeInstructions: [Instruction]) {
+    init(name: String, thumbnailUrl: String?, image: [String]?, recipeIngredient: [String], recipeInstructions: [Instruction]) {
         self.name = name
+        self.thumbnailUrl = thumbnailUrl
+        self.image = image
         self.recipeIngredient = recipeIngredient
         self.recipeInstructions = recipeInstructions
     }
@@ -29,6 +33,8 @@ class Recipe: Codable {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         name = try container.decode(String.self, forKey: .name)
+        thumbnailUrl = try container.decodeIfPresent(String.self, forKey: .thumbnailUrl)
+        image = try container.decodeIfPresent([String].self, forKey: .image)
         recipeIngredient = try container.decode([String].self, forKey: .recipeIngredient)
         recipeInstructions = try container.decode([Instruction].self, forKey: .recipeInstructions)
     }
@@ -36,6 +42,8 @@ class Recipe: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
+        try container.encode(thumbnailUrl, forKey: .thumbnailUrl)
+        try container.encode(image, forKey: .image)
         try container.encode(recipeIngredient, forKey: .recipeIngredient)
         try container.encode(recipeInstructions, forKey: .recipeInstructions)
     }
