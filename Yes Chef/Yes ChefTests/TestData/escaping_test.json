@@ -1,0 +1,17 @@
+{
+  "name": "Test Recipe with Escaping",
+  "recipeIngredient": [
+    "1 cup of \"special\" water",
+    "2 tbsp of <bold>sugar</bold>"
+  ],
+  "recipeInstructions": [
+    {
+      "@type": "HowToStep",
+      "text": "First, mix the ingredients.&nbsp;Be careful."
+    },
+    {
+      "@type": "HowToStep",
+      "text": "Then, bake at <em>350&deg;F</em>."
+    }
+  ]
+}

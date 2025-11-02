@@ -40,6 +40,16 @@ class RecipeTests {
         #expect(plainText.contains("1. 1 lb. dried elbow pasta"))
         #expect(plainText.contains("8. Sprinkle the top with the last 1 1/2 cups of cheese and bake for 15 minutes, until cheesy is bubbly and lightly golden brown."))
     }
+
+    @Test func testEscaping() async throws {
+        let data = try loadTestData(from: "escaping_test")
+        let plainText = convertRecipeToPlainText(from: data)
+
+        #expect(plainText.contains("1. 1 cup of \"special\" water"))
+        #expect(plainText.contains("2. 2 tbsp of sugar"))
+        #expect(plainText.contains("1. First, mix the ingredients. Be careful."))
+        #expect(plainText.contains("2. Then, bake at 350°F."))
+    }
 }
 
 enum TestError: Error {

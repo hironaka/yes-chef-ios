@@ -111,20 +111,34 @@ func extractInstructions(from recipeData: Recipe) -> [String] {
     return recipeData.recipeInstructions.flatMap { instruction -> [String] in
         switch instruction {
         case .string(let text):
-            return [text]
+            return [text.htmlToString()]
         case .howToSection(let section):
             if section.name == "Recipe Instructions" {
-                return section.itemListElement.map { $0.text ?? "" }
+                return section.itemListElement.map { $0.text?.htmlToString() ?? "" }
             }
             return []
         case .howToStep(let step):
-            return [step.text ?? ""]
+            return [step.text?.htmlToString() ?? ""]
         }
     }
 }
 
 func extractIngredients(from recipeData: Recipe) -> [String] {
-    return recipeData.recipeIngredient
+    return recipeData.recipeIngredient.map { $0.htmlToString() }
+}
+
+extension String {
+    func htmlToString() -> String {
+        guard let data = self.data(using: .utf8) else {
+            return self
+        }
+        do {
+            let attributedString = try NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)
+            return attributedString.string
+        } catch {
+            return self
+        }
+    }
 }
 
 func convertRecipeToPlainText(from data: Data) -> String {
