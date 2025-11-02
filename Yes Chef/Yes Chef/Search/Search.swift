@@ -8,41 +8,76 @@
 import SwiftUI
 import WebKit
 
-struct WebView: UIViewRepresentable {
-    let url: URL
-    var onRecipeFound: (String) -> Void
-
-    func makeUIView(context: Context) -> WKWebView {
+class WebViewManager: ObservableObject {
+    let webView: WKWebView
+    
+    @Published var canGoBack: Bool = false
+    @Published var canGoForward: Bool = false
+    @Published var recipeFound: String? = nil
+    
+    init() {
         let prefs = WKWebpagePreferences()
         prefs.allowsContentJavaScript = true
         let config = WKWebViewConfiguration()
         config.defaultWebpagePreferences = prefs
-        let webView = WKWebView(frame: .zero, configuration: config)
-        webView.uiDelegate = context.coordinator
-        webView.navigationDelegate = context.coordinator
-        return webView
+        self.webView = WKWebView(frame: .zero, configuration: config)
+    }
+    
+    func load(url: URL) {
+        let request = URLRequest(url: url)
+        webView.load(request)
+    }
+    
+    func goBack() {
+        webView.goBack()
+    }
+    
+    func goForward() {
+        webView.goForward()
+    }
+}
+
+struct WebView: UIViewRepresentable {
+    let url: URL
+    var onRecipeFound: (String) -> Void
+    @ObservedObject var webViewManager: WebViewManager
+
+    init(url: URL, onRecipeFound: @escaping (String) -> Void, webViewManager: WebViewManager) {
+        self.url = url
+        self.onRecipeFound = onRecipeFound
+        self.webViewManager = webViewManager
     }
 
-    func updateUIView(_ uiView: WKWebView, context: Context) {
+    func makeUIView(context: Context) -> WKWebView {
+        webViewManager.webView.uiDelegate = context.coordinator
+        webViewManager.webView.navigationDelegate = context.coordinator
+        
         let request = URLRequest(url: url)
-        uiView.load(request)
+        webViewManager.webView.load(request)
+        
+        return webViewManager.webView
     }
+
+    func updateUIView(_ uiView: WKWebView, context: Context) {}
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self, onRecipeFound: onRecipeFound)
+        Coordinator(self, webViewManager: webViewManager, onRecipeFound: onRecipeFound)
     }
 
     class Coordinator: NSObject, WKUIDelegate, WKNavigationDelegate {
         var parent: WebView
         var onRecipeFound: (String) -> Void
+        @ObservedObject var webViewManager: WebViewManager
 
-        init(_ parent: WebView, onRecipeFound: @escaping (String) -> Void) {
+        init(_ parent: WebView, webViewManager: WebViewManager, onRecipeFound: @escaping (String) -> Void) {
             self.parent = parent
+            self.webViewManager = webViewManager
             self.onRecipeFound = onRecipeFound
         }
 
         func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
             if navigationAction.targetFrame == nil {
+                print("Loading \(navigationAction.request)")
                 webView.load(navigationAction.request)
             }
             return nil
@@ -94,16 +129,56 @@ struct WebView: UIViewRepresentable {
                 
                 if let recipeJSON = result as? String {
                     self?.onRecipeFound(recipeJSON)
+                    self?.webViewManager.recipeFound = recipeJSON
+                } else {
+                    self?.webViewManager.recipeFound = nil
                 }
+                
+                self?.webViewManager.canGoBack = webView.canGoBack
+                self?.webViewManager.canGoForward = webView.canGoForward
             }
         }
     }
 }
 
 struct Search: View {
+    @StateObject private var webViewManager = WebViewManager()
+
     var body: some View {
-        WebView(url: URL(string: "https://yes-chef.ai/search")!) { recipeJSON in
-            print("Found recipe: \(recipeJSON)")
+        VStack {
+            HStack {
+                Button(action: {
+                    webViewManager.goBack()
+                }) {
+                    Image(systemName: "arrow.left")
+                }
+                .disabled(!webViewManager.canGoBack)
+                
+                Button(action: {
+                    webViewManager.goForward()
+                }) {
+                    Image(systemName: "arrow.right")
+                }
+                .disabled(!webViewManager.canGoForward)
+                
+                Spacer()
+                
+                Button(action: {
+                    // download action
+                }) {
+                    Image(systemName: "square.and.arrow.down")
+                }
+                .disabled(webViewManager.recipeFound == nil)
+            }
+            .padding()
+            
+            WebView(
+                url: URL(string: "https://yes-chef.ai/search")!,
+                onRecipeFound: { recipeJSON in
+                    print("Found recipe: \(recipeJSON)")
+                },
+                webViewManager: webViewManager
+            )
         }
     }
 }
