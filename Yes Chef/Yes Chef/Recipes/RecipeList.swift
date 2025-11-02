@@ -12,7 +12,7 @@ struct RecipeList: View {
     @Query private var recipes: [Recipe]
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List(recipes) { recipe in
                 NavigationLink(destination: RecipeDetail(recipe: recipe)) {
                     HStack {

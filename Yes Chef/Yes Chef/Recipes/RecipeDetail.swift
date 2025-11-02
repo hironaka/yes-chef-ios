@@ -6,8 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct RecipeDetail: View {
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.presentationMode) private var presentationMode
+    
     let recipe: Recipe
 
     var body: some View {
@@ -63,6 +67,20 @@ struct RecipeDetail: View {
         }
         .if(recipe.image?.first != nil || recipe.thumbnailUrl != nil) { view in
             view.ignoresSafeArea()
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: delete) {
+                    Image(systemName: "trash")
+                }
+            }
+        }
+    }
+    
+    private func delete() {
+        withAnimation {
+            modelContext.delete(recipe)
+            presentationMode.wrappedValue.dismiss()
         }
     }
 }
