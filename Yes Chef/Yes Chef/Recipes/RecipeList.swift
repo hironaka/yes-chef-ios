@@ -1,5 +1,5 @@
 //
-//  Recipes.swift
+//  RecipeList.swift
 //  Yes Chef
 //
 //  Created by Hannah Hironaka on 10/25/25.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct Recipes: View {
+struct RecipeList: View {
     @Query private var recipes: [Recipe]
 
     var body: some View {
@@ -33,5 +33,5 @@ struct Recipes: View {
 }
 
 #Preview {
-    Recipes()
+    RecipeList()
 }
