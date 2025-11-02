@@ -20,14 +20,23 @@ class RecipeTests {
     }
 
     @Test func testRecipeDecoding() async throws {
-        let data = try loadTestData(from: "mac_and_cheese")
         let decoder = JSONDecoder()
-        let recipe = try decoder.decode(Recipe.self, from: data)
+        let data1 = try loadTestData(from: "mac_and_cheese")
+        let recipe1 = try decoder.decode(Recipe.self, from: data1)
 
-        #expect(recipe.name == "Creamy Homemade Baked Mac and Cheese")
-        #expect(recipe.thumbnailUrl == "https://www.thechunkychef.com/wp-content/uploads/2018/02/Ultimate-Creamy-Baked-Mac-and-Cheese-feat.jpg")
-        #expect(recipe.recipeIngredient.count == 10)
-        #expect(recipe.recipeInstructions.count == 8)
+        #expect(recipe1.name == "Creamy Homemade Baked Mac and Cheese")
+        #expect(recipe1.thumbnailUrl == "https://www.thechunkychef.com/wp-content/uploads/2018/02/Ultimate-Creamy-Baked-Mac-and-Cheese-feat.jpg")
+        #expect(recipe1.recipeIngredient.count == 10)
+        #expect(recipe1.recipeInstructions.count == 8)
+
+        let data2 = try loadTestData(from: "lassagna")
+        let recipe2 = try decoder.decode(Recipe.self, from: data2)
+
+        #expect(recipe2.name == "Easy Homemade Lasagna")
+        #expect(recipe2.image?.count == 4)
+        #expect(recipe2.image?[0] == "https://www.spendwithpennies.com/wp-content/uploads/2022/12/1200-Easy-Homemade-Lasagna-SpendWithPennies.jpg")
+        #expect(recipe2.recipeIngredient.count == 14)
+        #expect(recipe2.recipeInstructions.count == 8)
     }
 
     @Test func testPlainTextConversion() async throws {

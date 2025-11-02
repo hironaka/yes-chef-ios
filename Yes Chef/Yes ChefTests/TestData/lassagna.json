@@ -1,0 +1,261 @@
+{
+   "@type":"Recipe",
+   "name":"Easy Homemade Lasagna",
+   "author":{
+      "@id":"https://www.spendwithpennies.com/#/schema/person/1212dd6ee15c360b58032f7b23d46110"
+   },
+   "description":"This homemade lasagna recipe is delicious and easy to make. It features layers of pasta, meat sauce, and cheese with a golden cheesy topping!",
+   "datePublished":"2022-12-20T14:00:00+00:00",
+   "image":[
+      "https://www.spendwithpennies.com/wp-content/uploads/2022/12/1200-Easy-Homemade-Lasagna-SpendWithPennies.jpg",
+      "https://www.spendwithpennies.com/wp-content/uploads/2022/12/1200-Easy-Homemade-Lasagna-SpendWithPennies-500x500.jpg",
+      "https://www.spendwithpennies.com/wp-content/uploads/2022/12/1200-Easy-Homemade-Lasagna-SpendWithPennies-500x375.jpg",
+      "https://www.spendwithpennies.com/wp-content/uploads/2022/12/1200-Easy-Homemade-Lasagna-SpendWithPennies-480x270.jpg"
+   ],
+   "video":{
+      "name":"Easy Homemade Lasagna",
+      "description":"Homemade Lasagna is a classic, delicious dinner that every family should have in their recipe rotation. We love serving a classic lasagna dinner, complete with a caesar salad or Italian salad and dinner rolls slathered in Homemade Garlic Butter. It’s the world’s best meal!",
+      "thumbnailUrl":"https://content.jwplatform.com/thumbs/f3bCEYGI-720.jpg",
+      "contentUrl":"https://content.jwplatform.com/videos/f3bCEYGI.mp4",
+      "uploadDate":"2019-12-20T13:43:38.000Z",
+      "@type":"VideoObject"
+   },
+   "recipeYield":[
+      "12",
+      "12 servings"
+   ],
+   "prepTime":"PT30M",
+   "cookTime":"PT60M",
+   "totalTime":"PT105M",
+   "recipeIngredient":[
+      "12  lasagna noodles (uncooked)",
+      "4 cups shredded mozzarella cheese (divided)",
+      "½  cup shredded Parmesan cheese (shredded and divided)",
+      "¾  teaspoon salt (more to taste)",
+      "½  pound lean ground beef",
+      "½  pound Italian sausage",
+      "1  yellow onion (diced)",
+      "2 cloves garlic (minced)",
+      "36 ounces pasta sauce (*see note)",
+      "2 tablespoons tomato paste",
+      "1 teaspoon Italian seasoning",
+      "2 cups ricotta cheese (or cottage cheese)",
+      "¼  cup chopped fresh parsley",
+      "1 large egg (beaten)"
+   ],
+   "recipeInstructions":[
+      {
+         "@type":"HowToStep",
+         "text":"Preheat the oven to 350°F. Bring a large pot of salted water to a boil. Add the lasagna noodles and cook until al dente (firm) according to package directions. Drain, rinse under cold water, and set aside.",
+         "name":"Preheat the oven to 350°F. Bring a large pot of salted water to a boil. Add the lasagna noodles and cook until al dente (firm) according to package directions. Drain, rinse under cold water, and set aside.",
+         "url":"https://www.spendwithpennies.com/easy-homemade-lasagna/#wprm-recipe-145181-step-0-0"
+      },
+      {
+         "@type":"HowToStep",
+         "text":"Meanwhile, in a large skillet or Dutch oven, brown the beef, sausage, onion, and garlic over medium-high heat until no pink remains. Drain any fat.",
+         "name":"Meanwhile, in a large skillet or Dutch oven, brown the beef, sausage, onion, and garlic over medium-high heat until no pink remains. Drain any fat.",
+         "url":"https://www.spendwithpennies.com/easy-homemade-lasagna/#wprm-recipe-145181-step-0-1"
+      },
+      {
+         "@type":"HowToStep",
+         "text":"Stir in the pasta sauce, tomato paste, Italian seasoning, ½ teaspoon of salt, and ¼ teaspoon of black pepper. Simmer uncovered over medium heat for 5 minutes or until slightly thickened.  Taste and season with additional salt if desired.",
+         "name":"Stir in the pasta sauce, tomato paste, Italian seasoning, ½ teaspoon of salt, and ¼ teaspoon of black pepper. Simmer uncovered over medium heat for 5 minutes or until slightly thickened.  Taste and season with additional salt if desired.",
+         "url":"https://www.spendwithpennies.com/easy-homemade-lasagna/#wprm-recipe-145181-step-0-2"
+      },
+      {
+         "@type":"HowToStep",
+         "text":"In a separate medium bowl, combine 1 ½ cups mozzarella cheese, ¼  cup parmesan cheese, ricotta, parsley, egg, and ¼ teaspoon salt.",
+         "name":"In a separate medium bowl, combine 1 ½ cups mozzarella cheese, ¼  cup parmesan cheese, ricotta, parsley, egg, and ¼ teaspoon salt.",
+         "url":"https://www.spendwithpennies.com/easy-homemade-lasagna/#wprm-recipe-145181-step-0-3"
+      },
+      {
+         "@type":"HowToStep",
+         "text":"Spread 1 cup of the meat sauce in a 9x13 pan or casserole dish. Top it with 3 lasagna noodles. Layer with ⅓ of the ricotta cheese mixture and 1 cup of meat sauce.  Repeat twice more. Finish with 3 noodles topped with remaining sauce.",
+         "name":"Spread 1 cup of the meat sauce in a 9x13 pan or casserole dish. Top it with 3 lasagna noodles. Layer with ⅓ of the ricotta cheese mixture and 1 cup of meat sauce.  Repeat twice more. Finish with 3 noodles topped with remaining sauce.",
+         "url":"https://www.spendwithpennies.com/easy-homemade-lasagna/#wprm-recipe-145181-step-0-4"
+      },
+      {
+         "@type":"HowToStep",
+         "text":"Cover with foil and bake for 45 minutes. ",
+         "name":"Cover with foil and bake for 45 minutes. ",
+         "url":"https://www.spendwithpennies.com/easy-homemade-lasagna/#wprm-recipe-145181-step-0-5"
+      },
+      {
+         "@type":"HowToStep",
+         "text":"Remove the foil and sprinkle the top of the lasagna with the remaining 2 ½ cups mozzarella cheese and ¼ cup parmesan cheese. Bake uncovered for an additional 15 minutes or until browned and bubbly. Broil for 2-3 minutes if desired.",
+         "name":"Remove the foil and sprinkle the top of the lasagna with the remaining 2 ½ cups mozzarella cheese and ¼ cup parmesan cheese. Bake uncovered for an additional 15 minutes or until browned and bubbly. Broil for 2-3 minutes if desired.",
+         "url":"https://www.spendwithpennies.com/easy-homemade-lasagna/#wprm-recipe-145181-step-0-6"
+      },
+      {
+         "@type":"HowToStep",
+         "text":"Rest for at least 15 minutes before cutting.",
+         "name":"Rest for at least 15 minutes before cutting.",
+         "url":"https://www.spendwithpennies.com/easy-homemade-lasagna/#wprm-recipe-145181-step-0-7"
+      }
+   ],
+   "aggregateRating":{
+      "@type":"AggregateRating",
+      "ratingValue":"4.97",
+      "ratingCount":"3257",
+      "reviewCount":"10"
+   },
+   "review":[
+      {
+         "@type":"Review",
+         "reviewRating":{
+            "@type":"Rating",
+            "ratingValue":"5"
+         },
+         "reviewBody":"This is my 4th time making this lasagna and it’s fantastic! Ive got one in the oven now! Not too overly complicated and absolutely delicious! Thank you! 😊",
+         "author":{
+            "@type":"Person",
+            "name":"Andrea"
+         },
+         "datePublished":"2025-10-27"
+      },
+      {
+         "@type":"Review",
+         "reviewRating":{
+            "@type":"Rating",
+            "ratingValue":"2"
+         },
+         "reviewBody":"I got halfway through the second layer and ran out of meat. No, the bottom layer wasn’t super thick. I ended up cutting it in half and transferring it to an 8x8 pan. But now I don’t enough lasagna for more than 1 meal. Very disappointing.",
+         "author":{
+            "@type":"Person",
+            "name":"Angie"
+         },
+         "datePublished":"2025-10-26"
+      },
+      {
+         "@type":"Review",
+         "reviewRating":{
+            "@type":"Rating",
+            "ratingValue":"5"
+         },
+         "reviewBody":"My family loved this recipe",
+         "author":{
+            "@type":"Person",
+            "name":"Mickey Genier"
+         },
+         "datePublished":"2025-10-26"
+      },
+      {
+         "@type":"Review",
+         "reviewRating":{
+            "@type":"Rating",
+            "ratingValue":"5"
+         },
+         "reviewBody":"Great",
+         "author":{
+            "@type":"Person",
+            "name":"Cindy Clements"
+         },
+         "datePublished":"2025-10-17"
+      },
+      {
+         "@type":"Review",
+         "reviewRating":{
+            "@type":"Rating",
+            "ratingValue":"5"
+         },
+         "reviewBody":"Made this ahead and froze it for later. It was delicious. Great recipe that I will keep as I am sure it will become a family fav. Thanks.",
+         "author":{
+            "@type":"Person",
+            "name":"Debra Moore"
+         },
+         "datePublished":"2025-10-15"
+      },
+      {
+         "@type":"Review",
+         "reviewRating":{
+            "@type":"Rating",
+            "ratingValue":"5"
+         },
+         "reviewBody":"I made this for the first time for dinner with friends and it was amazing! I used all beef because I couldn't find sausage and I used Trader Joe's no-boil lasagna sheets - still turned out so good. I assembled the lasagna earlier in the day, wrapped the top in foil, and popped it into the oven an hour before my dinner started and it was perfect. Would highly recommend.",
+         "author":{
+            "@type":"Person",
+            "name":"Grace Kim"
+         },
+         "datePublished":"2025-10-12"
+      },
+      {
+         "@type":"Review",
+         "reviewRating":{
+            "@type":"Rating",
+            "ratingValue":"5"
+         },
+         "reviewBody":"Help!!!! I’ve made this many times and it’s our family fav! I HAVE A QUESTION that I hope you answer overnight.. I’m sorry I k ow I’m asking too much but it’s Thanksgiving on Monday after tomorrow and I want to make this lasagna but I am also making a turkey and I have 1 oven! What do you think I should do? Bake it the day before , put in the fridge and reheat? Help Penny ❤️",
+         "author":{
+            "@type":"Person",
+            "name":"Monika"
+         },
+         "datePublished":"2025-10-11"
+      },
+      {
+         "@type":"Review",
+         "reviewRating":{
+            "@type":"Rating",
+            "ratingValue":"5"
+         },
+         "reviewBody":"Absolutely loved this recipe. Perfect portions of meat sauce to cheese in each layer. Everyone loved it, this is now my favorite lasagna recipe of all time.\r\n\r\nI did make a couple of changes:\r\n1. used 1/2 pound of chicken instead of beef (beef is too expensive and no one could tell)\r\n2. Minced 8 baby portobello mushrooms, slow cooked with garlic and onions in olive oil. cooked meat separately, strained it and then made sauce. \r\n3. Used 10 cloves of garlic\r\n\r\nEveryone loved it.",
+         "author":{
+            "@type":"Person",
+            "name":"Beau"
+         },
+         "datePublished":"2025-10-05"
+      },
+      {
+         "@type":"Review",
+         "reviewRating":{
+            "@type":"Rating",
+            "ratingValue":"5"
+         },
+         "reviewBody":"This is the BEST lasagna I have ever had!! I have never made lasagna from scratch let alone the sauce as well but THIS was soooo good. I made this for a little dinner party and all my friends LOVED it! Some are Italian and they said it was Italian approved haha! \r\n\r\nI do have a question. How long would I have to bake the lasagna for if I baked it straight from frozen? - note it wouldn’t have the cheese on it yet.",
+         "author":{
+            "@type":"Person",
+            "name":"Christine"
+         },
+         "datePublished":"2025-10-04"
+      },
+      {
+         "@type":"Review",
+         "reviewRating":{
+            "@type":"Rating",
+            "ratingValue":"5"
+         },
+         "reviewBody":"made it with my sis very nice intimate meal with a tasty lasagna!; I didn't screw it up \r\nfeel free to tweak the amount of sauce used as the original was preposterous!",
+         "author":{
+            "@type":"Person",
+            "name":"AnduCandu"
+         },
+         "datePublished":"2025-10-02"
+      }
+   ],
+   "recipeCategory":[
+      "Casserole",
+      "Main Course",
+      "Pasta"
+   ],
+   "recipeCuisine":[
+      "Italian"
+   ],
+   "keywords":"homemade lasagna recipe, how to make lasagna, lasagna",
+   "nutrition":{
+      "@type":"NutritionInformation",
+      "calories":"377 kcal",
+      "carbohydrateContent":"28 g",
+      "proteinContent":"29 g",
+      "fatContent":"16 g",
+      "saturatedFatContent":"7 g",
+      "cholesterolContent":"71 mg",
+      "sodiumContent":"857 mg",
+      "fiberContent":"2 g",
+      "sugarContent":"4 g",
+      "servingSize":"1 serving"
+   },
+   "@id":"https://www.spendwithpennies.com/easy-homemade-lasagna/#recipe",
+   "isPartOf":{
+      "@id":"https://www.spendwithpennies.com/easy-homemade-lasagna/#article"
+   },
+   "mainEntityOfPage":"https://www.spendwithpennies.com/easy-homemade-lasagna/"
+}
