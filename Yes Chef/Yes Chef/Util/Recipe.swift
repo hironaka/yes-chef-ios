@@ -11,11 +11,13 @@ import Foundation
 
 struct Recipe: Codable {
     let name: String?
+    let source: String?
+    let thumbnailUrl: String?
     let recipeIngredient: [String]?
     let recipeInstructions: [Instruction]?
 
     enum CodingKeys: String, CodingKey {
-        case name, recipeIngredient, recipeInstructions
+        case name, source, thumbnailUrl, recipeIngredient, recipeInstructions
     }
 }
 
