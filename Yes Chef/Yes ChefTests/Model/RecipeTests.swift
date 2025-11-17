@@ -39,6 +39,18 @@ class RecipeTests {
         #expect(recipe2.recipeInstructions.count == 8)
     }
 
+    @Test func testBraisedBeansDecoding() async throws {
+        let decoder = JSONDecoder()
+        let data = try loadTestData(from: "braised_beans")
+        let recipe = try decoder.decode(Recipe.self, from: data)
+
+        #expect(recipe.name == "Braised White Beans and Greens With Parmesan")
+        #expect(recipe.image?.count == 4)
+        #expect(recipe.image?[0] == "https://static01.nyt.com/images/2021/03/14/dining/lh-cheesy-beans-and-greens/lh-cheesy-beans-and-greens-videoSixteenByNineJumbo1600-v2.jpg")
+        #expect(recipe.recipeIngredient.count == 14)
+        #expect(recipe.recipeInstructions.count == 4)
+    }
+
     @Test func testPlainTextConversion() async throws {
         let data = try loadTestData(from: "mac_and_cheese")
         let plainText = convertRecipeToPlainText(from: data)

@@ -1,0 +1,147 @@
+{
+  "@context": "http://schema.org",
+  "@id": "nyt://recipe/c62f84aa-b410-51e6-8bac-68d037f5fee1",
+  "@type": "Recipe",
+  "mainEntityOfPage": {
+    "@id": "https://cooking.nytimes.com/recipes/1021902-braised-white-beans-and-greens-with-parmesan",
+    "@type": "WebPage",
+    "name": "Braised White Beans and Greens With Parmesan"
+  },
+  "url": "https://cooking.nytimes.com/recipes/1021902-braised-white-beans-and-greens-with-parmesan",
+  "name": "Braised White Beans and Greens With Parmesan",
+  "description": "Inspired by the Italian dish of sautéed puntarelle (an Italian variety of chicory) and white beans, this recipe makes a satisfying vegetarian main course or a hearty side dish for roast chicken or sausages. It opts for canned white beans, for the sake of weeknight convenience, and Swiss chard, which is much milder than puntarelle and easier to find in the U.S. Kale or escarole would also work well, if that’s what you’ve got. On that note, grated Pecorino Romano cheese gives the broth a more pungent element, but Parmesan will work in its place. Serve in shallow bowls with toasted country bread to mop up the garlicky broth.",
+  "author": {
+    "@type": "Person",
+    "name": "Lidey Heuck"
+  },
+  "image": [
+    {
+      "@id": "nyt://image/23fb1101-c374-5335-8584-4779611e3cbe#videoSixteenByNineJumbo1600",
+      "@type": "ImageObject",
+      "contentUrl": "https://static01.nyt.com/images/2021/03/14/dining/lh-cheesy-beans-and-greens/lh-cheesy-beans-and-greens-videoSixteenByNineJumbo1600-v2.jpg",
+      "creditText": "Julia Gartland for The New York Times (Photography and Styling)",
+      "dateModified": "2024-11-07T09:17:20.716Z",
+      "datePublished": "2021-02-10T16:57:27.000Z",
+      "height": "900",
+      "representativeOfPage": true,
+      "uploadDate": "2021-02-10T16:57:27.000Z",
+      "url": "https://static01.nyt.com/images/2021/03/14/dining/lh-cheesy-beans-and-greens/lh-cheesy-beans-and-greens-videoSixteenByNineJumbo1600-v2.jpg",
+      "width": "1600"
+    },
+    {
+      "@id": "nyt://image/23fb1101-c374-5335-8584-4779611e3cbe#googleFourByThree",
+      "@type": "ImageObject",
+      "contentUrl": "https://static01.nyt.com/images/2021/03/14/dining/lh-cheesy-beans-and-greens/lh-cheesy-beans-and-greens-googleFourByThree-v2.jpg",
+      "creditText": "Julia Gartland for The New York Times (Photography and Styling)",
+      "dateModified": "2024-11-07T09:17:20.716Z",
+      "datePublished": "2021-02-10T16:57:27.000Z",
+      "height": "600",
+      "representativeOfPage": true,
+      "uploadDate": "2021-02-10T16:57:27.000Z",
+      "url": "https://static01.nyt.com/images/2021/03/14/dining/lh-cheesy-beans-and-greens/lh-cheesy-beans-and-greens-googleFourByThree-v2.jpg",
+      "width": "800"
+    },
+    {
+      "@id": "nyt://image/23fb1101-c374-5335-8584-4779611e3cbe#mediumSquareAt3X",
+      "@type": "ImageObject",
+      "contentUrl": "https://static01.nyt.com/images/2021/03/14/dining/lh-cheesy-beans-and-greens/lh-cheesy-beans-and-greens-mediumSquareAt3X-v2.jpg",
+      "creditText": "Julia Gartland for The New York Times (Photography and Styling)",
+      "dateModified": "2024-11-07T09:17:20.716Z",
+      "datePublished": "2021-02-10T16:57:27.000Z",
+      "height": "1316",
+      "representativeOfPage": true,
+      "uploadDate": "2021-02-10T16:57:27.000Z",
+      "url": "https://static01.nyt.com/images/2021/03/14/dining/lh-cheesy-beans-and-greens/lh-cheesy-beans-and-greens-mediumSquareAt3X-v2.jpg",
+      "width": "1316"
+    },
+    {
+      "@id": "nyt://image/23fb1101-c374-5335-8584-4779611e3cbe#facebookJumbo",
+      "@type": "ImageObject",
+      "contentUrl": "https://static01.nyt.com/images/2021/03/14/dining/lh-cheesy-beans-and-greens/lh-cheesy-beans-and-greens-facebookJumbo-v2.jpg",
+      "creditText": "Julia Gartland for The New York Times (Photography and Styling)",
+      "dateModified": "2024-11-07T09:17:20.716Z",
+      "datePublished": "2021-02-10T16:57:27.000Z",
+      "height": "550",
+      "representativeOfPage": true,
+      "uploadDate": "2021-02-10T16:57:27.000Z",
+      "url": "https://static01.nyt.com/images/2021/03/14/dining/lh-cheesy-beans-and-greens/lh-cheesy-beans-and-greens-facebookJumbo-v2.jpg",
+      "width": "1050"
+    }
+  ],
+  "totalTime": "PT30M",
+  "recipeYield": "4 servings",
+  "recipeCuisine": "",
+  "recipeCategory": "dinner, easy, quick, weeknight, beans, main course, side dish",
+  "keywords": "cannellini bean, dutch oven, escarole, fennel, full-access-ic-2024-09, kale, swiss chard, vegetarian",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": 5,
+    "ratingCount": 15825
+  },
+  "nutrition": {
+    "@context": "http://schema.org",
+    "@type": "NutritionInformation",
+    "calories": 617,
+    "unsaturatedFatContent": "16 grams",
+    "carbohydrateContent": "68 grams",
+    "cholesterolContent": null,
+    "fatContent": "25 grams",
+    "fiberContent": "14 grams",
+    "proteinContent": "33 grams",
+    "saturatedFatContent": "8 grams",
+    "sodiumContent": "1529 milligrams",
+    "sugarContent": "7 grams",
+    "transFatContent": "0 grams"
+  },
+  "recipeIngredient": [
+    "1/4 cup olive oil",
+    "1 small fennel bulb, trimmed, cored and small-diced",
+    "1 small yellow onion, small-diced",
+    "2 teaspoons minced fresh rosemary or thyme",
+    "5 garlic cloves, minced",
+    "1/4 teaspoon red-pepper flakes, plus more to taste",
+    "1 large or 2 small bunches escarole, kale or Swiss chard, stems removed (10 to 12 ounces)",
+    "2 (15-ounce) cans cannellini beans, rinsed",
+    "2 cups low-sodium vegetable or chicken broth",
+    "Kosher salt and black pepper",
+    "1 tablespoon lemon juice",
+    "1/2 cup shredded mozzarella (optional)",
+    "3 tablespoons grated Parmesan or Pecorino Romano, plus more for serving",
+    "Toasted country bread, for serving"
+  ],
+  "recipeInstructions": [
+    {
+      "@context": "http://schema.org",
+      "@type": "HowToStep",
+      "text": "In a 12-inch skillet or Dutch oven, heat the olive oil over medium. Add the fennel, onion and rosemary, and cook for 4 to 6 minutes, stirring occasionally, until tender. Add the garlic and red-pepper flakes and cook until fragrant, about 1 minute."
+    },
+    {
+      "@context": "http://schema.org",
+      "@type": "HowToStep",
+      "text": "Begin adding handfuls of the greens, cooking and stirring until leaves wilt."
+    },
+    {
+      "@context": "http://schema.org",
+      "@type": "HowToStep",
+      "text": "Add the white beans, broth and 1/4 teaspoon black pepper, and stir to combine. Bring to a boil, then turn the heat to low and simmer, mashing some of the beans with a wooden spoon, until the liquid has reduced and thickened, 6 to 8 minutes."
+    },
+    {
+      "@context": "http://schema.org",
+      "@type": "HowToStep",
+      "text": "Off the heat, stir in the lemon juice, then the mozzarella, if using, and Pecorino Romano. Taste and season with salt and pepper. Divide among shallow bowls and top with more Pecorino Romano. Serve with toasted bread and a dish of red-pepper flakes on the side."
+    }
+  ],
+  "publisher": {
+    "@id": "https://cooking.nytimes.com/#publisher",
+    "@type": "Organization",
+    "name": "NYT Cooking"
+  },
+  "datePublished": "2021-02-11T00:00:00.000Z",
+  "dateModified": "2024-10-21T14:57:22.000Z",
+  "copyrightHolder": {
+    "@id": "https://cooking.nytimes.com/#publisher",
+    "@type": "Organization",
+    "name": "NYT Cooking"
+  },
+  "copyrightYear": 2021
+}

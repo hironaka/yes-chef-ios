@@ -34,9 +34,30 @@ class Recipe: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         name = try container.decode(String.self, forKey: .name)
         thumbnailUrl = try container.decodeIfPresent(String.self, forKey: .thumbnailUrl)
-        image = try container.decodeIfPresent([String].self, forKey: .image)
+        
+        if let images = try? container.decode([String].self, forKey: .image) {
+            image = images
+        } else if let imageObjects = try? container.decode([ImageObject].self, forKey: .image) {
+            image = imageObjects.compactMap { $0.url ?? $0.contentUrl }
+        } else if let singleImage = try? container.decode(String.self, forKey: .image) {
+            image = [singleImage]
+        } else if let singleImageObject = try? container.decode(ImageObject.self, forKey: .image) {
+            if let url = singleImageObject.url ?? singleImageObject.contentUrl {
+                image = [url]
+            } else {
+                image = nil
+            }
+        } else {
+            image = nil
+        }
+        
         recipeIngredient = try container.decode([String].self, forKey: .recipeIngredient)
         recipeInstructions = try container.decode([Instruction].self, forKey: .recipeInstructions)
+    }
+
+    private struct ImageObject: Codable {
+        let url: String?
+        let contentUrl: String?
     }
 
     func encode(to encoder: Encoder) throws {
