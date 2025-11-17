@@ -5,45 +5,48 @@
 //  Created by Hannah Hironaka on 10/25/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 import WebKit
 
 class WebViewManager: ObservableObject {
     let webView: WKWebView
-    
+
     @Published var canGoBack: Bool = false
     @Published var canGoForward: Bool = false
     @Published var recipeFound: String? = nil
-    
+
     init() {
         let prefs = WKWebpagePreferences()
         prefs.allowsContentJavaScript = true
         let config = WKWebViewConfiguration()
         config.defaultWebpagePreferences = prefs
         self.webView = WKWebView(frame: .zero, configuration: config)
+        self.webView.customUserAgent =
+            "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1"
     }
-    
+
     func load(url: URL) {
         let request = URLRequest(url: url)
         webView.load(request)
     }
-    
+
     func goBack() {
         webView.goBack()
     }
-    
+
     func goForward() {
         webView.goForward()
     }
-    
+
     func download(completion: @escaping (Recipe?) -> Void) {
         guard let recipeJSON = self.recipeFound,
-              let data = recipeJSON.data(using: .utf8) else {
+            let data = recipeJSON.data(using: .utf8)
+        else {
             completion(nil)
             return
         }
-        
+
         do {
             let recipe = try JSONDecoder().decode(Recipe.self, from: data)
             completion(recipe)
@@ -66,10 +69,10 @@ struct WebView: UIViewRepresentable {
     func makeUIView(context: Context) -> WKWebView {
         webViewManager.webView.uiDelegate = context.coordinator
         webViewManager.webView.navigationDelegate = context.coordinator
-        
+
         let request = URLRequest(url: url)
         webViewManager.webView.load(request)
-        
+
         return webViewManager.webView
     }
 
@@ -88,64 +91,85 @@ struct WebView: UIViewRepresentable {
             self.webViewManager = webViewManager
         }
 
-        func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        func webView(
+            _ webView: WKWebView,
+            createWebViewWith configuration: WKWebViewConfiguration,
+            for navigationAction: WKNavigationAction,
+            windowFeatures: WKWindowFeatures
+        ) -> WKWebView? {
             if navigationAction.targetFrame == nil {
                 print("Loading \(navigationAction.request)")
                 webView.load(navigationAction.request)
             }
             return nil
         }
-        
-        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+
+        func webView(
+            _ webView: WKWebView,
+            decidePolicyFor navigationAction: WKNavigationAction,
+            decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+        ) {
+            if navigationAction.navigationType == .linkActivated {
+                decisionHandler(.cancel)
+                webView.load(navigationAction.request)
+            } else {
+                decisionHandler(.allow)
+            }
+        }
+
+        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
+        {
             print("content loaded")
-            
+
             let script = """
-                (function() {
-                    const scripts = document.querySelectorAll('script[type="application/ld+json"]');
-                    for (const script of scripts) {
-                        try {
-                            const obj = JSON.parse(script.textContent);
+                    (function() {
+                        const scripts = document.querySelectorAll('script[type="application/ld+json"]');
+                        for (const script of scripts) {
+                            try {
+                                const obj = JSON.parse(script.textContent);
 
-                            // Handle direct recipe objects
-                            if (obj && obj['@type']) {
-                                const type = obj['@type'];
-                                if (type === 'Recipe' || (Array.isArray(type) && type.includes('Recipe'))) {
-                                    return JSON.stringify(obj);
+                                // Handle direct recipe objects
+                                if (obj && obj['@type']) {
+                                    const type = obj['@type'];
+                                    if (type === 'Recipe' || (Array.isArray(type) && type.includes('Recipe'))) {
+                                        return JSON.stringify(obj);
+                                    }
                                 }
-                            }
 
-                            // Handle @graph structure
-                            if (obj && obj['@graph'] && Array.isArray(obj['@graph'])) {
-                                const recipe = obj['@graph'].find(item => {
-                                    const type = item['@type'];
-                                    return type === 'Recipe' || (Array.isArray(type) && type.includes('Recipe'));
-                                });
-                                if (recipe) {
-                                    return JSON.stringify(recipe);
+                                // Handle @graph structure
+                                if (obj && obj['@graph'] && Array.isArray(obj['@graph'])) {
+                                    const recipe = obj['@graph'].find(item => {
+                                        const type = item['@type'];
+                                        return type === 'Recipe' || (Array.isArray(type) && type.includes('Recipe'));
+                                    });
+                                    if (recipe) {
+                                        return JSON.stringify(recipe);
+                                    }
                                 }
+                            } catch (e) {
+                                // Ignore parsing errors
                             }
-                        } catch (e) {
-                            // Ignore parsing errors
                         }
-                    }
-                    return null;
-                })();
-            """
-            
+                        return null;
+                    })();
+                """
+
             webView.evaluateJavaScript(script) { [weak self] (result, error) in
                 print("JavaScript done: \(result)")
-                
+
                 if let error = error {
-                    print("JavaScript evaluation failed: \(error.localizedDescription)")
+                    print(
+                        "JavaScript evaluation failed: \(error.localizedDescription)"
+                    )
                     return
                 }
-                
+
                 if let recipeJSON = result as? String {
                     self?.webViewManager.recipeFound = recipeJSON
                 } else {
                     self?.webViewManager.recipeFound = nil
                 }
-                
+
                 self?.webViewManager.canGoBack = webView.canGoBack
                 self?.webViewManager.canGoForward = webView.canGoForward
             }
@@ -166,16 +190,16 @@ struct Search: View {
                     Image(systemName: "arrow.left")
                 }
                 .disabled(!webViewManager.canGoBack)
-                
+
                 Button(action: {
                     webViewManager.goForward()
                 }) {
                     Image(systemName: "arrow.right")
                 }
                 .disabled(!webViewManager.canGoForward)
-                
+
                 Spacer()
-                
+
                 Button(action: {
                     webViewManager.download { recipe in
                         if let recipe = recipe {
@@ -188,7 +212,7 @@ struct Search: View {
                 .disabled(webViewManager.recipeFound == nil)
             }
             .padding()
-            
+
             WebView(
                 url: URL(string: "https://yes-chef.ai/search")!,
                 webViewManager: webViewManager
