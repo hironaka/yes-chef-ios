@@ -19,6 +19,7 @@ struct RecipeList: View {
                         if let imageUrl = recipe.thumbnailUrl ?? recipe.image?.first, let url = URL(string: imageUrl) {
                             AsyncImage(url: url) { image in
                                 image.resizable()
+                                    .scaledToFill()
                             } placeholder: {
                                 ProgressView()
                             }

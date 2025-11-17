@@ -21,11 +21,13 @@ struct RecipeDetail: View {
                     ZStack(alignment: .bottomLeading) {
                         AsyncImage(url: url) { image in
                             image.resizable()
-                                .aspectRatio(contentMode: .fill)
+                                .scaledToFill()
+                                .aspectRatio(1, contentMode: .fit)
+                                .clipped()
+                                .containerRelativeFrame(.horizontal)
                         } placeholder: {
                             ProgressView()
                         }
-                        .frame(height: 300)
                         .clipped()
                         
                         Text(recipe.name ?? "Untitled Recipe")
@@ -36,6 +38,8 @@ struct RecipeDetail: View {
                             .cornerRadius(10)
                             .padding()
                     }
+                    .clipped()
+                    .aspectRatio(1, contentMode: .fit)
                 } else {
                     Text(recipe.name ?? "Untitled Recipe")
                         .font(.largeTitle)
@@ -91,8 +95,8 @@ struct RecipeDetail_Previews: PreviewProvider {
     static var previews: some View {
         RecipeDetail(recipe: Recipe(
             name: "Classic Tomato Bruschetta",
-            thumbnailUrl: "https://www.thechunkychef.com/wp-content/uploads/2018/02/Ultimate-Creamy-Baked-Mac-and-Cheese-feat.jpg",
-            image: ["https://www.thechunkychef.com/wp-content/uploads/2018/02/Ultimate-Creamy-Baked-Mac-and-Cheese-feat.jpg"],
+            thumbnailUrl: "https://static01.nyt.com/images/2021/03/14/dining/lh-cheesy-beans-and-greens/lh-cheesy-beans-and-greens-videoSixteenByNineJumbo1600-v2.jpg",
+            image: ["https://static01.nyt.com/images/2021/03/14/dining/lh-cheesy-beans-and-greens/lh-cheesy-beans-and-greens-videoSixteenByNineJumbo1600-v2.jpg"],
             recipeIngredient: [
                 "1 loaf French bread, cut into 1/2-inch slices",
                 "1/4 cup olive oil",
