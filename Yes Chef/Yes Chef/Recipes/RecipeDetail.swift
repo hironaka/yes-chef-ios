@@ -86,7 +86,7 @@ struct RecipeDetail: View {
             }
         }
         .sheet(isPresented: $isVoiceAssistantPresented) {
-            RecipeVoiceAssistant()
+            RecipeVoiceAssistant(recipe: recipe)
         }
     }
     
