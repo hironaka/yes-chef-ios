@@ -11,6 +11,7 @@ import SwiftData
 struct RecipeDetail: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.presentationMode) private var presentationMode
+    @State private var isVoiceAssistantPresented = false
     
     let recipe: Recipe
 
@@ -74,10 +75,18 @@ struct RecipeDetail: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: { isVoiceAssistantPresented = true }) {
+                    Image(systemName: "waveform.badge.microphone")
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: delete) {
                     Image(systemName: "trash")
                 }
             }
+        }
+        .sheet(isPresented: $isVoiceAssistantPresented) {
+            RecipeVoiceAssistant()
         }
     }
     
