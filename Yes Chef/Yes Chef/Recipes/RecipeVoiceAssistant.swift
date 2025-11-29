@@ -3,24 +3,36 @@ import RealtimeAPI
 
 struct RecipeVoiceAssistant: View {
     @State private var conversation = Conversation()
+    @StateObject private var audioMonitor = AudioLevelMonitor()
     let recipe: Recipe
 
     var body: some View {
-        Text("Say something!")
-            .task {
-                do {
-                    if let token = await fetchToken() {
-                        try await conversation.connect(ephemeralKey: token)
-                        await conversation.waitForConnection()
-                        await sendSystemInstruction()
-                        await sendRecipe()
-                    } else {
-                        print("Failed to fetch token")
-                    }
-                } catch {
-                    print("Failed to connect: \(error)")
+        VStack(spacing: 20) {
+            Waveform(level: audioMonitor.level)
+                .frame(height: 60)
+        }
+        .task {
+            do {
+                if let token = await fetchToken() {
+                    try await conversation.connect(ephemeralKey: token)
+                    await conversation.waitForConnection()
+                    
+                    // Start monitoring only after connection is established and session is configured by RealtimeAPI
+                    audioMonitor.startMonitoring()
+                    
+                    await sendSystemInstruction()
+                    await sendRecipe()
+                } else {
+                    print("Failed to fetch token")
                 }
+            } catch {
+                print("Failed to connect: \(error)")
             }
+        }
+        .onDisappear {
+            audioMonitor.stopMonitoring()
+            // conversation.disconnect() // Assuming we might want to disconnect
+        }
     }
     
     private func sendRecipe() async {
