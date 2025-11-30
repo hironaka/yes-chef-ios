@@ -17,7 +17,13 @@ struct RecipeDetail: View {
 
     var body: some View {
         ScrollView {
+        
             VStack(alignment: .leading, spacing: 20) {
+                Text(recipe.name ?? "Untitled Recipe")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding()
+                
                 if let imageUrl = recipe.image?.first ?? recipe.thumbnailUrl, let url = URL(string: imageUrl) {
                     ZStack(alignment: .bottomLeading) {
                         AsyncImage(url: url) { image in
@@ -30,24 +36,20 @@ struct RecipeDetail: View {
                             ProgressView()
                         }
                         .clipped()
-                        
-                        Text(recipe.name ?? "Untitled Recipe")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .padding()
-                            .background(.thinMaterial)
-                            .cornerRadius(10)
-                            .padding()
                     }
                     .clipped()
                     .aspectRatio(1, contentMode: .fit)
-                } else {
-                    Text(recipe.name ?? "Untitled Recipe")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .padding(.horizontal)
+                    .overlay(alignment: .center) {
+                        if isVoiceAssistantPresented {
+                            RecipeVoiceAssistant(recipe: recipe)
+                                .padding()
+                                .cornerRadius(20)
+                                .shadow(radius: 10)
+                                .padding()
+                        }
+                    }
                 }
-
+                
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Ingredients")
                         .font(.title2)
@@ -70,23 +72,26 @@ struct RecipeDetail: View {
                 .padding(.horizontal)
             }
         }
-        .if(recipe.image?.first != nil || recipe.thumbnailUrl != nil) { view in
-            view.ignoresSafeArea(.all, edges: .top)
-        }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: { isVoiceAssistantPresented = true }) {
-                    Image(systemName: "waveform.badge.microphone")
+                HStack {
+                    Button(action: {
+                        isVoiceAssistantPresented.toggle()
+                        print("Mic button tapped. New state: \(isVoiceAssistantPresented)")
+                    }) {
+                        if isVoiceAssistantPresented {
+                            Text("end")
+                                .foregroundStyle(.red)
+                        } else {
+                            Image(systemName: "waveform.badge.microphone")
+                        }
+                    }
+                    
+                    Button(action: delete) {
+                        Image(systemName: "trash")
+                    }
                 }
             }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: delete) {
-                    Image(systemName: "trash")
-                }
-            }
-        }
-        .sheet(isPresented: $isVoiceAssistantPresented) {
-            RecipeVoiceAssistant(recipe: recipe)
         }
     }
     
