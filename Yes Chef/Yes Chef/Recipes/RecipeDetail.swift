@@ -65,7 +65,7 @@ struct RecipeDetail: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: { isVoiceAssistantPresented = true }) {
+                Button(action: { isVoiceAssistantPresented.toggle() }) {
                     Image(systemName: "waveform.badge.microphone")
                 }
             }
@@ -77,6 +77,8 @@ struct RecipeDetail: View {
         }
         .sheet(isPresented: $isVoiceAssistantPresented) {
             RecipeVoiceAssistant(recipe: recipe)
+                .presentationDetents([.height(80)])
+                .presentationBackgroundInteraction(.enabled)
         }
     }
     
