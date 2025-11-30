@@ -18,6 +18,12 @@ struct RecipeDetail: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
+
+                Text(recipe.name ?? "Untitled Recipe")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding()
+                
                 if let imageUrl = recipe.image?.first ?? recipe.thumbnailUrl, let url = URL(string: imageUrl) {
                     ZStack(alignment: .bottomLeading) {
                         AsyncImage(url: url) { image in
@@ -30,22 +36,9 @@ struct RecipeDetail: View {
                             ProgressView()
                         }
                         .clipped()
-                        
-                        Text(recipe.name ?? "Untitled Recipe")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .padding()
-                            .background(.thinMaterial)
-                            .cornerRadius(10)
-                            .padding()
                     }
                     .clipped()
                     .aspectRatio(1, contentMode: .fit)
-                } else {
-                    Text(recipe.name ?? "Untitled Recipe")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .padding(.horizontal)
                 }
 
                 VStack(alignment: .leading, spacing: 10) {
@@ -69,9 +62,6 @@ struct RecipeDetail: View {
                 }
                 .padding(.horizontal)
             }
-        }
-        .if(recipe.image?.first != nil || recipe.thumbnailUrl != nil) { view in
-            view.ignoresSafeArea(.all, edges: .top)
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
