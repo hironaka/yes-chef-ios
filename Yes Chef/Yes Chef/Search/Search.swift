@@ -15,6 +15,7 @@ class WebViewManager: ObservableObject {
     @Published var canGoBack: Bool = false
     @Published var canGoForward: Bool = false
     @Published var recipeFound: String? = nil
+    @Published var textContent: String? = nil
 
     init() {
         let prefs = WKWebpagePreferences()
@@ -43,20 +44,61 @@ class WebViewManager: ObservableObject {
     }
 
     func download(completion: @escaping (Recipe?) -> Void) {
-        guard let recipeJSON = self.recipeFound,
-            let data = recipeJSON.data(using: .utf8)
-        else {
+        if let recipeJSON = self.recipeFound,
+           let data = recipeJSON.data(using: .utf8) {
+            do {
+                let recipe = try JSONDecoder().decode(Recipe.self, from: data)
+                completion(recipe)
+                return
+            } catch {
+                print("Failed to decode recipe: \(error)")
+            }
+        }
+
+        guard let text = self.textContent else {
             completion(nil)
             return
         }
 
-        do {
-            let recipe = try JSONDecoder().decode(Recipe.self, from: data)
-            completion(recipe)
-        } catch {
-            print("Failed to decode recipe: \(error)")
+        // Fallback to API
+        print("Fallback extraction for text content")
+        guard let url = URL(string: "https://yes-chef.ai/api/recipe/extract") else {
             completion(nil)
+            return
         }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body = ["textContent": text]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("API request failed: \(error)")
+                DispatchQueue.main.async { completion(nil) }
+                return
+            }
+
+            guard let data = data else {
+                DispatchQueue.main.async { completion(nil) }
+                return
+            }
+
+            do {
+                let response = try JSONDecoder().decode(APIRecipeResponse.self, from: data)
+                if let recipe = response.toRecipe() {
+                    DispatchQueue.main.async { completion(recipe) }
+                } else {
+                    print("API returned no recipe found")
+                    DispatchQueue.main.async { completion(nil) }
+                }
+            } catch {
+                print("Failed to decode recipe from API: \(error)")
+                DispatchQueue.main.async { completion(nil) }
+            }
+        }.resume()
     }
 }
 
@@ -126,6 +168,7 @@ struct WebView: UIViewRepresentable {
 
             let script = """
                     (function() {
+                        let recipe = null;
                         const scripts = document.querySelectorAll('script[type="application/ld+json"]');
                         for (const script of scripts) {
                             try {
@@ -135,25 +178,31 @@ struct WebView: UIViewRepresentable {
                                 if (obj && obj['@type']) {
                                     const type = obj['@type'];
                                     if (type === 'Recipe' || (Array.isArray(type) && type.includes('Recipe'))) {
-                                        return JSON.stringify(obj);
+                                        recipe = JSON.stringify(obj);
+                                        break;
                                     }
                                 }
 
                                 // Handle @graph structure
                                 if (obj && obj['@graph'] && Array.isArray(obj['@graph'])) {
-                                    const recipe = obj['@graph'].find(item => {
+                                    const graphRecipe = obj['@graph'].find(item => {
                                         const type = item['@type'];
                                         return type === 'Recipe' || (Array.isArray(type) && type.includes('Recipe'));
                                     });
-                                    if (recipe) {
-                                        return JSON.stringify(recipe);
+                                    if (graphRecipe) {
+                                        recipe = JSON.stringify(graphRecipe);
+                                        break;
                                     }
                                 }
                             } catch (e) {
                                 // Ignore parsing errors
                             }
                         }
-                        return null;
+                        
+                        return {
+                            recipe: recipe,
+                            textContent: document.body.innerText
+                        };
                     })();
                 """
 
@@ -167,10 +216,9 @@ struct WebView: UIViewRepresentable {
                     return
                 }
 
-                if let recipeJSON = result as? String {
-                    self?.webViewManager.recipeFound = recipeJSON
-                } else {
-                    self?.webViewManager.recipeFound = nil
+                if let dict = result as? [String: Any] {
+                    self?.webViewManager.recipeFound = dict["recipe"] as? String
+                    self?.webViewManager.textContent = dict["textContent"] as? String
                 }
 
                 self?.webViewManager.canGoBack = webView.canGoBack
@@ -212,7 +260,7 @@ struct Search: View {
                 }) {
                     Image(systemName: "square.and.arrow.down")
                 }
-                .disabled(webViewManager.recipeFound == nil)
+                .disabled(webViewManager.recipeFound == nil && webViewManager.textContent == nil)
             }
             .padding()
 

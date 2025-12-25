@@ -15,14 +15,14 @@ class Recipe: Codable {
     var name: String?
     var thumbnailUrl: String?
     var image: [String]?
-    var recipeIngredient: [String]
-    var recipeInstructions: [Instruction]
+    var recipeIngredient: [String]?
+    var recipeInstructions: [Instruction]?
 
     enum CodingKeys: String, CodingKey {
         case name, thumbnailUrl, image, recipeIngredient, recipeInstructions
     }
 
-    init(name: String, thumbnailUrl: String?, image: [String]?, recipeIngredient: [String], recipeInstructions: [Instruction]) {
+    init(name: String?, thumbnailUrl: String?, image: [String]?, recipeIngredient: [String]?, recipeInstructions: [Instruction]?) {
         self.name = name
         self.thumbnailUrl = thumbnailUrl
         self.image = image
@@ -32,7 +32,7 @@ class Recipe: Codable {
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        name = try container.decode(String.self, forKey: .name)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
         thumbnailUrl = try container.decodeIfPresent(String.self, forKey: .thumbnailUrl)
         
         if let images = try? container.decode([String].self, forKey: .image) {
@@ -51,8 +51,8 @@ class Recipe: Codable {
             image = nil
         }
         
-        recipeIngredient = try container.decode([String].self, forKey: .recipeIngredient)
-        recipeInstructions = try container.decode([Instruction].self, forKey: .recipeInstructions)
+        recipeIngredient = try container.decodeIfPresent([String].self, forKey: .recipeIngredient)
+        recipeInstructions = try container.decodeIfPresent([Instruction].self, forKey: .recipeInstructions)
     }
 
     private struct ImageObject: Codable {
@@ -129,7 +129,7 @@ struct HowToStep: Codable {
 // MARK: - Recipe Processing
 
 func extractInstructions(from recipeData: Recipe) -> [String] {
-    return recipeData.recipeInstructions.flatMap { instruction -> [String] in
+    return recipeData.recipeInstructions?.flatMap { instruction -> [String] in
         switch instruction {
         case .string(let text):
             return [text.htmlToString()]
@@ -141,11 +141,32 @@ func extractInstructions(from recipeData: Recipe) -> [String] {
         case .howToStep(let step):
             return [step.text?.htmlToString() ?? ""]
         }
-    }
+    } ?? []
 }
 
 func extractIngredients(from recipeData: Recipe) -> [String] {
-    return recipeData.recipeIngredient.map { $0.htmlToString() }
+    return recipeData.recipeIngredient?.map { $0.htmlToString() } ?? []
+}
+
+struct APIRecipeResponse: Codable {
+    let name: String?
+    let thumbnailUrl: String?
+    let image: [String]?
+    let recipeIngredient: [String]?
+    let recipeInstructions: [Instruction]?
+    let recipeFound: Bool?
+    
+    // Convert this to a Recipe object if found
+    func toRecipe() -> Recipe? {
+        if recipeFound == false { return nil }
+        return Recipe(
+            name: name,
+            thumbnailUrl: thumbnailUrl,
+            image: image,
+            recipeIngredient: recipeIngredient,
+            recipeInstructions: recipeInstructions
+        )
+    }
 }
 
 extension String {

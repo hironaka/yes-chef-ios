@@ -45,7 +45,7 @@ struct RecipeDetail: View {
                     Text("Ingredients")
                         .font(.title2)
                         .fontWeight(.semibold)
-                    ForEach(recipe.recipeIngredient, id: \.self) { ingredient in
+                    ForEach(recipe.recipeIngredient ?? [], id: \.self) { ingredient in
                         Text("• \(ingredient)")
                     }
                 }
