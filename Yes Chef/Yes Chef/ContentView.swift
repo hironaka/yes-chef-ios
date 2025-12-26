@@ -7,7 +7,7 @@ struct ContentView: View {
         TabView(selection: $selectedTab) {
             Search()
                 .tabItem {
-                    Label("Search", systemImage: "magnifyingglass")
+                    Label("Find", systemImage: "magnifyingglass")
                 }
                 .tag(0)
             
