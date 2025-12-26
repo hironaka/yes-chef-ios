@@ -52,7 +52,13 @@ class Recipe: Codable {
         }
         
         recipeIngredient = try container.decodeIfPresent([String].self, forKey: .recipeIngredient)
-        recipeInstructions = try container.decodeIfPresent([Instruction].self, forKey: .recipeInstructions)
+        if let instructionArray = try? container.decode([Instruction].self, forKey: .recipeInstructions) {
+            recipeInstructions = instructionArray
+        } else if let singleInstruction = try? container.decode(Instruction.self, forKey: .recipeInstructions) {
+            recipeInstructions = [singleInstruction]
+        } else {
+            recipeInstructions = nil
+        }
     }
 
     private struct ImageObject: Codable {
@@ -134,10 +140,7 @@ func extractInstructions(from recipeData: Recipe) -> [String] {
         case .string(let text):
             return [text.htmlToString()]
         case .howToSection(let section):
-            if section.name == "Recipe Instructions" {
-                return section.itemListElement.map { $0.text?.htmlToString() ?? "" }
-            }
-            return []
+            return section.itemListElement.compactMap { $0.text?.htmlToString() }
         case .howToStep(let step):
             return [step.text?.htmlToString() ?? ""]
         }
