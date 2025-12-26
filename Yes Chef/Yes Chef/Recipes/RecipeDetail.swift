@@ -12,6 +12,7 @@ struct RecipeDetail: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.presentationMode) private var presentationMode
     @State private var isVoiceAssistantPresented = false
+    @State private var isEditing = false
     
     let recipe: Recipe
 
@@ -75,11 +76,22 @@ struct RecipeDetail: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    isEditing.toggle()
+                }) {
+                    Image(systemName: "pencil")
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                     delete()
                 }) {
                     Image(systemName: "trash")
                 }
             }
+        }
+        .sheet(isPresented: $isEditing) {
+            EditRecipeView(recipe: recipe)
         }
         .sheet(isPresented: $isVoiceAssistantPresented) {
             RecipeVoiceAssistant(recipe: recipe)
