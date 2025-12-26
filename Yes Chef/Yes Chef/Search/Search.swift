@@ -170,33 +170,42 @@ struct WebView: UIViewRepresentable {
                     (function() {
                         let recipe = null;
                         const scripts = document.querySelectorAll('script[type="application/ld+json"]');
+                        
+                        function findRecipe(obj) {
+                            if (!obj) return null;
+                            
+                            // Handle direct recipe objects
+                            if (obj['@type']) {
+                                const type = obj['@type'];
+                                if (type === 'Recipe' || (Array.isArray(type) && type.includes('Recipe'))) {
+                                    return JSON.stringify(obj);
+                                }
+                            }
+
+                            // Handle @graph structure
+                            if (obj['@graph'] && Array.isArray(obj['@graph'])) {
+                                const graphRecipe = obj['@graph'].find(item => {
+                                    const type = item['@type'];
+                                    return type === 'Recipe' || (Array.isArray(type) && type.includes('Recipe'));
+                                });
+                                if (graphRecipe) {
+                                    return JSON.stringify(graphRecipe);
+                                }
+                            }
+                            return null;
+                        }
+
                         for (const script of scripts) {
                             try {
-                                const obj = JSON.parse(script.textContent);
-
-                                // Handle direct recipe objects
-                                if (obj && obj['@type']) {
-                                    const type = obj['@type'];
-                                    if (type === 'Recipe' || (Array.isArray(type) && type.includes('Recipe'))) {
-                                        recipe = JSON.stringify(obj);
-                                        break;
-                                    }
+                                const data = JSON.parse(script.textContent);
+                                const items = Array.isArray(data) ? data : [data];
+                                
+                                for (const item of items) {
+                                    recipe = findRecipe(item);
+                                    if (recipe) break;
                                 }
-
-                                // Handle @graph structure
-                                if (obj && obj['@graph'] && Array.isArray(obj['@graph'])) {
-                                    const graphRecipe = obj['@graph'].find(item => {
-                                        const type = item['@type'];
-                                        return type === 'Recipe' || (Array.isArray(type) && type.includes('Recipe'));
-                                    });
-                                    if (graphRecipe) {
-                                        recipe = JSON.stringify(graphRecipe);
-                                        break;
-                                    }
-                                }
-                            } catch (e) {
-                                // Ignore parsing errors
-                            }
+                            } catch (e) {}
+                            if (recipe) break;
                         }
                         
                         return {
@@ -231,6 +240,7 @@ struct WebView: UIViewRepresentable {
 struct Search: View {
     @Environment(\.modelContext) private var modelContext
     @StateObject private var webViewManager = WebViewManager()
+    @State private var showingToast = false
 
     var body: some View {
         VStack {
@@ -255,6 +265,14 @@ struct Search: View {
                     webViewManager.download { recipe in
                         if let recipe = recipe {
                             modelContext.insert(recipe)
+                            withAnimation {
+                                showingToast = true
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                withAnimation {
+                                    showingToast = false
+                                }
+                            }
                         }
                     }
                 }) {
@@ -264,10 +282,26 @@ struct Search: View {
             }
             .padding()
 
-            WebView(
-                url: URL(string: "https://yes-chef.ai/search")!,
-                webViewManager: webViewManager
-            )
+            ZStack {
+                WebView(
+                    url: URL(string: "https://yes-chef.ai/search")!,
+                    webViewManager: webViewManager
+                )
+                
+                if showingToast {
+                    VStack {
+                        Spacer()
+                        Text("Recipe Downloaded!")
+                            .font(.subheadline)
+                            .padding()
+                            .background(Color.black.opacity(0.7))
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                            .padding(.bottom, 50)
+                    }
+                }
+            }
         }
     }
 }

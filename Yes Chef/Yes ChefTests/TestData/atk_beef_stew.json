@@ -1,0 +1,20 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Recipe",
+  "name": "Best Beef Stew",
+  "recipeIngredient": [
+    "2 medium garlic cloves, minced or pressed through garlic press (about 2 teaspoons)",
+    "4 anchovy fillets, finely minced (about 2 teaspoons)",
+    "1 tablespoon tomato paste"
+  ],
+  "recipeInstructions": [
+    {
+      "@type": "HowToStep",
+      "text": "Adjust oven rack to lower-middle position and heat oven to 300 degrees. Combine garlic and anchovies in small bowl; press with back of fork to form paste. Stir in tomato paste and set mixture aside."
+    },
+    {
+      "@type": "HowToStep",
+      "text": "Pat meat dry with paper towels. Do not season. Heat 1 tablespoon vegetable oil in large heavy-bottomed Dutch oven over high heat until just starting to smoke."
+    }
+  ]
+}

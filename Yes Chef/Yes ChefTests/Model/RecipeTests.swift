@@ -46,6 +46,12 @@ class RecipeTests {
         #expect(recipe3.image?[0] == "https://static01.nyt.com/images/2021/03/14/dining/lh-cheesy-beans-and-greens/lh-cheesy-beans-and-greens-videoSixteenByNineJumbo1600-v2.jpg")
         #expect(recipe3.recipeIngredient?.count == 14)
         #expect(recipe3.recipeInstructions?.count == 4)
+
+        let data4 = try loadTestData(from: "atk_beef_stew")
+        let recipe4 = try decoder.decode(Recipe.self, from: data4)
+        #expect(recipe4.name == "Best Beef Stew")
+        #expect(recipe4.recipeIngredient?.count == 3)
+        #expect(recipe4.recipeInstructions?.count == 2)
     }
 
     @Test func testPlainTextConversion() async throws {
