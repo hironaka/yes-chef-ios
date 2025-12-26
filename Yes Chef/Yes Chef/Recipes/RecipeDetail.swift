@@ -65,12 +65,18 @@ struct RecipeDetail: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: { isVoiceAssistantPresented.toggle() }) {
+                Button(action: {
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    isVoiceAssistantPresented.toggle()
+                }) {
                     Image(systemName: "waveform.badge.microphone")
                 }
             }
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: delete) {
+                Button(action: {
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    delete()
+                }) {
                     Image(systemName: "trash")
                 }
             }
