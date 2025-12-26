@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct RecipeList: View {
-    @Query private var recipes: [Recipe]
+    @Query(sort: \Recipe.name) private var recipes: [Recipe]
 
     var body: some View {
         NavigationStack {
