@@ -1,33 +1,24 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var selectedTab = 0
+    
     var body: some View {
-        TabView {
-            
+        TabView(selection: $selectedTab) {
             Search()
                 .tabItem {
                     Label("Search", systemImage: "magnifyingglass")
                 }
+                .tag(0)
             
             RecipeList()
                 .tabItem {
                     Label("Recipes", systemImage: "list.bullet")
                 }
-//            
-//            Meals()
-//                .tabItem {
-//                    Label("Meals", systemImage: "fork.knife")
-//                }
-//            
-//            Groceries()
-//                .tabItem {
-//                    Label("Groceries", systemImage: "cart")
-//                }
-//            
-//            Settings()
-//                .tabItem {
-//                    Label("Account", systemImage: "person.crop.circle")
-//                }
+                .tag(1)
+        }
+        .onChange(of: selectedTab) {
+            UISelectionFeedbackGenerator().selectionChanged()
         }
     }
 }

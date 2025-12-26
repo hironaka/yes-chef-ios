@@ -246,6 +246,7 @@ struct Search: View {
         VStack {
             HStack {
                 Button(action: {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
                     webViewManager.goBack()
                 }) {
                     Image(systemName: "arrow.left")
@@ -253,6 +254,7 @@ struct Search: View {
                 .disabled(!webViewManager.canGoBack)
 
                 Button(action: {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
                     webViewManager.goForward()
                 }) {
                     Image(systemName: "arrow.right")
@@ -262,8 +264,10 @@ struct Search: View {
                 Spacer()
 
                 Button(action: {
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                     webViewManager.download { recipe in
                         if let recipe = recipe {
+                            UINotificationFeedbackGenerator().notificationOccurred(.success)
                             modelContext.insert(recipe)
                             withAnimation {
                                 showingToast = true
