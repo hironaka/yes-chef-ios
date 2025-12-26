@@ -268,11 +268,6 @@ struct Search: View {
                             withAnimation {
                                 showingToast = true
                             }
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                withAnimation {
-                                    showingToast = false
-                                }
-                            }
                         }
                     }
                 }) {
@@ -291,14 +286,18 @@ struct Search: View {
                 if showingToast {
                     VStack {
                         Spacer()
-                        Text("Recipe Downloaded!")
-                            .font(.subheadline)
-                            .padding()
-                            .background(Color.black.opacity(0.7))
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
-                            .padding(.bottom, 50)
+                        ToastView(
+                            toastType: .success,
+                            title: "Recipe Downloaded!",
+                            subtitle: nil,
+                            onUndo: {
+                                withAnimation {
+                                    showingToast = false
+                                }
+                            }
+                        )
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                        .padding(.bottom, 50)
                     }
                 }
             }
