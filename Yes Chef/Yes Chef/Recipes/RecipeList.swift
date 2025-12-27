@@ -10,36 +10,114 @@ import SwiftData
 
 struct RecipeList: View {
     @Query(sort: \Recipe.name) private var recipes: [Recipe]
+    @Environment(\.modelContext) private var modelContext
+    
+    @State private var showingAddMenu = false
+    @State private var showingManualAdd = false
+    @State private var showingImagePicker = false
+    @State private var selectedImage: UIImage?
+    @State private var isExtracting = false
+    @State private var extractedRecipe: Recipe?
+    @State private var showingExtractedResult = false
 
     var body: some View {
         NavigationStack {
-            List(recipes) { recipe in
-                NavigationLink(destination: RecipeDetail(recipe: recipe)) {
-                    HStack {
-                        Text(recipe.name ?? "Untitled Recipe")
-                            .lineLimit(2)
-                        
-                        Spacer()
-                        
-                        if let imageUrl = recipe.thumbnailUrl ?? recipe.image?.first, let url = URL(string: imageUrl) {
-                            AsyncImage(url: url) { image in
-                                image.resizable()
-                                    .scaledToFill()
-                            } placeholder: {
-                                ProgressView()
+            ZStack {
+                List(recipes) { recipe in
+                    NavigationLink(destination: RecipeDetail(recipe: recipe)) {
+                        HStack {
+                            Text(recipe.name ?? "Untitled Recipe")
+                                .lineLimit(2)
+                            
+                            Spacer()
+                            
+                            if let imageUrl = recipe.thumbnailUrl ?? recipe.image?.first, let url = URL(string: imageUrl) {
+                                AsyncImage(url: url) { image in
+                                    image.resizable()
+                                        .scaledToFill()
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .frame(width: 50, height: 50)
+                                .cornerRadius(8)
+                                .clipped()
+                            } else {
+                                // Empty frame to maintain consistent spacing even without image
+                                Color.clear.frame(width: 50, height: 50)
                             }
-                            .frame(width: 50, height: 50)
-                            .cornerRadius(8)
-                            .clipped()
-                        } else {
-                            // Empty frame to maintain consistent spacing even without image
-                            Color.clear.frame(width: 50, height: 50)
+                        }
+                        .frame(height: 50)
+                    }
+                }
+                .navigationTitle("Recipes")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Menu {
+                            Button(action: {
+                                showingManualAdd = true
+                            }) {
+                                Label("Manual Entry", systemImage: "square.and.pencil")
+                            }
+                            
+                            Button(action: {
+                                showingImagePicker = true
+                            }) {
+                                Label("From Photo", systemImage: "photo")
+                            }
+                        } label: {
+                            Image(systemName: "plus")
                         }
                     }
-                    .frame(height: 50)
+                }
+                .sheet(isPresented: $showingManualAdd) {
+                    EditRecipeView()
+                }
+                .sheet(isPresented: $showingImagePicker) {
+                    ImagePicker(image: $selectedImage)
+                }
+                .sheet(isPresented: $showingExtractedResult) {
+                    if let recipe = extractedRecipe {
+                        EditRecipeView(recipe: recipe)
+                    }
+                }
+                .onChange(of: selectedImage) {
+                    if let image = selectedImage {
+                        extractRecipe(from: image)
+                    }
+                }
+                
+                if isExtracting {
+                    Color.black.opacity(0.4)
+                        .ignoresSafeArea()
+                    VStack {
+                        ProgressView()
+                            .scaleEffect(1.5)
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        Text("Extracting recipe...")
+                            .foregroundColor(.white)
+                            .padding(.top, 10)
+                    }
+                    .padding(30)
+                    .background(Color.black.opacity(0.6))
+                    .cornerRadius(15)
                 }
             }
-            .navigationTitle("Recipes")
+        }
+    }
+    
+    private func extractRecipe(from image: UIImage) {
+        isExtracting = true
+        RecipeExtractor.shared.extractRecipe(from: image) { recipe in
+            isExtracting = false
+            selectedImage = nil
+            if let recipe = recipe {
+                self.extractedRecipe = recipe
+                self.showingExtractedResult = true
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+            } else {
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
+                // Maybe show an error alert here?
+            }
         }
     }
 }

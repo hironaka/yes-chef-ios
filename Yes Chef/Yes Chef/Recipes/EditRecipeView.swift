@@ -10,17 +10,18 @@ import SwiftData
 
 struct EditRecipeView: View {
     @Environment(\.dismiss) var dismiss
-    let recipe: Recipe
+    @Environment(\.modelContext) private var modelContext
+    let recipe: Recipe?
     
     @State private var name: String
     @State private var ingredients: [String]
     @State private var instructions: [String]
     
-    init(recipe: Recipe) {
+    init(recipe: Recipe? = nil) {
         self.recipe = recipe
-        _name = State(initialValue: recipe.name ?? "")
-        _ingredients = State(initialValue: recipe.recipeIngredient ?? [])
-        _instructions = State(initialValue: extractInstructions(from: recipe))
+        _name = State(initialValue: recipe?.name ?? "")
+        _ingredients = State(initialValue: recipe?.recipeIngredient ?? [])
+        _instructions = State(initialValue: recipe.map { extractInstructions(from: $0) } ?? [])
     }
     
     var body: some View {
@@ -34,15 +35,13 @@ struct EditRecipeView: View {
                     ForEach(ingredients.indices, id: \.self) { index in
                         HStack {
                             TextField("Ingredient \(index + 1)", text: $ingredients[index])
-                            if ingredients.count > 0 {
-                                Button(action: {
-                                    ingredients.remove(at: index)
-                                }) {
-                                    Image(systemName: "minus.circle.fill")
-                                        .foregroundColor(.red)
-                                }
-                                .buttonStyle(BorderlessButtonStyle())
+                            Button(action: {
+                                ingredients.remove(at: index)
+                            }) {
+                                Image(systemName: "minus.circle.fill")
+                                    .foregroundColor(.red)
                             }
+                            .buttonStyle(BorderlessButtonStyle())
                         }
                     }
                     
@@ -63,15 +62,13 @@ struct EditRecipeView: View {
                             HStack {
                                 TextField("Step \(index + 1)", text: $instructions[index], axis: .vertical)
                                 
-                                if instructions.count > 0 {
-                                    Button(action: {
-                                        instructions.remove(at: index)
-                                    }) {
-                                        Image(systemName: "minus.circle.fill")
-                                            .foregroundColor(.red)
-                                    }
-                                    .buttonStyle(BorderlessButtonStyle())
+                                Button(action: {
+                                    instructions.remove(at: index)
+                                }) {
+                                    Image(systemName: "minus.circle.fill")
+                                        .foregroundColor(.red)
                                 }
+                                .buttonStyle(BorderlessButtonStyle())
                             }
                         }
                     }
@@ -83,7 +80,7 @@ struct EditRecipeView: View {
                     }
                 }
             }
-            .navigationTitle("Edit Recipe")
+            .navigationTitle(recipe == nil ? "Add Recipe" : "Edit Recipe")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -102,8 +99,23 @@ struct EditRecipeView: View {
     }
     
     private func save() {
-        recipe.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
-        recipe.recipeIngredient = ingredients.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }
-        recipe.recipeInstructions = instructions.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }.map { .string($0) }
+        let cleanedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        let cleanedIngredients = ingredients.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }
+        let cleanedInstructions = instructions.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }.map { Instruction.string($0) }
+        
+        if let recipe = recipe {
+            recipe.name = cleanedName
+            recipe.recipeIngredient = cleanedIngredients
+            recipe.recipeInstructions = cleanedInstructions
+        } else {
+            let newRecipe = Recipe(
+                name: cleanedName,
+                thumbnailUrl: nil,
+                image: nil,
+                recipeIngredient: cleanedIngredients,
+                recipeInstructions: cleanedInstructions
+            )
+            modelContext.insert(newRecipe)
+        }
     }
 }
