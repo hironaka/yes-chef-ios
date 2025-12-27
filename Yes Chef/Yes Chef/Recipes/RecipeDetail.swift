@@ -10,9 +10,20 @@ import SwiftData
 
 struct RecipeDetail: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.presentationMode) private var presentationMode
-    @State private var isVoiceAssistantPresented = false
-    @State private var isEditing = false
+    @Environment(\.dismiss) private var dismiss
+    enum SheetType: Identifiable {
+        case voiceAssistant
+        case edit
+        
+        var id: Int {
+            switch self {
+            case .voiceAssistant: return 0
+            case .edit: return 1
+            }
+        }
+    }
+    
+    @State private var activeSheet: SheetType?
     
     let recipe: Recipe
 
@@ -72,7 +83,7 @@ struct RecipeDetail: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                    isVoiceAssistantPresented.toggle()
+                    activeSheet = .voiceAssistant
                 }) {
                     Image(systemName: "waveform.badge.microphone")
                 }
@@ -80,7 +91,7 @@ struct RecipeDetail: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                    isEditing.toggle()
+                    activeSheet = .edit
                 }) {
                     Image(systemName: "pencil")
                 }
@@ -94,20 +105,22 @@ struct RecipeDetail: View {
                 }
             }
         }
-        .sheet(isPresented: $isEditing) {
-            EditRecipeView(recipe: recipe)
-        }
-        .sheet(isPresented: $isVoiceAssistantPresented) {
-            RecipeVoiceAssistant(recipe: recipe)
-                .presentationDetents([.height(80)])
-                .presentationBackgroundInteraction(.enabled)
+        .sheet(item: $activeSheet) { sheet in
+            switch sheet {
+            case .edit:
+                EditRecipeView(recipe: recipe)
+            case .voiceAssistant:
+                RecipeVoiceAssistant(recipe: recipe)
+                    .presentationDetents([.height(80)])
+                    .presentationBackgroundInteraction(.enabled)
+            }
         }
     }
     
     private func delete() {
         withAnimation {
             modelContext.delete(recipe)
-            presentationMode.wrappedValue.dismiss()
+            dismiss()
         }
     }
 }

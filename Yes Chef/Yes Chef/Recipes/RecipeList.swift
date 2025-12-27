@@ -12,20 +12,30 @@ struct RecipeList: View {
     @Query(sort: \Recipe.name) private var recipes: [Recipe]
     @Environment(\.modelContext) private var modelContext
     
-    @State private var showingAddMenu = false
-    @State private var showingManualAdd = false
-    @State private var showingImagePicker = false
+    enum SheetType: Identifiable {
+        case manualAdd
+        case imagePicker
+        case extractedResult(Recipe)
+        
+        var id: String {
+            switch self {
+            case .manualAdd: return "manualAdd"
+            case .imagePicker: return "imagePicker"
+            case .extractedResult: return "extractedResult"
+            }
+        }
+    }
+    
+    @State private var activeSheet: SheetType?
     @State private var selectedImage: UIImage?
     @State private var isExtracting = false
-    @State private var extractedRecipe: Recipe?
-    @State private var showingExtractedResult = false
     @State private var showingErrorToast = false
 
     var body: some View {
         NavigationStack {
             ZStack {
                 List(recipes) { recipe in
-                    NavigationLink(destination: RecipeDetail(recipe: recipe)) {
+                    NavigationLink(value: recipe) {
                         HStack {
                             Text(recipe.name ?? "Untitled Recipe")
                                 .lineLimit(2)
@@ -50,18 +60,21 @@ struct RecipeList: View {
                         .frame(height: 50)
                     }
                 }
+                .navigationDestination(for: Recipe.self) { recipe in
+                    RecipeDetail(recipe: recipe)
+                }
                 .navigationTitle("Recipes")
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Menu {
                             Button(action: {
-                                showingManualAdd = true
+                                activeSheet = .manualAdd
                             }) {
                                 Label("Manual Entry", systemImage: "square.and.pencil")
                             }
                             
                             Button(action: {
-                                showingImagePicker = true
+                                activeSheet = .imagePicker
                             }) {
                                 Label("From Photo", systemImage: "photo")
                             }
@@ -70,14 +83,13 @@ struct RecipeList: View {
                         }
                     }
                 }
-                .sheet(isPresented: $showingManualAdd) {
-                    EditRecipeView()
-                }
-                .sheet(isPresented: $showingImagePicker) {
-                    ImagePicker(image: $selectedImage)
-                }
-                .sheet(isPresented: $showingExtractedResult) {
-                    if let recipe = extractedRecipe {
+                .fullScreenCover(item: $activeSheet) { sheet in
+                    switch sheet {
+                    case .manualAdd:
+                        EditRecipeView()
+                    case .imagePicker:
+                        ImagePicker(image: $selectedImage)
+                    case .extractedResult(let recipe):
                         EditRecipeView(recipe: recipe)
                     }
                 }
@@ -130,8 +142,7 @@ struct RecipeList: View {
             isExtracting = false
             selectedImage = nil
             if let recipe = recipe {
-                self.extractedRecipe = recipe
-                self.showingExtractedResult = true
+                activeSheet = .extractedResult(recipe)
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
             } else {
                 UINotificationFeedbackGenerator().notificationOccurred(.error)

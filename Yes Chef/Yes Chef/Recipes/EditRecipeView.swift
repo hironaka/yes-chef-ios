@@ -117,5 +117,7 @@ struct EditRecipeView: View {
             )
             modelContext.insert(newRecipe)
         }
+        
+        try? modelContext.save()
     }
 }
