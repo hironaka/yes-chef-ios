@@ -247,6 +247,7 @@ struct Search: View {
     @Environment(\.modelContext) private var modelContext
     @StateObject private var webViewManager = WebViewManager()
     @State private var activeToast: ToastConfig?
+    @State private var isDownloading = false
 
     private func showToast(type: ToastType, title: String, subtitle: String? = nil) {
         withAnimation {
@@ -280,6 +281,22 @@ struct Search: View {
                     }
                     .id(toast.type)
                 }
+
+                if isDownloading {
+                    Color.black.opacity(0.4)
+                        .ignoresSafeArea()
+                    VStack {
+                        ProgressView()
+                            .scaleEffect(1.5)
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        Text("Downloading recipe...")
+                            .foregroundColor(.white)
+                            .padding(.top, 10)
+                    }
+                    .padding(30)
+                    .background(Color.black.opacity(0.6))
+                    .cornerRadius(15)
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -305,7 +322,9 @@ struct Search: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                        isDownloading = true
                         webViewManager.download { recipe in
+                            isDownloading = false
                             if let recipe = recipe {
                                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                                 modelContext.insert(recipe)
