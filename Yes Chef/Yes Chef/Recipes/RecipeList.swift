@@ -83,7 +83,7 @@ struct RecipeList: View {
                         }
                     }
                 }
-                .fullScreenCover(item: $activeSheet) { sheet in
+                .sheet(item: $activeSheet) { sheet in
                     switch sheet {
                     case .manualAdd:
                         EditRecipeView()

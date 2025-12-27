@@ -15,10 +15,10 @@ struct RecipeDetail: View {
         case voiceAssistant
         case edit
         
-        var id: Int {
+        var id: String {
             switch self {
-            case .voiceAssistant: return 0
-            case .edit: return 1
+            case .voiceAssistant: return "voiceAssistant"
+            case .edit: return "editRecipe"
             }
         }
     }
