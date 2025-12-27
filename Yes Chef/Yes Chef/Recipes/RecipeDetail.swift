@@ -26,6 +26,9 @@ struct RecipeDetail: View {
     @State private var activeSheet: SheetType?
     
     let recipe: Recipe
+    
+    @State private var displayIngredients: [String] = []
+    @State private var displayInstructions: [String] = []
 
     var body: some View {
         ScrollView {
@@ -58,7 +61,7 @@ struct RecipeDetail: View {
                     Text("Ingredients")
                         .font(.title2)
                         .fontWeight(.semibold)
-                    ForEach(recipe.recipeIngredient ?? [], id: \.self) { ingredient in
+                    ForEach(displayIngredients, id: \.self) { ingredient in
                         Text("• \(ingredient)")
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
@@ -69,7 +72,7 @@ struct RecipeDetail: View {
                     Text("Instructions")
                         .font(.title2)
                         .fontWeight(.semibold)
-                    ForEach(extractInstructions(from: recipe), id: \.self) { instruction in
+                    ForEach(displayInstructions, id: \.self) { instruction in
                         Text(instruction)
                             .multilineTextAlignment(.leading)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -78,6 +81,11 @@ struct RecipeDetail: View {
                 }
                 .padding(.horizontal)
             }
+        }
+        .onAppear {
+            // Process these off the main view update cycle
+            self.displayIngredients = recipe.recipeIngredient ?? []
+            self.displayInstructions = extractInstructions(from: recipe)
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -91,7 +99,10 @@ struct RecipeDetail: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                    activeSheet = .edit
+                    // Dispatch to next runloop to avoid AttributeGraph update cycle crash
+                    DispatchQueue.main.async {
+                        activeSheet = .edit
+                    }
                 }) {
                     Image(systemName: "pencil")
                 }

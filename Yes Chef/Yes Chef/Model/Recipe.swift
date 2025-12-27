@@ -174,6 +174,11 @@ struct APIRecipeResponse: Codable {
 
 extension String {
     func htmlToString() -> String {
+        // Optimization: if it doesn't look like HTML, don't pay the NSAttributedString cost
+        guard self.contains("<") else {
+            return self
+        }
+        
         guard let data = self.data(using: .utf8) else {
             return self
         }
