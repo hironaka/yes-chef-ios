@@ -266,6 +266,7 @@ struct Search: View {
     @StateObject private var webViewManager = WebViewManager()
     @State private var activeToast: ToastConfig?
     @State private var isDownloading = false
+    @State private var downloadedRecipe: Recipe?
 
     private func showToast(type: ToastType, title: String, subtitle: String? = nil) {
         withAnimation {
@@ -345,8 +346,7 @@ struct Search: View {
                             isDownloading = false
                             if let recipe = recipe {
                                 UINotificationFeedbackGenerator().notificationOccurred(.success)
-                                modelContext.insert(recipe)
-                                showToast(type: .success, title: "Recipe Downloaded!")
+                                downloadedRecipe = recipe
                             } else {
                                 UINotificationFeedbackGenerator().notificationOccurred(.error)
                                 showToast(
@@ -361,6 +361,9 @@ struct Search: View {
                     }
                     .disabled(!webViewManager.canDownloadRecipe)
                 }
+            }
+            .sheet(item: $downloadedRecipe) { recipe in
+                EditRecipeView(recipe: recipe)
             }
         }
     }

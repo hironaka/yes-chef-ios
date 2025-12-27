@@ -107,6 +107,7 @@ struct EditRecipeView: View {
             recipe.name = cleanedName
             recipe.recipeIngredient = cleanedIngredients
             recipe.recipeInstructions = cleanedInstructions
+            modelContext.insert(recipe)
         } else {
             let newRecipe = Recipe(
                 name: cleanedName,
