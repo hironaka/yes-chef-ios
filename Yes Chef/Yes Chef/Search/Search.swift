@@ -238,9 +238,21 @@ struct WebView: UIViewRepresentable {
 }
 
 struct Search: View {
+    struct ToastConfig: Equatable {
+        let type: ToastType
+        let title: String
+        let subtitle: String?
+    }
+
     @Environment(\.modelContext) private var modelContext
     @StateObject private var webViewManager = WebViewManager()
-    @State private var showingToast = false
+    @State private var activeToast: ToastConfig?
+
+    private func showToast(type: ToastType, title: String, subtitle: String? = nil) {
+        withAnimation {
+            activeToast = ToastConfig(type: type, title: title, subtitle: subtitle)
+        }
+    }
 
     var body: some View {
         NavigationStack {
@@ -250,22 +262,23 @@ struct Search: View {
                     webViewManager: webViewManager
                 )
                 
-                if showingToast {
+                if let toast = activeToast {
                     VStack {
                         Spacer()
                         ToastView(
-                            toastType: .success,
-                            title: "Recipe Downloaded!",
-                            subtitle: nil,
+                            toastType: toast.type,
+                            title: toast.title,
+                            subtitle: toast.subtitle,
                             onUndo: {
                                 withAnimation {
-                                    showingToast = false
+                                    activeToast = nil
                                 }
                             }
                         )
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                         .padding(.bottom, 50)
                     }
+                    .id(toast.type)
                 }
             }
             .toolbar {
@@ -296,9 +309,14 @@ struct Search: View {
                             if let recipe = recipe {
                                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                                 modelContext.insert(recipe)
-                                withAnimation {
-                                    showingToast = true
-                                }
+                                showToast(type: .success, title: "Recipe Downloaded!")
+                            } else {
+                                UINotificationFeedbackGenerator().notificationOccurred(.error)
+                                showToast(
+                                    type: .error,
+                                    title: "Download Failed",
+                                    subtitle: "Could not extract recipe from this page."
+                                )
                             }
                         }
                     }) {
