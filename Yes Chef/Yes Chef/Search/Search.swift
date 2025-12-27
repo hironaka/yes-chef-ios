@@ -243,44 +243,7 @@ struct Search: View {
     @State private var showingToast = false
 
     var body: some View {
-        VStack {
-            HStack {
-                Button(action: {
-                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                    webViewManager.goBack()
-                }) {
-                    Image(systemName: "arrow.left")
-                }
-                .disabled(!webViewManager.canGoBack)
-
-                Button(action: {
-                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                    webViewManager.goForward()
-                }) {
-                    Image(systemName: "arrow.right")
-                }
-                .disabled(!webViewManager.canGoForward)
-
-                Spacer()
-
-                Button(action: {
-                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                    webViewManager.download { recipe in
-                        if let recipe = recipe {
-                            UINotificationFeedbackGenerator().notificationOccurred(.success)
-                            modelContext.insert(recipe)
-                            withAnimation {
-                                showingToast = true
-                            }
-                        }
-                    }
-                }) {
-                    Image(systemName: "square.and.arrow.down")
-                }
-                .disabled(webViewManager.recipeFound == nil && webViewManager.textContent == nil)
-            }
-            .padding()
-
+        NavigationStack {
             ZStack {
                 WebView(
                     url: URL(string: "https://yes-chef.ai/search")!,
@@ -303,6 +266,45 @@ struct Search: View {
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                         .padding(.bottom, 50)
                     }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    HStack {
+                        Button(action: {
+                            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                            webViewManager.goBack()
+                        }) {
+                            Image(systemName: "arrow.left")
+                        }
+                        .disabled(!webViewManager.canGoBack)
+
+                        Button(action: {
+                            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                            webViewManager.goForward()
+                        }) {
+                            Image(systemName: "arrow.right")
+                        }
+                        .disabled(!webViewManager.canGoForward)
+                    }
+                }
+
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                        webViewManager.download { recipe in
+                            if let recipe = recipe {
+                                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                                modelContext.insert(recipe)
+                                withAnimation {
+                                    showingToast = true
+                                }
+                            }
+                        }
+                    }) {
+                        Image(systemName: "square.and.arrow.down")
+                    }
+                    .disabled(webViewManager.recipeFound == nil && webViewManager.textContent == nil)
                 }
             }
         }
