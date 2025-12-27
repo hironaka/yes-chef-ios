@@ -14,8 +14,9 @@ class WebViewManager: ObservableObject {
 
     @Published var canGoBack: Bool = false
     @Published var canGoForward: Bool = false
-    @Published var recipeFound: String? = nil
+    @Published var recipe: String? = nil
     @Published var textContent: String? = nil
+    @Published var canDownloadRecipe: Bool = false
 
     init() {
         let prefs = WKWebpagePreferences()
@@ -44,7 +45,7 @@ class WebViewManager: ObservableObject {
     }
 
     func download(completion: @escaping (Recipe?) -> Void) {
-        if let recipeJSON = self.recipeFound,
+        if let recipeJSON = self.recipe,
            let data = recipeJSON.data(using: .utf8) {
             do {
                 let recipe = try JSONDecoder().decode(Recipe.self, from: data)
@@ -162,10 +163,13 @@ struct WebView: UIViewRepresentable {
             }
         }
 
+        func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+            webViewManager.canDownloadRecipe = false
+        }
+
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
         {
             print("content loaded")
-
             let script = """
                     (function() {
                         let recipe = null;
@@ -226,13 +230,27 @@ struct WebView: UIViewRepresentable {
                 }
 
                 if let dict = result as? [String: Any] {
-                    self?.webViewManager.recipeFound = dict["recipe"] as? String
+                    self?.webViewManager.recipe = dict["recipe"] as? String
                     self?.webViewManager.textContent = dict["textContent"] as? String
+                    
+                    let isYesChef = webView.url?.host == "yes-chef.ai"
+                    let hasRecipe = self?.webViewManager.recipe != nil
+                    let hasRecipeText = self?.webViewManager.textContent?.lowercased().contains("recipe") ?? false
+                    
+                    self?.webViewManager.canDownloadRecipe = !isYesChef && (hasRecipe || hasRecipeText)
                 }
 
                 self?.webViewManager.canGoBack = webView.canGoBack
                 self?.webViewManager.canGoForward = webView.canGoForward
             }
+        }
+
+        func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+            webViewManager.canDownloadRecipe = false
+        }
+
+        func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+            webViewManager.canDownloadRecipe = false
         }
     }
 }
@@ -341,7 +359,7 @@ struct Search: View {
                     }) {
                         Image(systemName: "square.and.arrow.down")
                     }
-                    .disabled(webViewManager.recipeFound == nil && webViewManager.textContent == nil)
+                    .disabled(!webViewManager.canDownloadRecipe)
                 }
             }
         }
