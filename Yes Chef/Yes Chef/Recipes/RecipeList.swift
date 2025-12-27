@@ -19,6 +19,7 @@ struct RecipeList: View {
     @State private var isExtracting = false
     @State private var extractedRecipe: Recipe?
     @State private var showingExtractedResult = false
+    @State private var showingErrorToast = false
 
     var body: some View {
         NavigationStack {
@@ -101,6 +102,24 @@ struct RecipeList: View {
                     .background(Color.black.opacity(0.6))
                     .cornerRadius(15)
                 }
+
+                if showingErrorToast {
+                    VStack {
+                        Spacer()
+                        ToastView(
+                            toastType: .error,
+                            title: "Extraction Failed",
+                            subtitle: "Could not extract recipe from the photo.",
+                            onUndo: {
+                                withAnimation {
+                                    showingErrorToast = false
+                                }
+                            }
+                        )
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                        .padding(.bottom, 50)
+                    }
+                }
             }
         }
     }
@@ -116,7 +135,9 @@ struct RecipeList: View {
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
             } else {
                 UINotificationFeedbackGenerator().notificationOccurred(.error)
-                // Maybe show an error alert here?
+                withAnimation {
+                    showingErrorToast = true
+                }
             }
         }
     }
