@@ -23,7 +23,8 @@ struct RecipeDetail: View {
                 Text(recipe.name ?? "Untitled Recipe")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .padding()
+                    .padding(.horizontal)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 
                 if let imageUrl = recipe.image?.first ?? recipe.thumbnailUrl, let url = URL(string: imageUrl) {
                     ZStack(alignment: .bottomLeading) {
@@ -48,6 +49,7 @@ struct RecipeDetail: View {
                         .fontWeight(.semibold)
                     ForEach(recipe.recipeIngredient ?? [], id: \.self) { ingredient in
                         Text("• \(ingredient)")
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
                 .padding(.horizontal)
@@ -58,6 +60,8 @@ struct RecipeDetail: View {
                         .fontWeight(.semibold)
                     ForEach(extractInstructions(from: recipe), id: \.self) { instruction in
                         Text(instruction)
+                            .multilineTextAlignment(.leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.bottom, 5)
                     }
                 }
