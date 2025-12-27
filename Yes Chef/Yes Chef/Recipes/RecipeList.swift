@@ -15,12 +15,14 @@ struct RecipeList: View {
     enum SheetType: Identifiable {
         case manualAdd
         case imagePicker
+        case camera
         case extractedResult(Recipe)
         
         var id: String {
             switch self {
             case .manualAdd: return "manualAdd"
             case .imagePicker: return "imagePicker"
+            case .camera: return "camera"
             case .extractedResult: return "extractedResult"
             }
         }
@@ -74,9 +76,15 @@ struct RecipeList: View {
                             }
                             
                             Button(action: {
+                                activeSheet = .camera
+                            }) {
+                                Label("Camera", systemImage: "camera")
+                            }
+                            
+                            Button(action: {
                                 activeSheet = .imagePicker
                             }) {
-                                Label("From Photo", systemImage: "photo")
+                                Label("Photo", systemImage: "photo")
                             }
                         } label: {
                             Image(systemName: "plus")
@@ -89,6 +97,8 @@ struct RecipeList: View {
                         EditRecipeView()
                     case .imagePicker:
                         ImagePicker(image: $selectedImage)
+                    case .camera:
+                        CameraPicker(image: $selectedImage)
                     case .extractedResult(let recipe):
                         EditRecipeView(recipe: recipe)
                     }
