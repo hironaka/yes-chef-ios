@@ -14,11 +14,13 @@ struct RecipeDetail: View {
     enum SheetType: Identifiable {
         case voiceAssistant
         case edit
+        case addGroceries([String])
         
         var id: String {
             switch self {
             case .voiceAssistant: return "voiceAssistant"
             case .edit: return "editRecipe"
+            case .addGroceries: return "addGroceries"
             }
         }
     }
@@ -132,6 +134,17 @@ struct RecipeDetail: View {
                 RecipeVoiceAssistant(recipe: recipe)
                     .presentationDetents([.height(80)])
                     .presentationBackgroundInteraction(.enabled)
+            case .addGroceries(let ingredients):
+                AddGroceriesView(
+                    groceries: ingredients,
+                    onAdd: { selectedItems in
+                        saveGroceries(selectedItems)
+                        activeSheet = nil
+                    },
+                    onCancel: {
+                        activeSheet = nil
+                    }
+                )
             }
         }
     }
@@ -145,15 +158,13 @@ struct RecipeDetail: View {
     
     private func addToGroceries() {
         guard let ingredients = recipe.recipeIngredient else { return }
-        
-        // Optional: specific feedback logic or toast could go here
-        
-        for ingredient in ingredients {
-            // Check if item already exists to avoid duplicates? 
-            // For now, just add as requested "add from all ingredients"
-            // We strip HTML just in case
-            let cleanName = ingredient.htmlToString()
-            let newItem = GroceryItem(name: cleanName)
+        let cleanIngredients = ingredients.map { $0.htmlToString() }
+        activeSheet = .addGroceries(cleanIngredients)
+    }
+    
+    private func saveGroceries(_ items: [String]) {
+        for item in items {
+            let newItem = GroceryItem(name: item)
             modelContext.insert(newItem)
         }
     }

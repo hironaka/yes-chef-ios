@@ -22,6 +22,7 @@ struct Groceries: View {
                     ForEach(groceryItems) { item in
                         HStack {
                             Button(action: {
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                 toggleItem(item)
                             }) {
                                 Image(systemName: item.isCompleted ? "checkmark.circle.fill" : "circle")
@@ -44,12 +45,14 @@ struct Groceries: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Clear") {
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                         showClearConfirmation = true
                     }
                     .disabled(groceryItems.isEmpty)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
                         addItem()
                     }) {
                         Image(systemName: "plus")
@@ -59,6 +62,7 @@ struct Groceries: View {
             .alert("Clear All Items?", isPresented: $showClearConfirmation) {
                 Button("Cancel", role: .cancel) { }
                 Button("Clear", role: .destructive) {
+                    UINotificationFeedbackGenerator().notificationOccurred(.success)
                     clearAll()
                 }
             } message: {
@@ -92,6 +96,7 @@ struct Groceries: View {
     }
     
     private func deleteItems(offsets: IndexSet) {
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         withAnimation {
             for index in offsets {
                 modelContext.delete(groceryItems[index])
