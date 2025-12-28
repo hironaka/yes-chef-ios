@@ -31,7 +31,7 @@ struct RecipeList: View {
     @State private var activeSheet: SheetType?
     @State private var selectedImage: UIImage?
     @State private var isExtracting = false
-    @State private var showingErrorToast = false
+    @State private var showErrorAlert = false
 
     var body: some View {
         NavigationStack {
@@ -128,24 +128,13 @@ struct RecipeList: View {
                     .cornerRadius(15)
                 }
 
-                if showingErrorToast {
-                    VStack {
-                        Spacer()
-                        ToastView(
-                            toastType: .error,
-                            title: "Extraction Failed",
-                            subtitle: "Failed to extract a recipe.",
-                            onUndo: {
-                                withAnimation {
-                                    showingErrorToast = false
-                                }
-                            }
-                        )
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                        .padding(.bottom, 50)
-                    }
-                }
+
             }
+        }
+        .alert("Extraction Failed", isPresented: $showErrorAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Unable to extract a recipe.")
         }
     }
     
@@ -159,9 +148,7 @@ struct RecipeList: View {
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
             } else {
                 UINotificationFeedbackGenerator().notificationOccurred(.error)
-                withAnimation {
-                    showingErrorToast = true
-                }
+                showErrorAlert = true
             }
         }
     }

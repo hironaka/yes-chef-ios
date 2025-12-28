@@ -256,23 +256,11 @@ struct WebView: UIViewRepresentable {
 }
 
 struct Search: View {
-    struct ToastConfig: Equatable {
-        let type: ToastType
-        let title: String
-        let subtitle: String?
-    }
-
     @Environment(\.modelContext) private var modelContext
     @StateObject private var webViewManager = WebViewManager()
-    @State private var activeToast: ToastConfig?
+    @State private var showErrorAlert = false
     @State private var isDownloading = false
     @State private var downloadedRecipe: Recipe?
-
-    private func showToast(type: ToastType, title: String, subtitle: String? = nil) {
-        withAnimation {
-            activeToast = ToastConfig(type: type, title: title, subtitle: subtitle)
-        }
-    }
 
     var body: some View {
         NavigationStack {
@@ -282,24 +270,7 @@ struct Search: View {
                     webViewManager: webViewManager
                 )
                 
-                if let toast = activeToast {
-                    VStack {
-                        Spacer()
-                        ToastView(
-                            toastType: toast.type,
-                            title: toast.title,
-                            subtitle: toast.subtitle,
-                            onUndo: {
-                                withAnimation {
-                                    activeToast = nil
-                                }
-                            }
-                        )
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                        .padding(.bottom, 50)
-                    }
-                    .id(toast.type)
-                }
+
 
                 if isDownloading {
                     Color.black.opacity(0.4)
@@ -349,11 +320,7 @@ struct Search: View {
                                 downloadedRecipe = recipe
                             } else {
                                 UINotificationFeedbackGenerator().notificationOccurred(.error)
-                                showToast(
-                                    type: .error,
-                                    title: "Download Failed",
-                                    subtitle: "Failed to extract a recipe."
-                                )
+                                showErrorAlert = true
                             }
                         }
                     }) {
@@ -364,6 +331,11 @@ struct Search: View {
             }
             .sheet(item: $downloadedRecipe) { recipe in
                 EditRecipeView(recipe: recipe)
+            }
+            .alert("Download Failed", isPresented: $showErrorAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("Unable to extract a recipe.")
             }
         }
     }
