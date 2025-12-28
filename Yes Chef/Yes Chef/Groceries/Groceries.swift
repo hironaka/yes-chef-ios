@@ -25,7 +25,7 @@ struct Groceries: View {
                                 toggleItem(item)
                             }) {
                                 Image(systemName: item.isCompleted ? "checkmark.circle.fill" : "circle")
-                                    .foregroundColor(item.isCompleted ? .green : .gray)
+                                    .foregroundColor(item.isCompleted ? .accentColor : .gray)
                             }
                             .buttonStyle(.plain)
                             
@@ -81,8 +81,6 @@ struct Groceries: View {
             let newItem = GroceryItem(name: "")
             modelContext.insert(newItem)
             // Focus the new item
-            // We need to wait for the next runloop for the ID to be available/stable in the view?
-            // Actually, inserting it gives it a temporary ID immediately.
             focusedField = newItem.persistentModelID
         }
     }
