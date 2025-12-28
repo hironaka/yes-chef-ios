@@ -279,7 +279,7 @@ struct Search: View {
                         ProgressView()
                             .scaleEffect(1.5)
                             .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                        Text("Downloading recipe...")
+                        Text("Downloading...")
                             .foregroundColor(.white)
                             .padding(.top, 10)
                     }
@@ -335,7 +335,7 @@ struct Search: View {
             .alert("Download Failed", isPresented: $showErrorAlert) {
                 Button("OK", role: .cancel) { }
             } message: {
-                Text("Unable to extract a recipe.")
+                Text("Unable to extract a recipe")
             }
         }
     }

@@ -119,7 +119,7 @@ struct RecipeList: View {
                         ProgressView()
                             .scaleEffect(1.5)
                             .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                        Text("Extracting recipe...")
+                        Text("Processing...")
                             .foregroundColor(.white)
                             .padding(.top, 10)
                     }
@@ -134,7 +134,7 @@ struct RecipeList: View {
         .alert("Image Processing Failed", isPresented: $showErrorAlert) {
             Button("OK", role: .cancel) { }
         } message: {
-            Text("Unable to extract a recipe.")
+            Text("Unable to extract a recipe from the image")
         }
     }
     
