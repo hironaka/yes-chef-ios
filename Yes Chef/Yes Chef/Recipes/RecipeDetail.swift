@@ -110,6 +110,13 @@ struct RecipeDetail: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                }) {
+                    Image(systemName: "cart")
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                     delete()
                 }) {
                     Image(systemName: "trash")
