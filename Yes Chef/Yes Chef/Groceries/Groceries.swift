@@ -43,9 +43,11 @@ struct Groceries: View {
                             }
                             .buttonStyle(.plain)
                             
-                            Text(item.name)
+                            
+                            TextField("Name", text: Bindable(item).name)
                                 .strikethrough(item.isCompleted)
                                 .foregroundColor(item.isCompleted ? .gray : .primary)
+                                .submitLabel(.done)
                         }
                     }
                     .onDelete(perform: deleteItems)
