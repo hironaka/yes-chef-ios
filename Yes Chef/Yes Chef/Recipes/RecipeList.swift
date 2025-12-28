@@ -131,7 +131,7 @@ struct RecipeList: View {
 
             }
         }
-        .alert("Extraction Failed", isPresented: $showErrorAlert) {
+        .alert("Image Processing Failed", isPresented: $showErrorAlert) {
             Button("OK", role: .cancel) { }
         } message: {
             Text("Unable to extract a recipe.")
