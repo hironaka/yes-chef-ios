@@ -20,8 +20,15 @@ class RecipeExtractor {
             return
         }
         
+
         let base64Image = imageData.base64EncodedString()
-        let imageContent = "data:image/jpeg;base64,\(base64Image)"
+        // Structure matches Google Vertex AI 'Part' object for inline data
+        let imageContent: [String: Any] = [
+            "inlineData": [
+                "data": base64Image,
+                "mimeType": "image/jpeg"
+            ]
+        ]
         
         var request = URLRequest(url: apiUrl)
         request.httpMethod = "POST"
