@@ -61,7 +61,7 @@ struct RecipeDetail: View {
                     Text("Ingredients")
                         .font(.title2)
                         .fontWeight(.semibold)
-                    ForEach(displayIngredients, id: \.self) { ingredient in
+                    ForEach(Array(displayIngredients.enumerated()), id: \.offset) { index, ingredient in
                         Text("• \(ingredient)")
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
@@ -72,7 +72,7 @@ struct RecipeDetail: View {
                     Text("Instructions")
                         .font(.title2)
                         .fontWeight(.semibold)
-                    ForEach(displayInstructions, id: \.self) { instruction in
+                    ForEach(Array(displayInstructions.enumerated()), id: \.offset) { index, instruction in
                         Text(instruction)
                             .multilineTextAlignment(.leading)
                             .frame(maxWidth: .infinity, alignment: .leading)

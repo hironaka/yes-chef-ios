@@ -74,6 +74,58 @@ class RecipeTests {
         #expect(plainText.contains("1. First, mix the ingredients. Be careful."))
         #expect(plainText.contains("2. Then, bake at 350°F."))
     }
+
+    @Test func testAPIRecipeResponseDecoding() async throws {
+        let decoder = JSONDecoder()
+        
+        // Case 1: Single string image
+        let jsonStringImage = """
+        {
+            "name": "Single Image Recipe",
+            "image": "https://example.com/image.jpg",
+            "recipeIngredient": ["Ingredient 1", "Ingredient 1"],
+            "recipeInstructions": ["Step 1"],
+            "recipeFound": true
+        }
+        """
+        let dataStringImage = jsonStringImage.data(using: .utf8)!
+        let responseStringImage = try decoder.decode(APIRecipeResponse.self, from: dataStringImage)
+        let recipeStringImage = responseStringImage.toRecipe()
+        
+        #expect(recipeStringImage?.image?.count == 1)
+        #expect(recipeStringImage?.image?.first == "https://example.com/image.jpg")
+        #expect(recipeStringImage?.recipeIngredient?.count == 2)
+        #expect(recipeStringImage?.recipeIngredient?[0] == "Ingredient 1")
+        #expect(recipeStringImage?.recipeIngredient?[1] == "Ingredient 1") // Verify duplicates preserved
+        
+        // Case 2: Array of images
+        let jsonArrayImage = """
+        {
+            "name": "Array Image Recipe",
+            "image": ["https://example.com/img1.jpg", "https://example.com/img2.jpg"],
+            "recipeFound": true
+        }
+        """
+        let dataArrayImage = jsonArrayImage.data(using: .utf8)!
+        let responseArrayImage = try decoder.decode(APIRecipeResponse.self, from: dataArrayImage)
+        let recipeArrayImage = responseArrayImage.toRecipe()
+        
+        #expect(recipeArrayImage?.image?.count == 2)
+        #expect(recipeArrayImage?.image?.contains("https://example.com/img1.jpg") ?? false)
+        
+        // Case 3: No image
+        let jsonNoImage = """
+        {
+            "name": "No Image Recipe",
+            "recipeFound": true
+        }
+        """
+        let dataNoImage = jsonNoImage.data(using: .utf8)!
+        let responseNoImage = try decoder.decode(APIRecipeResponse.self, from: dataNoImage)
+        let recipeNoImage = responseNoImage.toRecipe()
+        
+        #expect(recipeNoImage?.image == nil)
+    }
 }
 
 enum TestError: Error {

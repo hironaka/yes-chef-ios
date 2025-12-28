@@ -159,6 +159,29 @@ struct APIRecipeResponse: Codable {
     let recipeInstructions: [Instruction]?
     let recipeFound: Bool?
     
+    enum CodingKeys: String, CodingKey {
+        case name, thumbnailUrl, image, recipeIngredient, recipeInstructions, recipeFound
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        thumbnailUrl = try container.decodeIfPresent(String.self, forKey: .thumbnailUrl)
+        
+        // Handle polymorphic image (String or [String])
+        if let images = try? container.decode([String].self, forKey: .image) {
+            image = images
+        } else if let singleImage = try? container.decode(String.self, forKey: .image) {
+            image = [singleImage]
+        } else {
+            image = nil
+        }
+        
+        recipeIngredient = try container.decodeIfPresent([String].self, forKey: .recipeIngredient)
+        recipeInstructions = try container.decodeIfPresent([Instruction].self, forKey: .recipeInstructions)
+        recipeFound = try container.decodeIfPresent(Bool.self, forKey: .recipeFound)
+    }
+    
     // Convert this to a Recipe object if found
     func toRecipe() -> Recipe? {
         if recipeFound == false { return nil }
@@ -175,7 +198,7 @@ struct APIRecipeResponse: Codable {
 extension String {
     func htmlToString() -> String {
         // Optimization: if it doesn't look like HTML, don't pay the NSAttributedString cost
-        guard self.contains("<") else {
+        guard self.contains("<") || self.contains("&") else {
             return self
         }
         
