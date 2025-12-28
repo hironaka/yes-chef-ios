@@ -70,18 +70,21 @@ struct RecipeList: View {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Menu {
                             Button(action: {
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                 activeSheet = .manualAdd
                             }) {
                                 Label("Manual Entry", systemImage: "square.and.pencil")
                             }
                             
                             Button(action: {
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                 activeSheet = .camera
                             }) {
                                 Label("Camera", systemImage: "camera")
                             }
                             
                             Button(action: {
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                 activeSheet = .imagePicker
                             }) {
                                 Label("Photo", systemImage: "photo")

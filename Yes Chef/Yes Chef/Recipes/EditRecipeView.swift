@@ -36,6 +36,7 @@ struct EditRecipeView: View {
                         HStack {
                             TextField("Ingredient \(index + 1)", text: $ingredients[index])
                             Button(action: {
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                 ingredients.remove(at: index)
                             }) {
                                 Image(systemName: "minus.circle.fill")
@@ -46,6 +47,7 @@ struct EditRecipeView: View {
                     }
                     
                     Button(action: {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
                         ingredients.append("")
                     }) {
                         Label("Add Ingredient", systemImage: "plus.circle.fill")
@@ -63,6 +65,7 @@ struct EditRecipeView: View {
                                 TextField("Step \(index + 1)", text: $instructions[index], axis: .vertical)
                                 
                                 Button(action: {
+                                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                     instructions.remove(at: index)
                                 }) {
                                     Image(systemName: "minus.circle.fill")
@@ -74,6 +77,7 @@ struct EditRecipeView: View {
                     }
                     
                     Button(action: {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
                         instructions.append("")
                     }) {
                         Label("Add Step", systemImage: "plus.circle.fill")
@@ -85,11 +89,13 @@ struct EditRecipeView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                         save()
                         dismiss()
                     }
