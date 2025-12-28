@@ -10,28 +10,14 @@ import SwiftData
 
 struct Groceries: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \GroceryItem.timestamp, order: .forward) private var groceryItems: [GroceryItem]
+    @Query(sort: \GroceryItem.timestamp, order: .reverse) private var groceryItems: [GroceryItem]
     
-    @State private var newItemName: String = ""
     @State private var showClearConfirmation = false
-    @State private var isAddingItem = false
-    @FocusState private var isFocused: Bool
+    @FocusState private var focusedField: PersistentIdentifier?
     
     var body: some View {
         NavigationStack {
             List {
-                if isAddingItem {
-                    TextField("Name", text: $newItemName)
-                        .focused($isFocused)
-                        .submitLabel(.done)
-                        .onSubmit {
-                            addItem()
-                        }
-                        .onAppear {
-                            isFocused = true
-                        }
-                }
-                
                 Section {
                     ForEach(groceryItems) { item in
                         HStack {
@@ -45,6 +31,7 @@ struct Groceries: View {
                             
                             
                             TextField("Name", text: Bindable(item).name)
+                                .focused($focusedField, equals: item.persistentModelID)
                                 .strikethrough(item.isCompleted)
                                 .foregroundColor(item.isCompleted ? .gray : .primary)
                                 .submitLabel(.done)
@@ -63,9 +50,7 @@ struct Groceries: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        withAnimation {
-                            isAddingItem = true
-                        }
+                        addItem()
                     }) {
                         Image(systemName: "plus")
                     }
@@ -92,14 +77,13 @@ struct Groceries: View {
     }
     
     private func addItem() {
-        let trimmedName = newItemName.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmedName.isEmpty else { return }
-        
         withAnimation {
-            let newItem = GroceryItem(name: trimmedName)
+            let newItem = GroceryItem(name: "")
             modelContext.insert(newItem)
-            newItemName = ""
-            isAddingItem = false
+            // Focus the new item
+            // We need to wait for the next runloop for the ID to be available/stable in the view?
+            // Actually, inserting it gives it a temporary ID immediately.
+            focusedField = newItem.persistentModelID
         }
     }
     
