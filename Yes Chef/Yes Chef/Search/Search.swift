@@ -352,7 +352,7 @@ struct Search: View {
                                 showToast(
                                     type: .error,
                                     title: "Download Failed",
-                                    subtitle: "Could not extract recipe from this page."
+                                    subtitle: "Failed to extract a recipe."
                                 )
                             }
                         }

@@ -131,7 +131,7 @@ struct RecipeList: View {
                         ToastView(
                             toastType: .error,
                             title: "Extraction Failed",
-                            subtitle: "Could not extract recipe from the photo.",
+                            subtitle: "Failed to extract a recipe.",
                             onUndo: {
                                 withAnimation {
                                     showingErrorToast = false
