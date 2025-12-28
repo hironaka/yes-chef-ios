@@ -13,6 +13,7 @@ struct Groceries: View {
     @Query(sort: \GroceryItem.timestamp, order: .forward) private var groceryItems: [GroceryItem]
     
     @State private var newItemName: String = ""
+    @State private var showClearConfirmation = false
     
     var body: some View {
         NavigationStack {
@@ -53,6 +54,30 @@ struct Groceries: View {
                 }
             }
             .navigationTitle("Groceries")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Clear") {
+                        showClearConfirmation = true
+                    }
+                    .disabled(groceryItems.isEmpty)
+                }
+            }
+            .alert("Clear All Items?", isPresented: $showClearConfirmation) {
+                Button("Cancel", role: .cancel) { }
+                Button("Clear", role: .destructive) {
+                    clearAll()
+                }
+            } message: {
+                Text("This will remove all items from your grocery list.")
+            }
+        }
+    }
+    
+    private func clearAll() {
+        withAnimation {
+            for item in groceryItems {
+                modelContext.delete(item)
+            }
         }
     }
     
