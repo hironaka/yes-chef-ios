@@ -14,24 +14,22 @@ struct Groceries: View {
     
     @State private var newItemName: String = ""
     @State private var showClearConfirmation = false
+    @State private var isAddingItem = false
+    @FocusState private var isFocused: Bool
     
     var body: some View {
         NavigationStack {
             List {
-                Section {
-                    HStack {
-                        TextField("Add new item", text: $newItemName)
-                            .submitLabel(.done)
-                            .onSubmit {
-                                addItem()
-                            }
-                        
-                        Button(action: addItem) {
-                            Image(systemName: "plus.circle.fill")
-                                .foregroundColor(.accentColor)
+                if isAddingItem {
+                    TextField("Name", text: $newItemName)
+                        .focused($isFocused)
+                        .submitLabel(.done)
+                        .onSubmit {
+                            addItem()
                         }
-                        .disabled(newItemName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                    }
+                        .onAppear {
+                            isFocused = true
+                        }
                 }
                 
                 Section {
@@ -55,11 +53,20 @@ struct Groceries: View {
             }
             .navigationTitle("Groceries")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button("Clear") {
                         showClearConfirmation = true
                     }
                     .disabled(groceryItems.isEmpty)
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        withAnimation {
+                            isAddingItem = true
+                        }
+                    }) {
+                        Image(systemName: "plus")
+                    }
                 }
             }
             .alert("Clear All Items?", isPresented: $showClearConfirmation) {
@@ -72,6 +79,7 @@ struct Groceries: View {
             }
         }
     }
+
     
     private func clearAll() {
         withAnimation {
@@ -89,6 +97,7 @@ struct Groceries: View {
             let newItem = GroceryItem(name: trimmedName)
             modelContext.insert(newItem)
             newItemName = ""
+            isAddingItem = false
         }
     }
     
