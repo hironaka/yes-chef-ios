@@ -31,6 +31,7 @@ struct RecipeDetail: View {
     
     @State private var displayIngredients: [String] = []
     @State private var displayInstructions: [String] = []
+    @State private var showDeleteConfirmation = false
 
     var body: some View {
         ScrollView {
@@ -120,7 +121,7 @@ struct RecipeDetail: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                    delete()
+                    showDeleteConfirmation = true
                 }) {
                     Image(systemName: "trash")
                 }
@@ -146,6 +147,15 @@ struct RecipeDetail: View {
                     }
                 )
             }
+        }
+        .alert("Delete Recipe?", isPresented: $showDeleteConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Delete", role: .destructive) {
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                delete()
+            }
+        } message: {
+            Text("This action cannot be undone.")
         }
     }
     
