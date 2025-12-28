@@ -36,10 +36,19 @@ struct Groceries: View {
                                 .strikethrough(item.isCompleted)
                                 .foregroundColor(item.isCompleted ? .gray : .primary)
                                 .submitLabel(.done)
+                                .onChange(of: item.name) { oldValue, newValue in
+                                    if newValue.contains("\n") {
+                                        item.name = newValue.replacingOccurrences(of: "\n", with: "")
+                                        focusedField = nil
+                                    }
+                                }
                         }
                     }
                     .onDelete(perform: deleteItems)
                 }
+            }
+            .onTapGesture {
+                focusedField = nil
             }
             .navigationTitle("Groceries")
             .toolbar {
