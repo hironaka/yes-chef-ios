@@ -110,6 +110,7 @@ struct RecipeDetail: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    addToGroceries()
                 }) {
                     Image(systemName: "cart")
                 }
@@ -139,6 +140,21 @@ struct RecipeDetail: View {
         withAnimation {
             modelContext.delete(recipe)
             dismiss()
+        }
+    }
+    
+    private func addToGroceries() {
+        guard let ingredients = recipe.recipeIngredient else { return }
+        
+        // Optional: specific feedback logic or toast could go here
+        
+        for ingredient in ingredients {
+            // Check if item already exists to avoid duplicates? 
+            // For now, just add as requested "add from all ingredients"
+            // We strip HTML just in case
+            let cleanName = ingredient.htmlToString()
+            let newItem = GroceryItem(name: cleanName)
+            modelContext.insert(newItem)
         }
     }
 }

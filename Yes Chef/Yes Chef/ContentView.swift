@@ -16,6 +16,12 @@ struct ContentView: View {
                     Label("Recipes", systemImage: "list.bullet")
                 }
                 .tag(1)
+            
+            Groceries()
+                .tabItem {
+                    Label("Groceries", systemImage: "cart")
+                }
+                .tag(2)
         }
         .onChange(of: selectedTab) {
             UISelectionFeedbackGenerator().selectionChanged()
