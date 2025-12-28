@@ -30,7 +30,7 @@ struct Groceries: View {
                             .buttonStyle(.plain)
                             
                             
-                            TextField("Name", text: Bindable(item).name)
+                            TextField("Name", text: Bindable(item).name, axis: .vertical)
                                 .focused($focusedField, equals: item.persistentModelID)
                                 .strikethrough(item.isCompleted)
                                 .foregroundColor(item.isCompleted ? .gray : .primary)
