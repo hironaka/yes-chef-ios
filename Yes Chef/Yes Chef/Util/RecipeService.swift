@@ -1,5 +1,5 @@
 //
-//  RecipeExtractor.swift
+//  RecipeService.swift
 //  Yes Chef
 //
 //  Created by Antigravity on 12/27/25.
@@ -8,9 +8,14 @@
 import Foundation
 import UIKit
 
-class RecipeExtractor {
-    static let shared = RecipeExtractor()
-    private let apiUrl = URL(string: "https://yes-chef.ai/api/recipe/extract")!
+struct ScaleResponse: Decodable {
+    let scaledIngredients: [String]
+}
+
+class RecipeService {
+    static let shared = RecipeService()
+    private let extractUrl = URL(string: "https://yes-chef.ai/api/recipe/extract")!
+    private let scaleUrl = URL(string: "https://yes-chef.ai/api/recipe/scale")!
     
     func extractRecipe(from image: UIImage, completion: @escaping (Recipe?) -> Void) {
         // Convert image to base64
@@ -30,7 +35,7 @@ class RecipeExtractor {
             ]
         ]
         
-        var request = URLRequest(url: apiUrl)
+        var request = URLRequest(url: extractUrl)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
@@ -67,5 +72,27 @@ class RecipeExtractor {
                 DispatchQueue.main.async { completion(nil) }
             }
         }.resume()
+    }
+    
+    func scaleRecipe(ingredients: [String], scaleFactor: Double) async throws -> [String] {
+        var request = URLRequest(url: scaleUrl)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body: [String: Any] = [
+            "ingredients": ingredients,
+            "scaleFactor": scaleFactor
+        ]
+        
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            throw URLError(.badServerResponse)
+        }
+        
+        let decodedResponse = try JSONDecoder().decode(ScaleResponse.self, from: data)
+        return decodedResponse.scaledIngredients
     }
 }

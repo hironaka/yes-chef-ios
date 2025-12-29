@@ -32,6 +32,8 @@ struct RecipeDetail: View {
     @State private var displayIngredients: [String] = []
     @State private var displayInstructions: [String] = []
     @State private var showDeleteConfirmation = false
+    @State private var scaleFactor: Double = 1.0
+    @State private var isScaling = false
 
     var body: some View {
         ScrollView {
@@ -126,13 +128,34 @@ struct RecipeDetail: View {
                     Image(systemName: "trash")
                 }
             }
+
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button(action: { scale(to: 0.5) }) { Label("0.5x", systemImage: "circle.lefthalf.filled") }
+                    Button(action: { scale(to: 1.0) }) { Label("1.0x (Original)", systemImage: "circle.fill") }
+                    Button(action: { scale(to: 2.0) }) { Label("2.0x", systemImage: "circle.circle") }
+                    Button(action: { scale(to: 3.0) }) { Label("3.0x", systemImage: "seal") }
+                } label: {
+                    Text("\(scaleFactor, specifier: "%g")x")
+                        .fontWeight(.bold)
+                }
+            }
         }
         .sheet(item: $activeSheet) { sheet in
             switch sheet {
             case .edit:
                 EditRecipeView(recipe: recipe)
+
             case .voiceAssistant:
-                RecipeVoiceAssistant(recipe: recipe)
+                // Create a transient recipe with currently displayed ingredients
+                let voiceRecipe = Recipe(
+                    name: recipe.name,
+                    thumbnailUrl: recipe.thumbnailUrl,
+                    image: recipe.image,
+                    recipeIngredient: displayIngredients,
+                    recipeInstructions: recipe.recipeInstructions
+                )
+                RecipeVoiceAssistant(recipe: voiceRecipe)
                     .presentationDetents([.height(80)])
                     .presentationBackgroundInteraction(.enabled)
             case .addGroceries(let ingredients):
@@ -176,6 +199,38 @@ struct RecipeDetail: View {
         for item in items {
             let newItem = GroceryItem(name: item)
             modelContext.insert(newItem)
+        }
+    }
+
+
+    private func scale(to factor: Double) {
+        guard factor != scaleFactor else { return }
+        
+        // Optimistic UI update if reverting to original
+        if factor == 1.0 {
+            self.scaleFactor = 1.0
+            self.displayIngredients = recipe.recipeIngredient ?? []
+            return
+        }
+        
+        self.isScaling = true
+        let originalIngredients = recipe.recipeIngredient ?? []
+        
+        Task {
+            do {
+                let scaled = try await RecipeService.shared.scaleRecipe(ingredients: originalIngredients, scaleFactor: factor)
+                await MainActor.run {
+                    self.displayIngredients = scaled
+                    self.scaleFactor = factor
+                    self.isScaling = false
+                }
+            } catch {
+                print("Scaling failed: \(error)")
+                await MainActor.run {
+                    self.isScaling = false
+                    // Optionally show error toast
+                }
+            }
         }
     }
 }

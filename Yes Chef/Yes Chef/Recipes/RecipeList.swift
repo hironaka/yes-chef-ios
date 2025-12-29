@@ -140,7 +140,7 @@ struct RecipeList: View {
     
     private func extractRecipe(from image: UIImage) {
         isExtracting = true
-        RecipeExtractor.shared.extractRecipe(from: image) { recipe in
+        RecipeService.shared.extractRecipe(from: image) { recipe in
             isExtracting = false
             selectedImage = nil
             if let recipe = recipe {
