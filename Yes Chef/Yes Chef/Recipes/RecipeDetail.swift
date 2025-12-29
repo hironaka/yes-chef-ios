@@ -131,10 +131,22 @@ struct RecipeDetail: View {
 
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
-                    Button(action: { scale(to: 0.5) }) { Label("0.5x", systemImage: "circle.lefthalf.filled") }
-                    Button(action: { scale(to: 1.0) }) { Label("1.0x (Original)", systemImage: "circle.fill") }
-                    Button(action: { scale(to: 2.0) }) { Label("2.0x", systemImage: "circle.circle") }
-                    Button(action: { scale(to: 3.0) }) { Label("3.0x", systemImage: "seal") }
+                    Button(action: {
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                        scale(to: 0.5)
+                    }) { Label("0.5x", systemImage: "circle.lefthalf.filled") }
+                    Button(action: {
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                        scale(to: 1.0)
+                    }) { Label("1.0x (Original)", systemImage: "circle.fill") }
+                    Button(action: {
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                        scale(to: 2.0)
+                    }) { Label("2.0x", systemImage: "circle.circle") }
+                    Button(action: {
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                        scale(to: 3.0)
+                    }) { Label("3.0x", systemImage: "seal") }
                 } label: {
                     Text("\(scaleFactor, specifier: "%g")x")
                         .fontWeight(.bold)
