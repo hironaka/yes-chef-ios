@@ -148,8 +148,12 @@ struct RecipeDetail: View {
                         scale(to: 3.0)
                     }) { Label("3.0x", systemImage: "seal") }
                 } label: {
-                    Text("\(scaleFactor, specifier: "%g")x")
-                        .fontWeight(.bold)
+                    if isScaling {
+                        ProgressView()
+                    } else {
+                        Text("\(scaleFactor, specifier: "%g")x")
+                            .fontWeight(.bold)
+                    }
                 }
             }
         }
