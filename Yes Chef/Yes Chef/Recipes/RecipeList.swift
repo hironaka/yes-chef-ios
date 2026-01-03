@@ -15,20 +15,19 @@ struct RecipeList: View {
     enum SheetType: Identifiable {
         case manualAdd
         case imagePicker
-        case camera
         case extractedResult(Recipe)
         
         var id: String {
             switch self {
             case .manualAdd: return "manualAdd"
             case .imagePicker: return "imagePicker"
-            case .camera: return "camera"
             case .extractedResult: return "extractedResult"
             }
         }
     }
     
     @State private var activeSheet: SheetType?
+    @State private var showCamera = false
     @State private var selectedImage: UIImage?
     @State private var isExtracting = false
     @State private var showErrorAlert = false
@@ -78,7 +77,7 @@ struct RecipeList: View {
                             
                             Button(action: {
                                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                                activeSheet = .camera
+                                showCamera = true
                             }) {
                                 Label("Camera", systemImage: "camera")
                             }
@@ -100,11 +99,13 @@ struct RecipeList: View {
                         EditRecipeView()
                     case .imagePicker:
                         ImagePicker(image: $selectedImage)
-                    case .camera:
-                        CameraPicker(image: $selectedImage)
                     case .extractedResult(let recipe):
                         EditRecipeView(recipe: recipe)
                     }
+                }
+                .fullScreenCover(isPresented: $showCamera) {
+                    CameraPicker(image: $selectedImage)
+                        .ignoresSafeArea()
                 }
                 .onChange(of: selectedImage) {
                     if let image = selectedImage {
