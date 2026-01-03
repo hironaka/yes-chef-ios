@@ -35,7 +35,9 @@ struct RecipeVoiceAssistant: View {
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
             audioMonitor.stopMonitoring()
-            // conversation.disconnect() // Assuming we might want to disconnect
+            conversation.muted = true
+            try? conversation.send(event: .clearInputAudioBuffer())
+            conversation.disconnect()
         }
     }
     

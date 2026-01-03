@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		35B152F82ED293110013876F /* RealtimeAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 35B152F72ED293110013876F /* RealtimeAPI */; };
+		35DCE3712F09D2420002B0FC /* RealtimeAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 35DCE3702F09D2420002B0FC /* RealtimeAPI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,7 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35B152F82ED293110013876F /* RealtimeAPI in Frameworks */,
+				35DCE3712F09D2420002B0FC /* RealtimeAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,14 +119,14 @@
 			buildRules = (
 			);
 			dependencies = (
-				35E8E7222EB7A46100373867 /* PBXTargetDependency */,
+				35DCE36F2F09D1FD0002B0FC /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				350616B22EAD412B00D35875 /* Yes Chef */,
 			);
 			name = "Yes Chef";
 			packageProductDependencies = (
-				35B152F72ED293110013876F /* RealtimeAPI */,
+				35DCE3702F09D2420002B0FC /* RealtimeAPI */,
 			);
 			productName = "Yes Chef";
 			productReference = 350616B02EAD412B00D35875 /* Yes Chef.app */;
@@ -211,7 +211,7 @@
 			mainGroup = 350616A72EAD412B00D35875;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				35E8E7202EB7A3C200373867 /* XCRemoteSwiftPackageReference "swift-realtime-openai" */,
+				35DCE36D2F09D0810002B0FC /* XCRemoteSwiftPackageReference "swift-realtime-openai" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 350616B12EAD412B00D35875 /* Products */;
@@ -284,9 +284,9 @@
 			target = 350616AF2EAD412B00D35875 /* Yes Chef */;
 			targetProxy = 350616C92EAD412B00D35875 /* PBXContainerItemProxy */;
 		};
-		35E8E7222EB7A46100373867 /* PBXTargetDependency */ = {
+		35DCE36F2F09D1FD0002B0FC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 35E8E7212EB7A46100373867 /* RealtimeAPI */;
+			productRef = 35DCE36E2F09D1FD0002B0FC /* RealtimeAPI */;
 		};
 /* End PBXTargetDependency section */
 
@@ -649,9 +649,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		35E8E7202EB7A3C200373867 /* XCRemoteSwiftPackageReference "swift-realtime-openai" */ = {
+		35DCE36D2F09D0810002B0FC /* XCRemoteSwiftPackageReference "swift-realtime-openai" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/m1guelpf/swift-realtime-openai.git";
+			repositoryURL = "https://github.com/hironaka/swift-realtime-openai.git";
 			requirement = {
 				branch = main;
 				kind = branch;
@@ -660,14 +660,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		35B152F72ED293110013876F /* RealtimeAPI */ = {
+		35DCE36E2F09D1FD0002B0FC /* RealtimeAPI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 35E8E7202EB7A3C200373867 /* XCRemoteSwiftPackageReference "swift-realtime-openai" */;
+			package = 35DCE36D2F09D0810002B0FC /* XCRemoteSwiftPackageReference "swift-realtime-openai" */;
 			productName = RealtimeAPI;
 		};
-		35E8E7212EB7A46100373867 /* RealtimeAPI */ = {
+		35DCE3702F09D2420002B0FC /* RealtimeAPI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 35E8E7202EB7A3C200373867 /* XCRemoteSwiftPackageReference "swift-realtime-openai" */;
+			package = 35DCE36D2F09D0810002B0FC /* XCRemoteSwiftPackageReference "swift-realtime-openai" */;
 			productName = RealtimeAPI;
 		};
 /* End XCSwiftPackageProductDependency section */

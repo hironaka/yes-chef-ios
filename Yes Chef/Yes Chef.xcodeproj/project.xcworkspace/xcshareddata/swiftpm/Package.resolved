@@ -1,5 +1,5 @@
 {
-  "originHash" : "033133227950924ca071090a084a608e5343a69494c4fb95f967971327c66d65",
+  "originHash" : "198020bc1487ada7fe9ca54cf7294b78199f9d5ab028e1545dd7aa6bca0590cc",
   "pins" : [
     {
       "identity" : "metacodable",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser.git",
       "state" : {
-        "revision" : "cdd0ef3755280949551dc26dee5de9ddeda89f54",
-        "version" : "1.6.2"
+        "revision" : "c5d11a805e765f52ba34ec7284bd4fcd6ba68615",
+        "version" : "1.7.0"
       }
     },
     {
@@ -31,10 +31,10 @@
     {
       "identity" : "swift-realtime-openai",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/m1guelpf/swift-realtime-openai.git",
+      "location" : "https://github.com/hironaka/swift-realtime-openai.git",
       "state" : {
         "branch" : "main",
-        "revision" : "46f393d9e2e60724aadc30062f75ee73bbcdb8fc"
+        "revision" : "4ed21502531561b6cf1d9d642815ca7631013cd5"
       }
     },
     {
