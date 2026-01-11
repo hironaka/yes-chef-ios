@@ -169,6 +169,32 @@ struct WebView: UIViewRepresentable {
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
         {
+            processWebviewContent(webView)
+        }
+
+        func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+            let nsError = error as NSError
+            if nsError.code == NSURLErrorCancelled {
+                print("Navigation cancelled")
+                processWebviewContent(webView)
+                return
+            }
+            print("didfail \(error)")
+            webViewManager.canDownloadRecipe = false
+        }
+
+        func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+            let nsError = error as NSError
+            if nsError.code == NSURLErrorCancelled {
+                print("Provisional navigation cancelled")
+                processWebviewContent(webView)
+                return
+            }
+            print("didfailProvisionalNavigation \(error)")
+            webViewManager.canDownloadRecipe = false
+        }
+        
+        private func processWebviewContent(_ webView: WKWebView) {
             print("content loaded")
             let script = """
                     (function() {
@@ -212,9 +238,39 @@ struct WebView: UIViewRepresentable {
                             if (recipe) break;
                         }
                         
+                        function getRecipeTextContent() {
+                            const recipeSelectors = [
+                                '.recipe-callout',
+                                '.tasty-recipes',
+                                '.easyrecipe',
+                                '.innerrecipe',
+                                '.recipe-summary.wide',
+                                '.wprm-recipe-container',
+                                '.recipe-content',
+                                '.simple-recipe-pro',
+                                '.mv-recipe-card',
+                                'div[itemtype="http://schema.org/Recipe"]',
+                                'div[itemtype="https://schema.org/Recipe"]',
+                                'div.recipediv'
+                            ];
+                            
+                            const selectorString = recipeSelectors.join(', ');
+                            const matchedElements = document.querySelectorAll(selectorString);
+                            
+                            if (matchedElements.length > 0) {
+                                return Array.from(matchedElements)
+                                    .map(el => el.innerText || el.textContent || '')
+                                    .join('\\n\\n')
+                                    .replace(/\\s\\s+/g, ' ')
+                                    .trim();
+                            }
+                            
+                            return document.body.innerText;
+                        }
+
                         return {
                             recipe: recipe,
-                            textContent: document.body.innerText
+                            textContent: getRecipeTextContent()
                         };
                     })();
                 """
@@ -238,19 +294,14 @@ struct WebView: UIViewRepresentable {
                     let hasRecipeText = self?.webViewManager.textContent?.lowercased().contains("recipe") ?? false
                     
                     self?.webViewManager.canDownloadRecipe = !isYesChef && (hasRecipe || hasRecipeText)
+                    print("Has recipe: \(String(describing: hasRecipe))")
+                    print("Has recipe text: \(String(describing: hasRecipeText))")
+                    print("isYesChef: \(String(describing: isYesChef))")
                 }
 
                 self?.webViewManager.canGoBack = webView.canGoBack
                 self?.webViewManager.canGoForward = webView.canGoForward
             }
-        }
-
-        func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-            webViewManager.canDownloadRecipe = false
-        }
-
-        func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-            webViewManager.canDownloadRecipe = false
         }
     }
 }
