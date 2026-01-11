@@ -15,6 +15,6 @@ struct Yes_ChefApp: App {
             ContentView()
                 .preferredColorScheme(.light)
         }
-        .modelContainer(for: [Recipe.self, GroceryItem.self])
+        .modelContainer(ModelContainer.shared)
     }
 }

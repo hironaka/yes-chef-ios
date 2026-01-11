@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		35DCE3712F09D2420002B0FC /* RealtimeAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 35DCE3702F09D2420002B0FC /* RealtimeAPI */; };
+		35DCE3802F133C250002B0FC /* Share Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 35DCE3762F133C250002B0FC /* Share Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,17 +26,62 @@
 			remoteGlobalIDString = 350616AF2EAD412B00D35875;
 			remoteInfo = "Yes Chef";
 		};
+		35DCE37E2F133C250002B0FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 350616A82EAD412B00D35875 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 35DCE3752F133C250002B0FC;
+			remoteInfo = "Share Extension";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		35DCE3852F133C250002B0FC /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				35DCE3802F133C250002B0FC /* Share Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		350616B02EAD412B00D35875 /* Yes Chef.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Yes Chef.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		350616BE2EAD412B00D35875 /* Yes ChefTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Yes ChefTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		350616C82EAD412B00D35875 /* Yes ChefUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Yes ChefUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		35DCE3762F133C250002B0FC /* Share Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Share Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		35DCE3812F133C250002B0FC /* Exceptions for "Share Extension" folder in "Share Extension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 35DCE3752F133C250002B0FC /* Share Extension */;
+		};
+		35DCE38C2F13458F0002B0FC /* Exceptions for "Yes Chef" folder in "Share Extension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Model/GroceryItem.swift,
+				Model/Recipe.swift,
+				Shared/ModelContainer.swift,
+				Shared/RecipeExtractor.swift,
+			);
+			target = 35DCE3752F133C250002B0FC /* Share Extension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		350616B22EAD412B00D35875 /* Yes Chef */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				35DCE38C2F13458F0002B0FC /* Exceptions for "Yes Chef" folder in "Share Extension" target */,
+			);
 			path = "Yes Chef";
 			sourceTree = "<group>";
 		};
@@ -47,6 +93,14 @@
 		350616CB2EAD412B00D35875 /* Yes ChefUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Yes ChefUITests";
+			sourceTree = "<group>";
+		};
+		35DCE3772F133C250002B0FC /* Share Extension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				35DCE3812F133C250002B0FC /* Exceptions for "Share Extension" folder in "Share Extension" target */,
+			);
+			path = "Share Extension";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -74,6 +128,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		35DCE3732F133C250002B0FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -83,6 +144,7 @@
 				350616B22EAD412B00D35875 /* Yes Chef */,
 				350616C12EAD412B00D35875 /* Yes ChefTests */,
 				350616CB2EAD412B00D35875 /* Yes ChefUITests */,
+				35DCE3772F133C250002B0FC /* Share Extension */,
 				35B152F62ED293110013876F /* Frameworks */,
 				350616B12EAD412B00D35875 /* Products */,
 			);
@@ -94,6 +156,7 @@
 				350616B02EAD412B00D35875 /* Yes Chef.app */,
 				350616BE2EAD412B00D35875 /* Yes ChefTests.xctest */,
 				350616C82EAD412B00D35875 /* Yes ChefUITests.xctest */,
+				35DCE3762F133C250002B0FC /* Share Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -115,11 +178,13 @@
 				350616AC2EAD412B00D35875 /* Sources */,
 				350616AD2EAD412B00D35875 /* Frameworks */,
 				350616AE2EAD412B00D35875 /* Resources */,
+				35DCE3852F133C250002B0FC /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				35DCE36F2F09D1FD0002B0FC /* PBXTargetDependency */,
+				35DCE37F2F133C250002B0FC /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				350616B22EAD412B00D35875 /* Yes Chef */,
@@ -178,6 +243,28 @@
 			productReference = 350616C82EAD412B00D35875 /* Yes ChefUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		35DCE3752F133C250002B0FC /* Share Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 35DCE3822F133C250002B0FC /* Build configuration list for PBXNativeTarget "Share Extension" */;
+			buildPhases = (
+				35DCE3722F133C250002B0FC /* Sources */,
+				35DCE3732F133C250002B0FC /* Frameworks */,
+				35DCE3742F133C250002B0FC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				35DCE3772F133C250002B0FC /* Share Extension */,
+			);
+			name = "Share Extension";
+			packageProductDependencies = (
+			);
+			productName = "Share Extension";
+			productReference = 35DCE3762F133C250002B0FC /* Share Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -185,7 +272,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1640;
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
 					350616AF2EAD412B00D35875 = {
@@ -198,6 +285,9 @@
 					350616C72EAD412B00D35875 = {
 						CreatedOnToolsVersion = 16.4;
 						TestTargetID = 350616AF2EAD412B00D35875;
+					};
+					35DCE3752F133C250002B0FC = {
+						CreatedOnToolsVersion = 26.0.1;
 					};
 				};
 			};
@@ -221,6 +311,7 @@
 				350616AF2EAD412B00D35875 /* Yes Chef */,
 				350616BD2EAD412B00D35875 /* Yes ChefTests */,
 				350616C72EAD412B00D35875 /* Yes ChefUITests */,
+				35DCE3752F133C250002B0FC /* Share Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -241,6 +332,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		350616C62EAD412B00D35875 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		35DCE3742F133C250002B0FC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -271,6 +369,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		35DCE3722F133C250002B0FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -287,6 +392,11 @@
 		35DCE36F2F09D1FD0002B0FC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = 35DCE36E2F09D1FD0002B0FC /* RealtimeAPI */;
+		};
+		35DCE37F2F133C250002B0FC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 35DCE3752F133C250002B0FC /* Share Extension */;
+			targetProxy = 35DCE37E2F133C250002B0FC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -607,6 +717,77 @@
 			};
 			name = Release;
 		};
+		35DCE3832F133C250002B0FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Share Extension/Share Extension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6WY2A6DU5T;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Share Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Share Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ai.yes-chef.Yes-Chef.Share-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		35DCE3842F133C250002B0FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Share Extension/Share Extension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6WY2A6DU5T;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Share Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Share Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ai.yes-chef.Yes-Chef.Share-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -642,6 +823,15 @@
 			buildConfigurations = (
 				350616D92EAD412B00D35875 /* Debug */,
 				350616DA2EAD412B00D35875 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		35DCE3822F133C250002B0FC /* Build configuration list for PBXNativeTarget "Share Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35DCE3832F133C250002B0FC /* Debug */,
+				35DCE3842F133C250002B0FC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
