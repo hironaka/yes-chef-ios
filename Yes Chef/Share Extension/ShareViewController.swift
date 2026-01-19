@@ -38,56 +38,25 @@ class ShareViewController: UIViewController {
                     return
                 }
                 
-                
                 DispatchQueue.main.async {
                     self?.extractRecipe(from: url)
                 }
-            }
-        } else {
-            // No URL found
-            print("No URL found in attachments")
-            let errorView = ShareView(status: .error)
-            let hostingController = UIHostingController(rootView: errorView)
-            addChild(hostingController)
-            view.addSubview(hostingController.view)
-            hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
-                hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-            ])
-            hostingController.view.backgroundColor = .clear
-            hostingController.didMove(toParent: self)
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-                self?.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
             }
         }
     }
     
     private func extractRecipe(from url: URL) {
-        print("Extracting from: \(url)")
         // Show a loading UI using hosting controller
         let rootView = ShareView(status: .extracting)
         let hostingController = UIHostingController(rootView: rootView)
         addChild(hostingController)
         view.addSubview(hostingController.view)
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
-            hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-        
+        hostingController.view.frame = view.bounds
         hostingController.view.backgroundColor = .clear
         hostingController.didMove(toParent: self)
         
         recipeExtractor.extract(from: url) { [weak self] recipe in
             guard let self = self else { return }
-            print("Extraction result: \(String(describing: recipe?.name))")
             
             if let recipe = recipe {
                 self.saveRecipe(recipe)
