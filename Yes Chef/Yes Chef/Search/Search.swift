@@ -115,6 +115,7 @@ struct WebView: UIViewRepresentable {
     func makeUIView(context: Context) -> WKWebView {
         webViewManager.webView.uiDelegate = context.coordinator
         webViewManager.webView.navigationDelegate = context.coordinator
+        context.coordinator.setupURLObserver(for: webViewManager.webView)
 
         let request = URLRequest(url: url)
         webViewManager.webView.load(request)
@@ -131,10 +132,32 @@ struct WebView: UIViewRepresentable {
     class Coordinator: NSObject, WKUIDelegate, WKNavigationDelegate {
         var parent: WebView
         @ObservedObject var webViewManager: WebViewManager
+        var urlObservation: NSKeyValueObservation?
+        private var lastProcessedURL: URL?
 
         init(_ parent: WebView, webViewManager: WebViewManager) {
             self.parent = parent
             self.webViewManager = webViewManager
+        }
+        
+        func setupURLObserver(for webView: WKWebView) {
+            urlObservation = webView.observe(\.url, options: [.new]) { [weak self] webView, change in
+                guard let self = self,
+                      let newURL = change.newValue as? URL,
+                      newURL != self.lastProcessedURL else {
+                    return
+                }
+                
+                print("URL changed via KVO: \(newURL)")
+                // Small delay to let the page content update
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    // Only process if navigation delegate methods haven't already handled it
+                    if self.lastProcessedURL != webView.url {
+                        self.lastProcessedURL = webView.url
+                        self.processWebviewContent(webView)
+                    }
+                }
+            }
         }
 
         func webView(
@@ -169,6 +192,7 @@ struct WebView: UIViewRepresentable {
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!)
         {
+            print("didfinish")
             processWebviewContent(webView)
         }
 
@@ -195,6 +219,7 @@ struct WebView: UIViewRepresentable {
         }
         
         private func processWebviewContent(_ webView: WKWebView) {
+            lastProcessedURL = webView.url
             print("content loaded")
             let script = """
                     (function() {
