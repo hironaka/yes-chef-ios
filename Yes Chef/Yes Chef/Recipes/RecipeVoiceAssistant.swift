@@ -4,7 +4,9 @@ import RealtimeAPI
 struct RecipeVoiceAssistant: View {
     @State private var conversation = Conversation()
     @StateObject private var audioMonitor = AudioLevelMonitor()
+    @State private var previousMessages: [Item.Message] = []
     let recipe: Recipe
+    let onDismiss: () -> Void
 
     var body: some View {
         VStack(spacing: 20) {
@@ -12,22 +14,10 @@ struct RecipeVoiceAssistant: View {
                 .frame(height: 60)
         }
         .task {
-            do {
-                if let token = await fetchToken() {
-                    try await conversation.connect(ephemeralKey: token)
-                    await conversation.waitForConnection()
-                    
-                    // Start monitoring only after connection is established and session is configured by RealtimeAPI
-                    audioMonitor.startMonitoring()
-                    
-                    await sendSystemInstruction()
-                    await sendRecipe()
-                } else {
-                    print("Failed to fetch token")
-                }
-            } catch {
-                print("Failed to connect: \(error)")
-            }
+            await initialConnect()
+        }
+        .task {
+            await monitorConnectionStatus()
         }
         .onAppear {
             UIApplication.shared.isIdleTimerDisabled = true
@@ -38,6 +28,79 @@ struct RecipeVoiceAssistant: View {
             conversation.muted = true
             try? conversation.send(event: .clearInputAudioBuffer())
             conversation.disconnect()
+        }
+    }
+    
+    private func initialConnect() async {
+        do {
+            if let token = await fetchToken() {
+                try await conversation.connect(ephemeralKey: token)
+                await conversation.waitForConnection()
+                
+                // Start monitoring only after connection is established and session is configured by RealtimeAPI
+                audioMonitor.startMonitoring()
+                
+                await sendSystemInstruction()
+                await sendRecipe()
+            } else {
+                print("Failed to fetch token")
+            }
+        } catch {
+            print("Failed to connect: \(error)")
+        }
+    }
+    
+    private func monitorConnectionStatus() async {
+        // Wait for initial connection to be established first
+        await conversation.waitForConnection()
+        
+        // Now monitor for disconnection
+        while !Task.isCancelled {
+            try? await Task.sleep(for: .milliseconds(500))
+            
+            if conversation.status == .disconnected {
+                // Save message history before attempting reconnect
+                previousMessages = conversation.messages
+
+                print("Connection lost, attempting to reconnect...")
+                
+                do {
+                    if let token = await fetchToken() {
+                        try await conversation.connect(ephemeralKey: token)
+                        await conversation.waitForConnection()
+                        
+                        print("Reconnected successfully, sending system instruction...")
+                        await sendSystemInstruction()
+                        
+                        print("Replaying \(previousMessages.count) previous messages...")
+                        await replayMessageHistory()
+                        
+                        print("Reconnection complete")
+                    } else {
+                        print("Failed to fetch token for reconnection, dismissing")
+                        await MainActor.run {
+                            onDismiss()
+                        }
+                        return
+                    }
+                } catch {
+                    print("Reconnection failed: \(error), dismissing")
+                    await MainActor.run {
+                        onDismiss()
+                    }
+                    return
+                }
+            }
+        }
+    }
+    
+    private func replayMessageHistory() async {
+        for message in previousMessages {
+            do {
+                try conversation.send(event: .createConversationItem(.message(message)))
+            } catch {
+                print("Failed to replay message: \(error)")
+            }
         }
     }
     

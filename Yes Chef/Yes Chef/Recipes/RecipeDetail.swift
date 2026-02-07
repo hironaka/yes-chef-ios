@@ -171,7 +171,9 @@ struct RecipeDetail: View {
                     recipeIngredient: displayIngredients,
                     recipeInstructions: recipe.recipeInstructions
                 )
-                RecipeVoiceAssistant(recipe: voiceRecipe)
+                RecipeVoiceAssistant(recipe: voiceRecipe, onDismiss: {
+                    activeSheet = nil
+                })
                     .presentationDetents([.height(80)])
                     .presentationBackgroundInteraction(.enabled)
             case .addGroceries(let ingredients):
