@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SwiftyLab/MetaCodable.git",
       "state" : {
-        "revision" : "e2b09b4ceed09c972adb7f48572446d07a1c0e16",
-        "version" : "1.5.0"
+        "revision" : "c2a6cc907e2f95463ba8f2b55432bd2aee8a4bfd",
+        "version" : "1.6.0"
       }
     },
     {
@@ -34,7 +34,7 @@
       "location" : "https://github.com/hironaka/swift-realtime-openai.git",
       "state" : {
         "branch" : "main",
-        "revision" : "4ed21502531561b6cf1d9d642815ca7631013cd5"
+        "revision" : "b57dc940aa51a99b460ccbe475e31d6d8056f92e"
       }
     },
     {
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftlang/swift-syntax.git",
       "state" : {
-        "revision" : "f99ae8aa18f0cf0d53481901f88a0991dc3bd4a2",
-        "version" : "601.0.1"
+        "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
+        "version" : "602.0.0"
       }
     },
     {
@@ -52,7 +52,7 @@
       "location" : "https://github.com/livekit/webrtc-xcframework.git",
       "state" : {
         "branch" : "main",
-        "revision" : "5b40f56c637369064b9c82e8f9cfa820f942658f"
+        "revision" : "0aa6a5ea4031d492d0493e3e4d4fbe08b5a0df78"
       }
     }
   ],

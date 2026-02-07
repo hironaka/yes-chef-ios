@@ -113,11 +113,63 @@ struct RecipeVoiceAssistant: View {
     private func replayConversationHistory() async {
         for entry in previousEntries {
             do {
-                try conversation.send(event: .createConversationItem(entry))
+                if let validEntry = sanitizeForReplay(entry) {
+                    try conversation.send(event: .createConversationItem(validEntry))
+                } else {
+                    print("Skipping invalid entry with ID: \(entry.id)")
+                }
             } catch {
                 print("Failed to replay entry: \(error)")
             }
         }
+    }
+
+    private func sanitizeForReplay(_ item: Item) -> Item? {
+        guard case let .message(message) = item else { return item }
+
+        var validContent: [Item.Message.Content] = []
+
+        for content in message.content {
+            switch content {
+            case let .text(text):
+                if !text.isEmpty {
+                    validContent.append(.text(text))
+                }
+            case let .inputText(text):
+                if !text.isEmpty {
+                    validContent.append(.inputText(text))
+                }
+            case let .audio(audio):
+                if let _ = audio.audio {
+                    // If we have audio bytes, keep it as audio
+                    validContent.append(.audio(audio))
+                } else if let transcript = audio.transcript, !transcript.isEmpty {
+                    // If we don't have audio bytes but have a transcript, convert to output_text
+                    // Assistant messages should use output_text when they are text-only
+                     validContent.append(.outputText(transcript))
+                }
+            case let .outputText(text):
+                 if !text.isEmpty {
+                    validContent.append(.outputText(text))
+                }
+            case let .inputAudio(audio):
+                if let _ = audio.audio {
+                    validContent.append(.inputAudio(audio))
+                } else if let transcript = audio.transcript, !transcript.isEmpty {
+                    // Convert input audio without bytes to input text
+                    validContent.append(.inputText(transcript))
+                }
+            }
+        }
+
+        guard !validContent.isEmpty else { return nil }
+
+        return .message(Item.Message(
+            id: message.id,
+            status: .completed, // Always mark replayed items as completed
+            role: message.role,
+            content: validContent
+        ))
     }
     
     private func sendRecipe() async {
