@@ -4,14 +4,13 @@ import AVFoundation
 
 struct RecipeVoiceAssistant: View {
     @State private var conversation = Conversation()
-    @StateObject private var audioMonitor = AudioLevelMonitor()
     @State private var previousEntries: [Item] = []
     let recipe: Recipe
     let onDismiss: () -> Void
 
     var body: some View {
         VStack(spacing: 20) {
-            Waveform(level: audioMonitor.level)
+            Waveform(level: 0)
                 .frame(height: 60)
         }
         .task {
@@ -27,7 +26,6 @@ struct RecipeVoiceAssistant: View {
         }
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
-            audioMonitor.stopMonitoring()
             conversation.muted = true
             try? conversation.send(event: .clearInputAudioBuffer())
             conversation.disconnect()
@@ -39,10 +37,6 @@ struct RecipeVoiceAssistant: View {
             if let token = await fetchToken() {
                 try await conversation.connect(ephemeralKey: token)
                 await conversation.waitForConnection()
-                
-                // Start monitoring only after connection is established and session is configured by RealtimeAPI
-                audioMonitor.startMonitoring()
-                
                 await sendSystemInstruction()
                 await sendRecipe()
             } else {
@@ -57,9 +51,6 @@ struct RecipeVoiceAssistant: View {
         print("Attempting to reconnect...")
         previousEntries = conversation.entries
         
-        // Stop the old audio monitor since we're reconnecting
-        audioMonitor.stopMonitoring()
-        
         conversation.disconnect()
         
         // Create a fresh Conversation instance - the old WebRTCConnector's peer connection
@@ -70,9 +61,6 @@ struct RecipeVoiceAssistant: View {
             if let token = await fetchToken() {
                 try await conversation.connect(ephemeralKey: token)
                 await conversation.waitForConnection()
-                
-                // Restart audio monitoring with the new connection
-                audioMonitor.startMonitoring()
                 
                 print("Reconnected successfully, sending system instruction...")
                 await sendSystemInstruction()
