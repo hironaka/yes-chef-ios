@@ -1,5 +1,6 @@
 import SwiftUI
 import RealtimeAPI
+import AVFoundation
 
 struct RecipeVoiceAssistant: View {
     @State private var conversation = Conversation()
@@ -23,7 +24,6 @@ struct RecipeVoiceAssistant: View {
         }
         .onAppear {
             UIApplication.shared.isIdleTimerDisabled = true
-            conversation.debug = true
         }
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
@@ -60,7 +60,6 @@ struct RecipeVoiceAssistant: View {
         // Stop the old audio monitor since we're reconnecting
         audioMonitor.stopMonitoring()
         
-        // Disconnect the old conversation
         conversation.disconnect()
         
         // Create a fresh Conversation instance - the old WebRTCConnector's peer connection
@@ -99,24 +98,15 @@ struct RecipeVoiceAssistant: View {
         }
     }
     
-    private func monitorConnectionStatus() async {
-        // Wait for initial connection to be established first
-        await conversation.waitForConnection()
-        
-        // Now monitor for disconnection
-        while !Task.isCancelled {
-            try? await Task.sleep(for: .seconds(10))
-            print("Converstaion status is \(conversation.status)")
-        }
-    }
-    
     private func replayConversationHistory() async {
         for entry in previousEntries {
             do {
+                print("Conversation entry: \(entry)")
                 if let validEntry = sanitizeForReplay(entry) {
+                    print("Sanitized conversation entry: \(validEntry)")
                     try conversation.send(event: .createConversationItem(validEntry))
                 } else {
-                    print("Skipping invalid entry with ID: \(entry.id)")
+                    print("Skipping invalid entry with ID: \(entry)")
                 }
             } catch {
                 print("Failed to replay entry: \(error)")
