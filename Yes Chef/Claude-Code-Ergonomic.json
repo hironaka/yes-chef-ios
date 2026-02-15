@@ -1,0 +1,209 @@
+{
+  "Profiles": [
+    {
+      "Name": "Claude Code Ergonomic",
+      "Guid": "claude-code-ergonomic-v1",
+      "Description": "Research-backed iTerm2 profile for 12+ hour Claude Code sessions. Optimized for dark mode, Night Shift compatibility, and reduced eye strain.",
+
+      "Custom Command": "No",
+      "Terminal Type": "xterm-256color",
+
+      "Normal Font": "JetBrainsMono-Medium 16",
+      "Non Ascii Font": "JetBrainsMono-Medium 16",
+      "Use Non-ASCII Font": false,
+      "Horizontal Spacing": 1.0,
+      "Vertical Spacing": 1.05,
+      "ASCII Anti Aliased": true,
+      "Non-ASCII Anti Aliased": true,
+      "Use Bold Font": true,
+      "Use Bright Bold": false,
+      "Use Italic Font": true,
+      "Use Ligatures": false,
+      "Thin Strokes": 0,
+      "ASCII Ligatures": false,
+      "Ambiguous Double Width": false,
+      "Draw Powerline Glyphs": true,
+
+      "Minimum Contrast": 0.15,
+      "Cursor Boost": 0.15,
+      "Smart Cursor Color": true,
+      "Cursor Type": 2,
+      "Blinking Cursor": false,
+
+      "Background Color": {
+        "Red Component": 0.10980392156862745,
+        "Green Component": 0.10980392156862745,
+        "Blue Component": 0.11764705882352941,
+        "Color Space": "sRGB"
+      },
+      "Foreground Color": {
+        "Red Component": 0.8784313725490196,
+        "Green Component": 0.8784313725490196,
+        "Blue Component": 0.8784313725490196,
+        "Color Space": "sRGB"
+      },
+      "Cursor Color": {
+        "Red Component": 0.8784313725490196,
+        "Green Component": 0.8784313725490196,
+        "Blue Component": 0.8784313725490196,
+        "Color Space": "sRGB"
+      },
+      "Cursor Text Color": {
+        "Red Component": 0.10980392156862745,
+        "Green Component": 0.10980392156862745,
+        "Blue Component": 0.11764705882352941,
+        "Color Space": "sRGB"
+      },
+      "Selected Text Color": {
+        "Red Component": 0.8784313725490196,
+        "Green Component": 0.8784313725490196,
+        "Blue Component": 0.8784313725490196,
+        "Color Space": "sRGB"
+      },
+      "Selection Color": {
+        "Red Component": 0.17254901960784313,
+        "Green Component": 0.24313725490196078,
+        "Blue Component": 0.3137254901960784,
+        "Color Space": "sRGB"
+      },
+      "Badge Color": {
+        "Red Component": 1.0,
+        "Green Component": 0.0,
+        "Blue Component": 0.0,
+        "Alpha Component": 0.5
+      },
+
+      "Ansi 0 Color": {
+        "Red Component": 0.10980392156862745,
+        "Green Component": 0.10980392156862745,
+        "Blue Component": 0.11764705882352941,
+        "Color Space": "sRGB"
+      },
+      "Ansi 1 Color": {
+        "Red Component": 0.8431372549019608,
+        "Green Component": 0.37254901960784315,
+        "Blue Component": 0.0,
+        "Color Space": "sRGB"
+      },
+      "Ansi 2 Color": {
+        "Red Component": 0.0,
+        "Green Component": 0.6196078431372549,
+        "Blue Component": 0.45098039215686275,
+        "Color Space": "sRGB"
+      },
+      "Ansi 3 Color": {
+        "Red Component": 0.8431372549019608,
+        "Green Component": 0.5294117647058824,
+        "Blue Component": 0.0,
+        "Color Space": "sRGB"
+      },
+      "Ansi 4 Color": {
+        "Red Component": 0.33725490196078434,
+        "Green Component": 0.73,
+        "Blue Component": 0.9137254901960784,
+        "Color Space": "sRGB"
+      },
+      "Ansi 5 Color": {
+        "Red Component": 0.8,
+        "Green Component": 0.4745098039215686,
+        "Blue Component": 0.6549019607843137,
+        "Color Space": "sRGB"
+      },
+      "Ansi 6 Color": {
+        "Red Component": 0.37254901960784315,
+        "Green Component": 0.6862745098039216,
+        "Blue Component": 0.6862745098039216,
+        "Color Space": "sRGB"
+      },
+      "Ansi 7 Color": {
+        "Red Component": 0.8784313725490196,
+        "Green Component": 0.8784313725490196,
+        "Blue Component": 0.8784313725490196,
+        "Color Space": "sRGB"
+      },
+
+      "Ansi 8 Color": {
+        "Red Component": 0.4,
+        "Green Component": 0.4,
+        "Blue Component": 0.4,
+        "Color Space": "sRGB"
+      },
+      "Ansi 9 Color": {
+        "Red Component": 1.0,
+        "Green Component": 0.4745098039215686,
+        "Blue Component": 0.0,
+        "Color Space": "sRGB"
+      },
+      "Ansi 10 Color": {
+        "Red Component": 0.20,
+        "Green Component": 0.90,
+        "Blue Component": 0.40,
+        "Color Space": "sRGB"
+      },
+      "Ansi 11 Color": {
+        "Red Component": 0.9411764705882353,
+        "Green Component": 0.7764705882352941,
+        "Blue Component": 0.4549019607843137,
+        "Color Space": "sRGB"
+      },
+      "Ansi 12 Color": {
+        "Red Component": 0.5294117647058824,
+        "Green Component": 0.83,
+        "Blue Component": 0.9215686274509803,
+        "Color Space": "sRGB"
+      },
+      "Ansi 13 Color": {
+        "Red Component": 0.8,
+        "Green Component": 0.4745098039215686,
+        "Blue Component": 0.6549019607843137,
+        "Color Space": "sRGB"
+      },
+      "Ansi 14 Color": {
+        "Red Component": 0.5294117647058824,
+        "Green Component": 0.807843137254902,
+        "Blue Component": 0.807843137254902,
+        "Color Space": "sRGB"
+      },
+      "Ansi 15 Color": {
+        "Red Component": 0.9333333333333333,
+        "Green Component": 0.9333333333333333,
+        "Blue Component": 0.9333333333333333,
+        "Color Space": "sRGB"
+      },
+
+      "Transparency": 0.0,
+      "Blur": false,
+      "Blur Radius": 0.0,
+
+      "Scrollback Lines": 50000,
+      "Unlimited Scrollback": false,
+      "Scrollback With Status Bar": true,
+      "Scrollback in Alternate Screen": false,
+
+      "Flashing Bell": false,
+      "Visual Bell": false,
+      "Silence Bell": true,
+
+      "Close Sessions On End": true,
+      "Prompt Before Closing 2": 0,
+      "Sync Title": false,
+      "Disable Window Resizing": false,
+      "Only The Default BG Color Uses Transparency": true,
+
+      "Keyboard Map": {
+        "0xd-0x20000": {
+          "Action": 12,
+          "Text": "\n",
+          "Version": 1,
+          "Label": "Shift+Enter sends newline for Claude Code"
+        },
+        "0x9-0x20000": {
+          "Action": 12,
+          "Text": "\n",
+          "Version": 1,
+          "Label": "Shift+Tab sends newline for Claude Code over SSH"
+        }
+      }
+    }
+  ]
+}
