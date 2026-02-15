@@ -1,44 +1,153 @@
 import SwiftUI
 import RealtimeAPI
+import AVFoundation
 
 struct RecipeVoiceAssistant: View {
     @State private var conversation = Conversation()
-    @StateObject private var audioMonitor = AudioLevelMonitor()
+    @State private var previousEntries: [Item] = []
     let recipe: Recipe
+    let onDismiss: () -> Void
 
     var body: some View {
         VStack(spacing: 20) {
-            Waveform(level: audioMonitor.level)
+            Waveform(level: 0)
                 .frame(height: 60)
         }
         .task {
-            do {
-                if let token = await fetchToken() {
-                    try await conversation.connect(ephemeralKey: token)
-                    await conversation.waitForConnection()
-                    
-                    // Start monitoring only after connection is established and session is configured by RealtimeAPI
-                    audioMonitor.startMonitoring()
-                    
-                    await sendSystemInstruction()
-                    await sendRecipe()
-                } else {
-                    print("Failed to fetch token")
-                }
-            } catch {
-                print("Failed to connect: \(error)")
-            }
+            await initialConnect()
+        }
+        .task {
+            // Debug: force disconnect after 60 seconds to test reconnection
+            try? await Task.sleep(for: .seconds(15))
+            await reconnect()
         }
         .onAppear {
             UIApplication.shared.isIdleTimerDisabled = true
         }
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
-            audioMonitor.stopMonitoring()
             conversation.muted = true
             try? conversation.send(event: .clearInputAudioBuffer())
             conversation.disconnect()
         }
+    }
+    
+    private func initialConnect() async {
+        do {
+            if let token = await fetchToken() {
+                try await conversation.connect(ephemeralKey: token)
+                await conversation.waitForConnection()
+                await sendSystemInstruction()
+                await sendRecipe()
+            } else {
+                print("Failed to fetch token")
+            }
+        } catch {
+            print("Failed to connect: \(error)")
+        }
+    }
+    
+    private func reconnect() async {
+        print("Attempting to reconnect...")
+        previousEntries = conversation.entries
+        
+        conversation.disconnect()
+        
+        // Create a fresh Conversation instance - the old WebRTCConnector's peer connection
+        // cannot be reused after disconnect (connection state is no longer 'new')
+        conversation = Conversation()
+        
+        do {
+            if let token = await fetchToken() {
+                try await conversation.connect(ephemeralKey: token)
+                await conversation.waitForConnection()
+                
+                print("Reconnected successfully, sending system instruction...")
+                await sendSystemInstruction()
+                await sendRecipe()
+                
+                print("Replaying \(previousEntries.count) previous entries...")
+                await replayConversationHistory()
+                
+                print("Reconnection complete")
+            } else {
+                print("Failed to fetch token for reconnection, dismissing")
+                await MainActor.run {
+                    onDismiss()
+                }
+                return
+            }
+        } catch {
+            print("Reconnection failed: \(error), dismissing")
+            await MainActor.run {
+                onDismiss()
+            }
+            return
+        }
+    }
+    
+    private func replayConversationHistory() async {
+        for entry in previousEntries {
+            do {
+                print("Conversation entry: \(entry)")
+                if let validEntry = sanitizeForReplay(entry) {
+                    print("Sanitized conversation entry: \(validEntry)")
+                    try conversation.send(event: .createConversationItem(validEntry))
+                } else {
+                    print("Skipping invalid entry with ID: \(entry)")
+                }
+            } catch {
+                print("Failed to replay entry: \(error)")
+            }
+        }
+    }
+
+    private func sanitizeForReplay(_ item: Item) -> Item? {
+        guard case let .message(message) = item else { return item }
+
+        var validContent: [Item.Message.Content] = []
+
+        for content in message.content {
+            switch content {
+            case let .text(text):
+                if !text.isEmpty {
+                    validContent.append(.text(text))
+                }
+            case let .inputText(text):
+                if !text.isEmpty {
+                    validContent.append(.inputText(text))
+                }
+            case let .audio(audio):
+                if let _ = audio.audio {
+                    // If we have audio bytes, keep it as audio
+                    validContent.append(.audio(audio))
+                } else if let transcript = audio.transcript, !transcript.isEmpty {
+                    // If we don't have audio bytes but have a transcript, convert to output_text
+                    // Assistant messages should use output_text when they are text-only
+                     validContent.append(.outputText(transcript))
+                }
+            case let .outputText(text):
+                 if !text.isEmpty {
+                    validContent.append(.outputText(text))
+                }
+            case let .inputAudio(audio):
+                if let _ = audio.audio {
+                    validContent.append(.inputAudio(audio))
+                } else if let transcript = audio.transcript, !transcript.isEmpty {
+                    // Convert input audio without bytes to input text
+                    validContent.append(.inputText(transcript))
+                }
+            }
+        }
+
+        guard !validContent.isEmpty else { return nil }
+
+        return .message(Item.Message(
+            id: message.id,
+            status: .completed, // Always mark replayed items as completed
+            role: message.role,
+            content: validContent
+        ))
     }
     
     private func sendRecipe() async {
