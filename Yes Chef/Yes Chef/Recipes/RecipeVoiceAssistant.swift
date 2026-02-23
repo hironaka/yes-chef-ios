@@ -4,13 +4,12 @@ import AVFoundation
 
 struct RecipeVoiceAssistant: View {
     @State private var conversation = Conversation()
-    @StateObject private var audioMonitor = AudioLevelMonitor()
     let recipe: Recipe
     let onDismiss: () -> Void
 
     var body: some View {
         VStack(spacing: 20) {
-            Waveform(level: audioMonitor.level)
+            Waveform(level: 0)
                 .frame(height: 60)
         }
         .task {
@@ -23,12 +22,10 @@ struct RecipeVoiceAssistant: View {
 //        }
         .onAppear {
             UIApplication.shared.isIdleTimerDisabled = true
-            audioMonitor.setupRecorder()
         }
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
             disconnect()
-            audioMonitor.stopMonitoring()
         }
     }
 
@@ -37,10 +34,6 @@ struct RecipeVoiceAssistant: View {
             if let token = await fetchToken() {
                 try await conversation.connect(ephemeralKey: token)
                 await conversation.waitForConnection()
-                
-                // Start monitoring only after connection is established and session is configured by RealtimeAPI
-                audioMonitor.startMonitoring()
-                
                 await sendSystemInstruction()
                 await sendRecipe()
             } else {
@@ -57,17 +50,13 @@ struct RecipeVoiceAssistant: View {
     
     private func reconnect() async {
         print("[Reconnect] Attempting to reconnect...")
+        print("[Reconnect] conversation.muted: \(conversation.muted), status: \(conversation.status)")
         let previousEntries = conversation.entries
-        // Stop the old audio monitor since we're reconnecting
-        audioMonitor.stopMonitoring()
 
         disconnect()
         await conversation.waitForDisconnection()
 
         conversation = Conversation()
-        
-        audioMonitor.setupRecorder()
-        
         print("[Reconnect] New conversation created — muted: \(conversation.muted), status: \(conversation.status)")
 
         do {
@@ -75,11 +64,9 @@ struct RecipeVoiceAssistant: View {
                 try await conversation.connect(ephemeralKey: token)
                 print("[Reconnect] connect() returned, waiting for connection...")
                 await conversation.waitForConnection()
-                
-                // Restart audio monitoring with the new connection
-                audioMonitor.startMonitoring()
-                
-                print("Reconnected successfully, sending system instruction...")
+                print("[Reconnect] Connected — muted: \(conversation.muted), status: \(conversation.status)")
+
+                print("[Reconnect] Sending system instruction...")
                 await sendSystemInstruction()
                 await sendRecipe()
 
