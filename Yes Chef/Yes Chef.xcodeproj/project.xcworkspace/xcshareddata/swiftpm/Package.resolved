@@ -1,5 +1,5 @@
 {
-  "originHash" : "198020bc1487ada7fe9ca54cf7294b78199f9d5ab028e1545dd7aa6bca0590cc",
+  "originHash" : "bac16bbde1bc1281ecf878af53e2d2bb2bc22e45be53c08eac89d25e9b0200bd",
   "pins" : [
     {
       "identity" : "metacodable",
@@ -29,15 +29,6 @@
       }
     },
     {
-      "identity" : "swift-realtime-openai",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/hironaka/swift-realtime-openai.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "790507e3075823ab096609a6506fed9741eac92b"
-      }
-    },
-    {
       "identity" : "swift-syntax",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftlang/swift-syntax.git",
@@ -52,7 +43,7 @@
       "location" : "https://github.com/livekit/webrtc-xcframework.git",
       "state" : {
         "branch" : "main",
-        "revision" : "0aa6a5ea4031d492d0493e3e4d4fbe08b5a0df78"
+        "revision" : "0cdbbd1731050137dd7f3678c8ee626e1a32570c"
       }
     }
   ],

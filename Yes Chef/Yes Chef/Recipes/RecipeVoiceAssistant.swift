@@ -4,7 +4,6 @@ import AVFoundation
 
 struct RecipeVoiceAssistant: View {
     @State private var conversation = Conversation()
-    @State private var previousEntries: [Item] = []
     let recipe: Recipe
     let onDismiss: () -> Void
 
@@ -16,22 +15,20 @@ struct RecipeVoiceAssistant: View {
         .task {
             await initialConnect()
         }
-        .task {
-            // Debug: force disconnect after 60 seconds to test reconnection
-            try? await Task.sleep(for: .seconds(15))
-            await reconnect()
-        }
+//        .task {
+//            // Debug: force disconnect after 60 seconds to test reconnection
+//            try? await Task.sleep(for: .seconds(15))
+//            await reconnect()
+//        }
         .onAppear {
             UIApplication.shared.isIdleTimerDisabled = true
         }
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
-            conversation.muted = true
-            try? conversation.send(event: .clearInputAudioBuffer())
-            conversation.disconnect()
+            disconnect()
         }
     }
-    
+
     private func initialConnect() async {
         do {
             if let token = await fetchToken() {
@@ -46,30 +43,37 @@ struct RecipeVoiceAssistant: View {
             print("Failed to connect: \(error)")
         }
     }
+
+    private func disconnect() {
+        conversation.disconnect()
+    }
     
     private func reconnect() async {
-        print("Attempting to reconnect...")
-        previousEntries = conversation.entries
-        
-        conversation.disconnect()
-        
-        // Create a fresh Conversation instance - the old WebRTCConnector's peer connection
-        // cannot be reused after disconnect (connection state is no longer 'new')
+        print("[Reconnect] Attempting to reconnect...")
+        print("[Reconnect] conversation.muted: \(conversation.muted), status: \(conversation.status)")
+        let previousEntries = conversation.entries
+
+        disconnect()
+        await conversation.waitForDisconnection()
+
         conversation = Conversation()
-        
+        print("[Reconnect] New conversation created — muted: \(conversation.muted), status: \(conversation.status)")
+
         do {
             if let token = await fetchToken() {
                 try await conversation.connect(ephemeralKey: token)
+                print("[Reconnect] connect() returned, waiting for connection...")
                 await conversation.waitForConnection()
-                
-                print("Reconnected successfully, sending system instruction...")
+                print("[Reconnect] Connected — muted: \(conversation.muted), status: \(conversation.status)")
+
+                print("[Reconnect] Sending system instruction...")
                 await sendSystemInstruction()
                 await sendRecipe()
-                
-                print("Replaying \(previousEntries.count) previous entries...")
-                await replayConversationHistory()
-                
-                print("Reconnection complete")
+
+                print("[Reconnect] Replaying \(previousEntries.count) previous entries...")
+                await replayConversationHistory(previousEntries)
+
+                print("[Reconnect] Reconnection complete")
             } else {
                 print("Failed to fetch token for reconnection, dismissing")
                 await MainActor.run {
@@ -86,7 +90,7 @@ struct RecipeVoiceAssistant: View {
         }
     }
     
-    private func replayConversationHistory() async {
+    private func replayConversationHistory(_ previousEntries: [Item]) async {
         for entry in previousEntries {
             do {
                 print("Conversation entry: \(entry)")
