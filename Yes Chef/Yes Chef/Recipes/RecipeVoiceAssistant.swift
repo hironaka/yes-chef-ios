@@ -27,7 +27,6 @@ struct RecipeVoiceAssistant: View {
         }
         .onAppear {
             UIApplication.shared.isIdleTimerDisabled = true
-            audioMonitor.setupRecorder()
         }
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
@@ -70,8 +69,6 @@ struct RecipeVoiceAssistant: View {
         disconnect()
 
         conversation = Conversation()
-        
-        audioMonitor.setupRecorder()
         
         print("[Reconnect] New conversation created — muted: \(conversation.muted), status: \(conversation.status)")
 
@@ -124,6 +121,7 @@ struct RecipeVoiceAssistant: View {
             
             try audioSession.setConfiguration(configuration, active: true)
             audioSession.isAudioEnabled = true
+            audioMonitor.setupRecorder()
         } catch {
             print("Failed to configure AVAudioSession: \(error)")
         }

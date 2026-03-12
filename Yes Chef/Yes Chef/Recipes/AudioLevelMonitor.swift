@@ -22,7 +22,6 @@ class AudioLevelMonitor: ObservableObject {
     
     func setupRecorder() {
         let session = AVAudioSession.sharedInstance()
-        try? session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .mixWithOthers])
         let sampleRate = session.sampleRate > 0 ? session.sampleRate : 44100.0
         let settings: [String: Any] = [
             AVFormatIDKey: Int(kAudioFormatAppleLossless),
