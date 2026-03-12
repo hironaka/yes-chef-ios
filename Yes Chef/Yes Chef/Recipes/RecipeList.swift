@@ -31,11 +31,38 @@ struct RecipeList: View {
     @State private var selectedImage: UIImage?
     @State private var isExtracting = false
     @State private var showErrorAlert = false
+    @State private var searchText = ""
+
+    var filteredRecipes: [Recipe] {
+        if searchText.isEmpty {
+            return recipes
+        }
+        
+        let lowercasedSearchText = searchText.localizedLowercase
+        
+        return recipes.filter { recipe in
+            if let name = recipe.name, name.localizedLowercase.contains(lowercasedSearchText) {
+                return true
+            }
+            
+            let ingredients = extractIngredients(from: recipe)
+            if ingredients.contains(where: { $0.localizedLowercase.contains(lowercasedSearchText) }) {
+                return true
+            }
+            
+            let instructions = extractInstructions(from: recipe)
+            if instructions.contains(where: { $0.localizedLowercase.contains(lowercasedSearchText) }) {
+                return true
+            }
+            
+            return false
+        }
+    }
 
     var body: some View {
         NavigationStack {
             ZStack {
-                List(recipes) { recipe in
+                List(filteredRecipes) { recipe in
                     NavigationLink(value: recipe) {
                         HStack {
                             Text(recipe.name ?? "Untitled Recipe")
@@ -65,6 +92,7 @@ struct RecipeList: View {
                     RecipeDetail(recipe: recipe)
                 }
                 .navigationTitle("Recipes")
+                .searchable(text: $searchText, prompt: "Search")
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Menu {
