@@ -30,7 +30,7 @@ struct RecipeDetail: View {
     let recipe: Recipe
     
     @State private var displayIngredients: [String] = []
-    @State private var displayInstructions: [String] = []
+    @State private var displayInstructions: [RecipeInstructionSection] = []
     @State private var showDeleteConfirmation = false
     @State private var scaleFactor: Double = 1.0
     @State private var isScaling = false
@@ -74,11 +74,21 @@ struct RecipeDetail: View {
                     Text("Instructions")
                         .font(.title2)
                         .fontWeight(.semibold)
-                    ForEach(Array(displayInstructions.enumerated()), id: \.offset) { index, instruction in
-                        Text(instruction)
-                            .multilineTextAlignment(.leading)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.bottom, 5)
+                    
+                    ForEach(Array(displayInstructions.enumerated()), id: \.offset) { sectionIndex, section in
+                        if let sectionName = section.name {
+                            Text(sectionName)
+                                .font(.headline)
+                                .padding(.top, 5)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        
+                        ForEach(Array(section.instructions.enumerated()), id: \.offset) { index, instruction in
+                            Text(instruction)
+                                .multilineTextAlignment(.leading)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.bottom, 5)
+                        }
                     }
                 }
                 .padding(.horizontal)

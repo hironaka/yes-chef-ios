@@ -52,6 +52,22 @@ class RecipeTests {
         #expect(recipe4.name == "Best Beef Stew")
         #expect(recipe4.recipeIngredient?.count == 3)
         #expect(recipe4.recipeInstructions?.count == 2)
+        
+        let data5 = try loadTestData(from: "boston_cream_pie")
+        let recipe5 = try decoder.decode(Recipe.self, from: data5)
+        #expect(recipe5.name == "Wicked Good Boston Cream Pie")
+        #expect(recipe5.recipeInstructions?.count == 4) // It has 4 HowToSection elements
+        
+        let sections = extractInstructions(from: recipe5)
+        #expect(sections.count == 4)
+        #expect(sections[0].name == "FOR THE PASTRY CREAM:")
+        #expect(sections[0].instructions.count == 3)
+        #expect(sections[1].name == "FOR THE CAKE:")
+        #expect(sections[1].instructions.count == 4)
+        #expect(sections[2].name == "TO ASSEMBLE:")
+        #expect(sections[2].instructions.count == 1)
+        #expect(sections[3].name == "FOR THE GLAZE:")
+        #expect(sections[3].instructions.count == 2)
     }
 
     @Test func testPlainTextConversion() async throws {

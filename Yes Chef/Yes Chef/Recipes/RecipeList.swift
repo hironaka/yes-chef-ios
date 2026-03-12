@@ -50,7 +50,7 @@ struct RecipeList: View {
                 return true
             }
             
-            let instructions = extractInstructions(from: recipe)
+            let instructions = extractInstructions(from: recipe).flatMap { $0.instructions }
             if instructions.contains(where: { $0.localizedLowercase.contains(lowercasedSearchText) }) {
                 return true
             }

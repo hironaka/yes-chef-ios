@@ -135,17 +135,41 @@ struct HowToStep: Codable {
 
 // MARK: - Recipe Processing
 
-func extractInstructions(from recipeData: Recipe) -> [String] {
-    return recipeData.recipeInstructions?.flatMap { instruction -> [String] in
+struct RecipeInstructionSection: Hashable {
+    var name: String?
+    var instructions: [String]
+}
+
+func extractInstructions(from recipeData: Recipe) -> [RecipeInstructionSection] {
+    var sections: [RecipeInstructionSection] = []
+    var defaultSectionInstructions: [String] = []
+
+    for instruction in recipeData.recipeInstructions ?? [] {
         switch instruction {
         case .string(let text):
-            return [text.htmlToString()]
-        case .howToSection(let section):
-            return section.itemListElement.compactMap { $0.text?.htmlToString() }
+            defaultSectionInstructions.append(text.htmlToString())
         case .howToStep(let step):
-            return [step.text?.htmlToString() ?? ""]
+            if let text = step.text {
+                defaultSectionInstructions.append(text.htmlToString())
+            }
+        case .howToSection(let section):
+            // If we have accumulated some default instructions, save them as a section first
+            if !defaultSectionInstructions.isEmpty {
+                sections.append(RecipeInstructionSection(name: nil, instructions: defaultSectionInstructions))
+                defaultSectionInstructions = []
+            }
+            let steps = section.itemListElement.compactMap { $0.text?.htmlToString() }
+            if !steps.isEmpty {
+                sections.append(RecipeInstructionSection(name: section.name, instructions: steps))
+            }
         }
-    } ?? []
+    }
+
+    if !defaultSectionInstructions.isEmpty {
+        sections.append(RecipeInstructionSection(name: nil, instructions: defaultSectionInstructions))
+    }
+
+    return sections
 }
 
 func extractIngredients(from recipeData: Recipe) -> [String] {
@@ -237,8 +261,14 @@ func convertRecipeToPlainText(from data: Data) -> String {
 
     if !instructions.isEmpty {
         output += "Instructions:\n"
-        for (index, instruction) in instructions.enumerated() {
-            output += "\(index + 1). \(instruction)\n"
+        for section in instructions {
+            if let name = section.name {
+                output += "\(name)\n"
+            }
+            for (index, instruction) in section.instructions.enumerated() {
+                output += "\(index + 1). \(instruction)\n"
+            }
+            output += "\n"
         }
     }
 

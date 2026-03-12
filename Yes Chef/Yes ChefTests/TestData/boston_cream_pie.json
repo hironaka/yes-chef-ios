@@ -1,0 +1,170 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Recipe",
+  "name": "Wicked Good Boston Cream Pie",
+  "url": "https://www.americastestkitchen.com/recipes/6395-wicked-good-boston-cream-pie",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Andrea Geary",
+      "url": "https://www.americastestkitchen.com/authors/50"
+    }
+  ],
+  "totalTime": "PT8H30M",
+  "datePublished": "2013-03-27T04:00:00.000Z",
+  "dateModified": "2026-02-20T16:50:42.504Z",
+  "description": "This triple-component dessert would deserve a revival—if only we could make the filling foolproof and keep the glaze from cracking off.",
+  "image": [
+    {
+      "@type": "ImageObject",
+      "height": 1200,
+      "contentUrl": "https://res.cloudinary.com/hksqkdlah/image/upload/c_fill,dpr_2.0,f_auto,fl_lossy.progressive.strip_profile,g_faces:auto,q_auto:low/SFS_Boston_Cream_Pie_075_szwmj0",
+      "creditText": "America's Test Kitchen",
+      "representativeOfPage": true,
+      "url": "https://res.cloudinary.com/hksqkdlah/image/upload/c_fill,dpr_2.0,f_auto,fl_lossy.progressive.strip_profile,g_faces:auto,q_auto:low/SFS_Boston_Cream_Pie_075_szwmj0",
+      "width": 1200
+    }
+  ],
+  "recipeIngredient": [
+    "2 cups half-and-half ",
+    "6 large egg yolks ",
+    "1/2 cup (3½ ounces/99 grams) sugar ",
+    "Pinch table salt ",
+    "1/4 cup (1¼ ounces/35 grams) unbleached all-purpose flour ",
+    "4 tablespoons cold unsalted butter , cut into four pieces",
+    "1½ teaspoons vanilla extract ",
+    "1½ cups (7½ ounces/213 grams) unbleached all-purpose flour ",
+    "1½ teaspoons baking powder ",
+    "3/4 teaspoon table salt ",
+    "3/4 cup whole milk ",
+    "6 tablespoons unsalted butter ",
+    "1½ teaspoons vanilla extract ",
+    "3 large eggs ",
+    "1½ cups (10½ ounces/298 grams) sugar ",
+    "1/2 cup heavy cream ",
+    "2 tablespoons light corn syrup ",
+    "4 ounces (113 grams) bittersweet chocolate , chopped fine"
+  ],
+  "recipeInstructions": [
+    {
+      "@type": "HowToSection",
+      "name": "FOR THE PASTRY CREAM:",
+      "itemListElement": [
+        {
+          "@type": "HowToStep",
+          "text": "Heat 2 cups half-and-half in medium saucepan over medium heat until just simmering. Meanwhile, whisk 6 large egg yolks, ½ cup (3½ ounces) sugar, and pinch salt in medium bowl until smooth. Add ¼ cup (1¼ ounces) all-purpose flour to yolk mixture and whisk until incorporated. Remove half-and-half from heat and, whisking constantly, slowly add ½ cup to yolk mixture to temper. Whisking constantly, return tempered yolk mixture to half-and-half in saucepan."
+        },
+        {
+          "@type": "HowToStep",
+          "text": "Return saucepan to medium heat and cook, whisking constantly, until mixture thickens slightly, about 1 minute. Reduce heat to medium-low and continue to simmer, whisking constantly, 8 minutes."
+        },
+        {
+          "@type": "HowToStep",
+          "text": "Increase heat to medium and cook, whisking vigorously, until bubbles burst on surface, 1 to 2 minutes. Remove saucepan from heat; whisk in 4 tablespoons cold unsalted butter, cut into 4 pieces, and 1½ teaspoons vanilla until butter is melted and incorporated. Strain pastry cream through fine-mesh strainer set over medium bowl. Press lightly greased parchment paper directly on surface and refrigerate until set, at least 2 hours and up to 24 hours."
+        }
+      ]
+    },
+    {
+      "@type": "HowToSection",
+      "name": "FOR THE CAKE:",
+      "itemListElement": [
+        {
+          "@type": "HowToStep",
+          "text": "Adjust oven rack to middle position and heat oven to 325 degrees. Lightly grease two 9-inch round cake pans with nonstick cooking spray and line with parchment. Whisk 1½ cups (7½ ounces) all-purpose flour, 1½ teaspoons baking powder, and ¾ teaspoon salt together in medium bowl. Heat ¾ cup whole milk and 6 tablespoons butter in small saucepan over low heat until butter is melted. Remove from heat, add 1½ teaspoons vanilla, and cover to keep warm."
+        },
+        {
+          "@type": "HowToStep",
+          "text": "In stand mixer fitted with whisk attachment, whip 3 large eggs and 1½ cups (10½ ounces) sugar at high speed until light and airy, about 5 minutes. Remove mixer bowl from stand. Add hot milk mixture and whisk by hand until incorporated. Add dry ingredients and whisk until incorporated."
+        },
+        {
+          "@type": "HowToStep",
+          "text": "Working quickly, divide batter evenly between prepared pans. Bake until tops are light brown and toothpick inserted in center of cakes comes out clean, 20 to 22 minutes."
+        },
+        {
+          "@type": "HowToStep",
+          "text": "Transfer cakes to wire rack and cool completely in pan, about 2 hours. Run small plastic knife around edge of pans, then invert cakes onto wire rack. Carefully remove parchment, then reinvert cakes."
+        }
+      ]
+    },
+    {
+      "@type": "HowToSection",
+      "name": "TO ASSEMBLE:",
+      "itemListElement": [
+        {
+          "@type": "HowToStep",
+          "text": "Place 1 cake round on large plate. Whisk pastry cream briefly, then spoon onto center of cake. Using offset spatula, spread evenly to cake edge. Place second layer on pastry cream, bottom side up, making sure layers line up properly. Press lightly on top of cake to level. Refrigerate cake while preparing glaze."
+        }
+      ]
+    },
+    {
+      "@type": "HowToSection",
+      "name": "FOR THE GLAZE:",
+      "itemListElement": [
+        {
+          "@type": "HowToStep",
+          "text": "Bring ½ cup cream and 2 tablespoons corn syrup to simmer in small saucepan over medium heat. Remove from heat and add 4 ounces finely chopped bittersweet chocolate. Whisk gently until smooth, 30 seconds. Let stand, whisking occasionally, until thickened slightly, about 5 minutes."
+        },
+        {
+          "@type": "HowToStep",
+          "text": "Pour glaze onto center of cake. Use offset spatula to spread glaze to edge of cake, letting excess drip decoratively down sides. Chill finished cake 3 hours before slicing. Cake may be made up to 24 hours before serving."
+        }
+      ]
+    }
+  ],
+  "nutrition": {
+    "@type": "NutritionInformation",
+    "calories": "586",
+    "carbohydrateContent": "",
+    "cholesterolContent": "229 mg",
+    "fiberContent": "229 mg",
+    "proteinContent": "9 g",
+    "sodiumContent": "9 g"
+  },
+  "recipeYield": [
+    8,
+    "Serves 8 to 10"
+  ],
+  "commentCount": 262,
+  "tool": [
+    {
+      "@type": "HowToTool",
+      "name": "Stand Mixers (Inexpensive)",
+      "url": "https://www.americastestkitchen.com/equipment_reviews/1108-stand-mixers-inexpensive"
+    },
+    {
+      "@type": "HowToTool",
+      "name": "The Best Round Cake Pans",
+      "url": "https://www.americastestkitchen.com/equipment_reviews/1439-9-inch-round-cake-pans"
+    }
+  ],
+  "isAccessibleForFree": false,
+  "hasPart": {
+    "@type": "WebPageElement",
+    "isAccessibleForFree": false,
+    "cssSelector": ".paywall-hidden"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.25",
+    "reviewCount": 262
+  },
+  "associatedMedia": {
+    "@type": "ImageObject",
+    "contentUrl": "https://res.cloudinary.com/hksqkdlah/image/upload/c_fill,dpr_2.0,f_auto,fl_lossy.progressive.strip_profile,g_faces:auto,q_auto:low/SFS_Boston_Cream_Pie_075_szwmj0",
+    "description": "Wicked Good Boston Cream Pie"
+  },
+  "recipeCategory": "Desserts or Baked Goods",
+  "recipeCuisine": "New EnglandAmericanUS & Canada",
+  "keywords": "Cakes",
+  "video": {
+    "@type": "VideoObject",
+    "name": "Wicked Good Boston Cream Pie",
+    "thumbnailUrl": [
+      "https://res.cloudinary.com/hksqkdlah/image/upload/ar_1/39873_1804-16by9",
+      "https://res.cloudinary.com/hksqkdlah/image/upload/ar_1.33/39873_1804-16by9",
+      "https://res.cloudinary.com/hksqkdlah/image/upload/ar_0.5/39873_1804-16by9"
+    ],
+    "embedUrl": "https://player.zype.com/embed/5b400b824b32992a31062272.html",
+    "uploadDate": "2018-01-26T20:26:21.038Z"
+  }
+}
