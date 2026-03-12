@@ -7,9 +7,14 @@
 
 import SwiftUI
 import SwiftData
+import LiveKitWebRTC
 
 @main
 struct Yes_ChefApp: App {
+    init() {
+        LKRTCAudioSession.sharedInstance().useManualAudio = true
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()

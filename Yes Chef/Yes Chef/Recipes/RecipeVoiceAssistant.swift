@@ -1,6 +1,7 @@
 import SwiftUI
 import RealtimeAPI
 import AVFoundation
+import LiveKitWebRTC
 
 struct RecipeVoiceAssistant: View {
     @State private var conversation = Conversation()
@@ -31,6 +32,7 @@ struct RecipeVoiceAssistant: View {
 
     private func initialConnect() async {
         do {
+            configureAudioSession()
             if let token = await fetchToken() {
                 try await conversation.connect(ephemeralKey: token)
                 await conversation.waitForConnection()
@@ -46,6 +48,7 @@ struct RecipeVoiceAssistant: View {
 
     private func disconnect() {
         conversation.disconnect()
+        deactiveAudioSession()
     }
     
     private func reconnect() async {
@@ -54,12 +57,12 @@ struct RecipeVoiceAssistant: View {
         let previousEntries = conversation.entries
 
         disconnect()
-        await conversation.waitForDisconnection()
 
         conversation = Conversation()
         print("[Reconnect] New conversation created — muted: \(conversation.muted), status: \(conversation.status)")
 
         do {
+            configureAudioSession()
             if let token = await fetchToken() {
                 try await conversation.connect(ephemeralKey: token)
                 print("[Reconnect] connect() returned, waiting for connection...")
@@ -90,6 +93,41 @@ struct RecipeVoiceAssistant: View {
         }
     }
     
+    private func configureAudioSession() {
+        print("Configuring AVAudioSession")
+        do {
+            let audioSession = LKRTCAudioSession.sharedInstance()
+            audioSession.lockForConfiguration()
+            defer { audioSession.unlockForConfiguration() }
+            audioSession.ignoresPreferredAttributeConfigurationErrors = true
+            
+            let configuration = LKRTCAudioSessionConfiguration.webRTC()
+            configuration.category = AVAudioSession.Category.playAndRecord.rawValue
+            configuration.mode = AVAudioSession.Mode.voiceChat.rawValue
+            configuration.categoryOptions = [.defaultToSpeaker, .allowBluetoothHFP, .mixWithOthers]
+            
+            try audioSession.setConfiguration(configuration, active: true)
+            audioSession.isAudioEnabled = true
+        } catch {
+            print("Failed to configure AVAudioSession: \(error)")
+        }
+    }
+
+    private func deactiveAudioSession() {
+        print("Deactivating AVAudioSession")
+        do {
+            let audioSession = LKRTCAudioSession.sharedInstance()
+            audioSession.lockForConfiguration()
+            defer {
+                audioSession.unlockForConfiguration()
+            }
+            try audioSession.setActive(false)
+            audioSession.isAudioEnabled = false
+        } catch {
+            print("Failed to deactivate AVAudioSession: \(error)")
+        }
+    }
+
     private func replayConversationHistory(_ previousEntries: [Item]) async {
         for entry in previousEntries {
             do {
