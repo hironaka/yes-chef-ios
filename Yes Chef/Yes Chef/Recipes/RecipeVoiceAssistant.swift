@@ -10,9 +10,26 @@ struct RecipeVoiceAssistant: View {
     let onDismiss: () -> Void
 
     var body: some View {
-        VStack(spacing: 20) {
+        ZStack {
             Waveform(level: audioMonitor.level)
                 .frame(height: 60)
+                .padding(.horizontal, 60)
+                
+            HStack {
+                Spacer()
+                Button(action: {
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    onDismiss()
+                }) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(.white)
+                        .padding(8)
+                        .background(Color.accentColor)
+                        .clipShape(Circle())
+                }
+                .padding(.trailing, 20)
+            }
         }
         .task {
             await initialConnect()

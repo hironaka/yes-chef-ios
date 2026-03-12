@@ -247,34 +247,24 @@ struct RecipeDetail: View {
 
     @ViewBuilder
     private var voiceAssistantButton: some View {
-        let isActive = activeSheet == .voiceAssistant
-        Button(action: {
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-            if isActive {
-                activeSheet = nil
-            } else {
+        if activeSheet != .voiceAssistant {
+            Button(action: {
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 activeSheet = .voiceAssistant
-            }
-        }) {
-            HStack {
-                if isActive {
-                    Image(systemName: "stop.fill")
-                        .imageScale(.large)
-                    Text("End")
-                        .font(.headline)
-                } else {
+            }) {
+                HStack {
                     Image(systemName: "waveform.badge.microphone")
                         .imageScale(.large)
                     Text("Voice Assistant")
                         .font(.headline)
                 }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 14)
+                .background(Color.accentColor)
+                .foregroundColor(.white)
+                .clipShape(Capsule())
+                .shadow(color: .black.opacity(0.3), radius: 6, x: 0, y: 3)
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 14)
-            .background(isActive ? Color.red : Color.accentColor)
-            .foregroundColor(.white)
-            .clipShape(Capsule())
-            .shadow(color: .black.opacity(0.3), radius: 6, x: 0, y: 3)
         }
     }
 }
