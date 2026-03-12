@@ -46,7 +46,7 @@ struct RecipeDetail: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 if let imageUrl = recipe.image?.first ?? recipe.thumbnailUrl, let url = URL(string: imageUrl) {
-                    ZStack(alignment: .bottomLeading) {
+                    ZStack(alignment: .bottom) {
                         AsyncImage(url: url) { image in
                             image.resizable()
                                 .scaledToFill()
@@ -57,9 +57,16 @@ struct RecipeDetail: View {
                             ProgressView()
                         }
                         .clipped()
+
+                        voiceAssistantButton
+                            .padding()
                     }
                     .clipped()
                     .aspectRatio(1, contentMode: .fit)
+                } else {
+                    voiceAssistantButton
+                        .padding(.horizontal)
+                        .frame(maxWidth: .infinity, alignment: .center)
                 }
 
                 VStack(alignment: .leading, spacing: 10) {
@@ -93,14 +100,6 @@ struct RecipeDetail: View {
             self.displayInstructions = extractInstructions(from: recipe)
         }
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                    activeSheet = .voiceAssistant
-                }) {
-                    Image(systemName: "waveform.badge.microphone")
-                }
-            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
@@ -249,6 +248,27 @@ struct RecipeDetail: View {
                     // Optionally show error toast
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private var voiceAssistantButton: some View {
+        Button(action: {
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            activeSheet = .voiceAssistant
+        }) {
+            HStack {
+                Image(systemName: "waveform.badge.microphone")
+                    .imageScale(.large)
+                Text("Voice Assistant")
+                    .font(.headline)
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 14)
+            .background(Color.accentColor)
+            .foregroundColor(.white)
+            .clipShape(Capsule())
+            .shadow(color: .black.opacity(0.3), radius: 6, x: 0, y: 3)
         }
     }
 }
