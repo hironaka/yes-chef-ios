@@ -46,27 +46,17 @@ struct RecipeDetail: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 if let imageUrl = recipe.image?.first ?? recipe.thumbnailUrl, let url = URL(string: imageUrl) {
-                    ZStack(alignment: .bottom) {
-                        AsyncImage(url: url) { image in
-                            image.resizable()
-                                .scaledToFill()
-                                .aspectRatio(1, contentMode: .fit)
-                                .clipped()
-                                .containerRelativeFrame(.horizontal)
-                        } placeholder: {
-                            ProgressView()
-                        }
-                        .clipped()
-
-                        voiceAssistantButton
-                            .padding()
+                    AsyncImage(url: url) { image in
+                        image.resizable()
+                            .scaledToFill()
+                            .aspectRatio(1, contentMode: .fit)
+                            .clipped()
+                            .containerRelativeFrame(.horizontal)
+                    } placeholder: {
+                        ProgressView()
                     }
                     .clipped()
                     .aspectRatio(1, contentMode: .fit)
-                } else {
-                    voiceAssistantButton
-                        .padding(.horizontal)
-                        .frame(maxWidth: .infinity, alignment: .center)
                 }
 
                 VStack(alignment: .leading, spacing: 10) {
@@ -93,6 +83,10 @@ struct RecipeDetail: View {
                 }
                 .padding(.horizontal)
             }
+        }
+        .safeAreaInset(edge: .bottom) {
+            voiceAssistantButton
+                .padding(.bottom, 20)
         }
         .onAppear {
             // Process these off the main view update cycle
