@@ -16,11 +16,14 @@ struct RecipeVoiceAssistant: View {
         .task {
             await initialConnect()
         }
-//        .task {
-//            // Debug: force disconnect after 60 seconds to test reconnection
-//            try? await Task.sleep(for: .seconds(15))
-//            await reconnect()
-//        }
+        .task {
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(59 * 60))
+                if !Task.isCancelled {
+                    await reconnect()
+                }
+            }
+        }
         .onAppear {
             UIApplication.shared.isIdleTimerDisabled = true
         }
