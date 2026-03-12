@@ -54,7 +54,6 @@
 		350616BE2EAD412B00D35875 /* Yes ChefTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Yes ChefTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		350616C82EAD412B00D35875 /* Yes ChefUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Yes ChefUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		35DCE3762F133C250002B0FC /* Share Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Share Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7E12F98E2F4B971E0056F270 /* swift-realtime-openai */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "swift-realtime-openai"; path = "/Users/hannahhironaka/Projects/swift-realtime-openai"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -148,7 +147,6 @@
 				35DCE3772F133C250002B0FC /* Share Extension */,
 				35B152F62ED293110013876F /* Frameworks */,
 				350616B12EAD412B00D35875 /* Products */,
-				7E12F98E2F4B971E0056F270 /* swift-realtime-openai */,
 			);
 			sourceTree = "<group>";
 		};

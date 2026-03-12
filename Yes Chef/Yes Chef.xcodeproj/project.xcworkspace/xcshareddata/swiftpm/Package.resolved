@@ -1,5 +1,5 @@
 {
-  "originHash" : "bac16bbde1bc1281ecf878af53e2d2bb2bc22e45be53c08eac89d25e9b0200bd",
+  "originHash" : "198020bc1487ada7fe9ca54cf7294b78199f9d5ab028e1545dd7aa6bca0590cc",
   "pins" : [
     {
       "identity" : "metacodable",
@@ -24,8 +24,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections.git",
       "state" : {
-        "revision" : "7b847a3b7008b2dc2f47ca3110d8c782fb2e5c7e",
-        "version" : "1.3.0"
+        "revision" : "8d9834a6189db730f6264db7556a7ffb751e99ee",
+        "version" : "1.4.0"
+      }
+    },
+    {
+      "identity" : "swift-realtime-openai",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hironaka/swift-realtime-openai.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "53a3e72f776d7b8a46fb1a2d75ec756f81ce2c71"
       }
     },
     {
@@ -43,7 +52,7 @@
       "location" : "https://github.com/livekit/webrtc-xcframework.git",
       "state" : {
         "branch" : "main",
-        "revision" : "0cdbbd1731050137dd7f3678c8ee626e1a32570c"
+        "revision" : "d7832e4a46c25f40e95e2cda75ad83c67eb8f944"
       }
     }
   ],
