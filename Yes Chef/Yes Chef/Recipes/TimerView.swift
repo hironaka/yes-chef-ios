@@ -4,7 +4,7 @@ struct TimerView: View {
     @ObservedObject var timerState: TimerState
     
     var body: some View {
-        if timerState.isRunning || timerState.timeRemaining > 0 {
+        if timerState.isActive || timerState.timeRemaining > 0 {
             HStack {
                 Text(timeString(from: timerState.timeRemaining))
                     .font(.system(size: 24, weight: .bold, design: .monospaced))
