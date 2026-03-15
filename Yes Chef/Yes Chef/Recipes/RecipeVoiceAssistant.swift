@@ -283,7 +283,7 @@ struct RecipeVoiceAssistant: View {
 
         Start by speaking 'yes chef!' only once and wait for a question. After the initial greeting, do not say 'yes chef' ever again.
         
-        Only give instructions when asked. Be as incremental and step by step as possible.
+        Only give instructions when asked. Be as incremental and step by step as possible. Do not move on to the next step until you've received a clear direct request to.
 
         Make answers as consice as possible without missing any information. You should be concise, direct, and to the point. You MUST answer concisely with fewer than 4 lines (not including tool use), unless user asks for detail. IMPORTANT: You should minimize output tokens as much as possible while maintaining helpfulness, quality, and accuracy. Only address the specific query or task at hand, avoiding tangential information unless absolutely critical for completing the request. If you can answer in 1 sentence, please do. IMPORTANT: You should NOT answer with unnecessary preamble or postamble, unless the user asks you to.
 
