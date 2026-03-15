@@ -7,6 +7,7 @@ struct RecipeVoiceAssistant: View {
     @State private var conversation = Conversation()
     @StateObject private var audioMonitor = AudioLevelMonitor()
     let recipe: Recipe
+    @ObservedObject var timerState: TimerState
     let onDismiss: () -> Void
 
     var body: some View {
@@ -49,6 +50,43 @@ struct RecipeVoiceAssistant: View {
             UIApplication.shared.isIdleTimerDisabled = false
             disconnect()
             audioMonitor.stopMonitoring()
+            timerState.stop()
+        }
+        .onChange(of: conversation.entries) { _, newEntries in
+            handleEntriesChange(entries: newEntries)
+        }
+    }
+
+    private func handleEntriesChange(entries: [Item]) {
+        guard let lastItem = entries.last else { return }
+        
+        if case .functionCall(let call) = lastItem {
+            print("Found function call \(call)")
+            handleFunctionCall(call)
+        }
+    }
+    
+    private func handleFunctionCall(_ call: Item.FunctionCall) {
+        print("Handle function call: \(call.name)")
+        switch call.name {
+        case "start_timer":
+            struct Args: Codable { let duration: Int }
+            if let data = call.arguments.data(using: .utf8),
+               let args = try? JSONDecoder().decode(Args.self, from: data) {
+                timerState.start(duration: args.duration)
+            }
+            try? conversation.send(result: .init(id: UUID().uuidString, callId: call.callId, output: "Timer started for \(call.arguments) seconds."))
+        case "stop_timer":
+            timerState.stop()
+            try? conversation.send(result: .init(id: UUID().uuidString, callId: call.callId, output: "Timer stopped."))
+        case "pause_timer":
+            timerState.pause()
+            try? conversation.send(result: .init(id: UUID().uuidString, callId: call.callId, output: "Timer paused."))
+        case "resume_timer":
+            timerState.resume()
+            try? conversation.send(result: .init(id: UUID().uuidString, callId: call.callId, output: "Timer resumed."))
+        default:
+            break
         }
     }
 
@@ -259,6 +297,33 @@ struct RecipeVoiceAssistant: View {
         do {
             try conversation.updateSession { session in
                 session.instructions = systemInstruction
+                session.tools = [
+                    .function(.init(
+                        name: "start_timer",
+                        description: "Call this function when a user asks to start or set a timer.",
+                        parameters: .object(
+                            properties: [
+                                "duration": .integer(description: "The duration of the timer in seconds.")
+                            ]
+                        )
+                    )),
+                    .function(.init(
+                        name: "stop_timer",
+                        description: "Call this function when a user asks to stop (end and reset) the current timer.",
+                        parameters: .object(properties: [:])
+                    )),
+                    .function(.init(
+                        name: "pause_timer",
+                        description: "Call this function when a user asks to pause the current timer.",
+                        parameters: .object(properties: [:])
+                    )),
+                    .function(.init(
+                        name: "resume_timer",
+                        description: "Call this function when a user asks to resume the paused timer.",
+                        parameters: .object(properties: [:])
+                    ))
+                ]
+                session.toolChoice = .auto
             }
             print("Session updated with instructions")
         } catch {

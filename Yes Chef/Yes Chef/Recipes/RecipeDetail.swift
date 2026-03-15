@@ -34,6 +34,7 @@ struct RecipeDetail: View {
     @State private var showDeleteConfirmation = false
     @State private var scaleFactor: Double = 1.0
     @State private var isScaling = false
+    @StateObject private var timerState = TimerState()
 
     var body: some View {
         ScrollView {
@@ -95,8 +96,11 @@ struct RecipeDetail: View {
             }
         }
         .safeAreaInset(edge: .bottom) {
-            voiceAssistantButton
-                .padding(.bottom, 20)
+            VStack {
+                TimerView(timerState: timerState)
+                voiceAssistantButton
+            }
+            .padding(.bottom, 20)
         }
         .onAppear {
             // Process these off the main view update cycle
@@ -174,7 +178,7 @@ struct RecipeDetail: View {
                     recipeIngredient: displayIngredients,
                     recipeInstructions: recipe.recipeInstructions
                 )
-                RecipeVoiceAssistant(recipe: voiceRecipe, onDismiss: {
+                RecipeVoiceAssistant(recipe: voiceRecipe, timerState: timerState, onDismiss: {
                     activeSheet = nil
                 })
                     .presentationDetents([.height(80)])
