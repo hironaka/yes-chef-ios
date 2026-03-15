@@ -4,13 +4,14 @@ struct TimerView: View {
     @ObservedObject var timerState: TimerState
     
     var body: some View {
-        if timerState.isActive || timerState.timeRemaining > 0 {
+        if timerState.isActive {
             HStack {
                 Text(timeString(from: timerState.timeRemaining))
                     .font(.system(size: 24, weight: .bold, design: .monospaced))
                     .foregroundColor(.white)
                 
                 Button(action: {
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                     timerState.stop()
                 }) {
                     Image(systemName: "xmark.circle.fill")

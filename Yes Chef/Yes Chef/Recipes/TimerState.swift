@@ -57,18 +57,34 @@ class TimerState: ObservableObject {
     }
     
     private func startTask() {
+        let expectedEndDate = Date().addingTimeInterval(TimeInterval(timeRemaining))
+        
         timerTask?.cancel()
         timerTask = Task {
-            while timeRemaining > 0 && isActive {
-                do {
-                    try await Task.sleep(nanoseconds: 1_000_000_000)
+            while isActive {
+                let remaining = expectedEndDate.timeIntervalSinceNow
+                
+                if remaining <= 0 {
                     if !Task.isCancelled {
-                        timeRemaining -= 1
+                        timeRemaining = 0
                     }
+                    break
+                }
+                
+                if !Task.isCancelled {
+                    let newTimeRemaining = Int(ceil(remaining))
+                    if newTimeRemaining != timeRemaining {
+                        timeRemaining = newTimeRemaining
+                    }
+                }
+                
+                do {
+                    try await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
                 } catch {
                     break
                 }
             }
+            
             if timeRemaining == 0 && !Task.isCancelled {
                 audioPlayer?.play()
             }

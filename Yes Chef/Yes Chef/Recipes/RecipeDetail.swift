@@ -261,7 +261,7 @@ struct RecipeDetail: View {
 
     @ViewBuilder
     private var voiceAssistantButton: some View {
-        if activeSheet != .voiceAssistant {
+        if activeSheet != .voiceAssistant && !timerState.isActive {
             Button(action: {
                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 activeSheet = .voiceAssistant
