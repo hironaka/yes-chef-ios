@@ -37,67 +37,71 @@ struct RecipeDetail: View {
     @StateObject private var timerState = TimerState()
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-
-                Text(recipe.name ?? "Untitled Recipe")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding(.horizontal)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-                if let imageUrl = recipe.image?.first ?? recipe.thumbnailUrl, let url = URL(string: imageUrl) {
-                    AsyncImage(url: url) { image in
-                        image.resizable()
-                            .scaledToFill()
-                            .aspectRatio(1, contentMode: .fit)
-                            .clipped()
-                            .containerRelativeFrame(.horizontal)
-                    } placeholder: {
-                        ProgressView()
-                    }
-                    .clipped()
-                    .aspectRatio(1, contentMode: .fit)
-                }
-
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("Ingredients")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    ForEach(Array(displayIngredients.enumerated()), id: \.offset) { index, ingredient in
-                        Text("• \(ingredient)")
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                }
-                .padding(.horizontal)
-
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("Instructions")
-                        .font(.title2)
-                        .fontWeight(.semibold)
+        ZStack(alignment: .topTrailing) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+    
+                    Text(recipe.name ?? "Untitled Recipe")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .padding(.horizontal)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     
-                    ForEach(Array(displayInstructions.enumerated()), id: \.offset) { sectionIndex, section in
-                        if let sectionName = section.name {
-                            Text(sectionName)
-                                .font(.headline)
-                                .padding(.top, 5)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                    if let imageUrl = recipe.image?.first ?? recipe.thumbnailUrl, let url = URL(string: imageUrl) {
+                        AsyncImage(url: url) { image in
+                            image.resizable()
+                                .scaledToFill()
+                                .aspectRatio(1, contentMode: .fit)
+                                .clipped()
+                                .containerRelativeFrame(.horizontal)
+                        } placeholder: {
+                            ProgressView()
                         }
-                        
-                        ForEach(Array(section.instructions.enumerated()), id: \.offset) { index, instruction in
-                            Text(instruction)
-                                .multilineTextAlignment(.leading)
+                        .clipped()
+                        .aspectRatio(1, contentMode: .fit)
+                    }
+    
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Ingredients")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                        ForEach(Array(displayIngredients.enumerated()), id: \.offset) { index, ingredient in
+                            Text("• \(ingredient)")
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.bottom, 5)
                         }
                     }
+                    .padding(.horizontal)
+    
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Instructions")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                        
+                        ForEach(Array(displayInstructions.enumerated()), id: \.offset) { sectionIndex, section in
+                            if let sectionName = section.name {
+                                Text(sectionName)
+                                    .font(.headline)
+                                    .padding(.top, 5)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                            
+                            ForEach(Array(section.instructions.enumerated()), id: \.offset) { index, instruction in
+                                Text(instruction)
+                                    .multilineTextAlignment(.leading)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.bottom, 5)
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
             }
+            
+            TimerView(timerState: timerState)
+                .padding()
         }
         .safeAreaInset(edge: .bottom) {
             VStack {
-                TimerView(timerState: timerState)
                 voiceAssistantButton
             }
             .padding(.bottom, 20)
@@ -261,7 +265,7 @@ struct RecipeDetail: View {
 
     @ViewBuilder
     private var voiceAssistantButton: some View {
-        if activeSheet != .voiceAssistant && !timerState.isActive {
+        if activeSheet != .voiceAssistant {
             Button(action: {
                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 activeSheet = .voiceAssistant
