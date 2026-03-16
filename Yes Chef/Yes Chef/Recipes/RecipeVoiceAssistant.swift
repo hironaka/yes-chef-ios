@@ -5,6 +5,7 @@ import LiveKitWebRTC
 
 struct RecipeVoiceAssistant: View {
     @State private var conversation = Conversation()
+    @State private var handledFunctionCalls: Set<String> = []
     @StateObject private var audioMonitor = AudioLevelMonitor()
     let recipe: Recipe
     @ObservedObject var timerState: TimerState
@@ -52,13 +53,14 @@ struct RecipeVoiceAssistant: View {
             audioMonitor.stopMonitoring()
         }
         .onChange(of: conversation.entries) { _, newEntries in
-            handleEntriesChange(entries: newEntries)
+            Task { @MainActor in
+                handleEntriesChange(entries: newEntries)
+            }
         }
     }
 
     private func handleEntriesChange(entries: [Item]) {
         guard let lastItem = entries.last else { return }
-        
         if case .functionCall(let call) = lastItem {
             print("Found function call \(call)")
             handleFunctionCall(call)
@@ -70,20 +72,21 @@ struct RecipeVoiceAssistant: View {
         switch call.name {
         case "start_timer":
             struct Args: Codable { let duration: Int }
-            if let data = call.arguments.data(using: .utf8),
-               let args = try? JSONDecoder().decode(Args.self, from: data) {
-                timerState.start(duration: args.duration)
+            guard let data = call.arguments.data(using: .utf8),
+                  let args = try? JSONDecoder().decode(Args.self, from: data) else {
+                return
             }
-            try? conversation.send(result: .init(id: UUID().uuidString, callId: call.callId, output: "Timer started for \(call.arguments) seconds."))
+            timerState.start(duration: args.duration)
+            try? conversation.send(result: .init(id: UUID().uuidString.replacingOccurrences(of: "-", with: ""), callId: call.callId, output: "Timer started for \(call.arguments) seconds."))
         case "stop_timer":
             timerState.stop()
-            try? conversation.send(result: .init(id: UUID().uuidString, callId: call.callId, output: "Timer stopped."))
+            try? conversation.send(result: .init(id: UUID().uuidString.replacingOccurrences(of: "-", with: ""), callId: call.callId, output: "Timer stopped."))
         case "pause_timer":
             timerState.pause()
-            try? conversation.send(result: .init(id: UUID().uuidString, callId: call.callId, output: "Timer paused."))
+            try? conversation.send(result: .init(id: UUID().uuidString.replacingOccurrences(of: "-", with: ""), callId: call.callId, output: "Timer paused."))
         case "resume_timer":
             timerState.resume()
-            try? conversation.send(result: .init(id: UUID().uuidString, callId: call.callId, output: "Timer resumed."))
+            try? conversation.send(result: .init(id: UUID().uuidString.replacingOccurrences(of: "-", with: ""), callId: call.callId, output: "Timer resumed."))
         default:
             break
         }

@@ -95,8 +95,9 @@ class TimerState: ObservableObject {
             }
         }
     }
-    
+
     func start(duration: Int) {
+        print("Starting timer with duration \(duration)")
         self.duration = duration
         self.timeRemaining = duration
         self.isActive = true
