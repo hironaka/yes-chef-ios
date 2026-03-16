@@ -63,7 +63,6 @@ struct TimerWidgetLiveActivity: Widget {
                         .foregroundColor(.secondary)
                 } else {
                     Text(timerInterval: Date()...context.state.estimatedEndTime, countsDown: true)
-                        .frame(width: 40)
                         .multilineTextAlignment(.trailing)
                 }
             } minimal: {
