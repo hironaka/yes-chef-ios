@@ -60,6 +60,7 @@ class TimerState: ObservableObject {
     
     private func cancelNotification() {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["kitchenTimer"])
+        UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ["kitchenTimer"])
     }
     
     private func restoreActivity() {
