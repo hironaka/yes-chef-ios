@@ -5,7 +5,7 @@ struct TimerView: View {
     
     var body: some View {
         if timerState.isActive {
-            HStack(spacing: 6) {
+            HStack {
                 Text(timeString(from: timerState.timeRemaining))
                     .font(.headline)
                     .foregroundColor(.white)
@@ -14,12 +14,16 @@ struct TimerView: View {
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                     timerState.stop()
                 }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundColor(.white.opacity(0.8))
+                    Image(systemName: "xmark")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(Color.accentColor)
+                        .frame(width: 20, height: 20)
+                        .background(.white.opacity(0.8))
+                        .clipShape(Circle())
                 }
             }
-            .padding(14)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 14)
             .background(Color.accentColor)
             .clipShape(Capsule())
             .shadow(color: .black.opacity(0.3), radius: 6, x: 0, y: 3)

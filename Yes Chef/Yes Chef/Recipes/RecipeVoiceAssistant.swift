@@ -25,7 +25,7 @@ struct RecipeVoiceAssistant: View {
                     Image(systemName: "xmark")
                         .font(.system(size: 14, weight: .bold))
                         .foregroundColor(.white)
-                        .padding(8)
+                        .frame(width: 28, height: 28)
                         .background(Color.accentColor)
                         .clipShape(Circle())
                 }
