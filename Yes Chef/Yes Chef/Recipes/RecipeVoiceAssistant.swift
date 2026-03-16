@@ -20,7 +20,6 @@ struct RecipeVoiceAssistant: View {
                 Spacer()
                 Button(action: {
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                    timerState.stop()
                     onDismiss()
                 }) {
                     Image(systemName: "xmark")
@@ -48,7 +47,6 @@ struct RecipeVoiceAssistant: View {
             UIApplication.shared.isIdleTimerDisabled = true
         }
         .onDisappear {
-            timerState.stop()
             UIApplication.shared.isIdleTimerDisabled = false
             disconnect()
             audioMonitor.stopMonitoring()
