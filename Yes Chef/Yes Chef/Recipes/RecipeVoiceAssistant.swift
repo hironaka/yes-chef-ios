@@ -98,6 +98,7 @@ struct RecipeVoiceAssistant: View {
             if let token = await fetchToken() {
                 try await conversation.connect(ephemeralKey: token)
                 await conversation.waitForConnection()
+                await waitForSessionCreated()
                 
                 // Start monitoring only after connection is established and session is configured by RealtimeAPI
                 audioMonitor.startMonitoring()
@@ -135,6 +136,7 @@ struct RecipeVoiceAssistant: View {
                 try await conversation.connect(ephemeralKey: token)
                 print("[Reconnect] connect() returned, waiting for connection...")
                 await conversation.waitForConnection()
+                await waitForSessionCreated()
                 
                 // Restart audio monitoring with the new connection
                 audioMonitor.startMonitoring()
@@ -160,6 +162,12 @@ struct RecipeVoiceAssistant: View {
                 onDismiss()
             }
             return
+        }
+    }
+    
+    private func waitForSessionCreated() async {
+        while conversation.session == nil && !Task.isCancelled {
+            try? await Task.sleep(for: .milliseconds(50))
         }
     }
     
