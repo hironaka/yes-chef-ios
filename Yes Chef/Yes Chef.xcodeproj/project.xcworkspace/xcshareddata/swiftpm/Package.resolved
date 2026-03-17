@@ -34,7 +34,7 @@
       "location" : "https://github.com/hironaka/swift-realtime-openai.git",
       "state" : {
         "branch" : "main",
-        "revision" : "53a3e72f776d7b8a46fb1a2d75ec756f81ce2c71"
+        "revision" : "b714a8416b59640a90f59f4be6b63835e0b7cfdf"
       }
     },
     {
@@ -52,7 +52,7 @@
       "location" : "https://github.com/livekit/webrtc-xcframework.git",
       "state" : {
         "branch" : "main",
-        "revision" : "d7832e4a46c25f40e95e2cda75ad83c67eb8f944"
+        "revision" : "14a945724d81cfe5a8ce331e4af15d205d2afb85"
       }
     }
   ],
