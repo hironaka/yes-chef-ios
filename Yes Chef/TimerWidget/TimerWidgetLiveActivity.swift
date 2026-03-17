@@ -6,7 +6,7 @@ struct TimerWidgetLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: TimerAttributes.self) { context in
             // Lock screen/banner UI
-            VStack(spacing: 8) {
+            VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Image(systemName: "timer")
                         .foregroundColor(.orange)
@@ -42,16 +42,18 @@ struct TimerWidgetLiveActivity: Widget {
                     }
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    if context.state.isPaused {
-                        Text("Paused")
-                            .foregroundColor(.secondary)
-                    } else {
-                        Text(timerInterval: Date()...context.state.estimatedEndTime, countsDown: true)
-                            .multilineTextAlignment(.trailing)
+                    HStack(alignment: .center) {
+                        if context.state.isPaused {
+                            Text("Paused")
+                                .font(.headline)
+                                .font(.title)
+                                .foregroundColor(.secondary)
+                        } else {
+                            Text(timerInterval: Date()...context.state.estimatedEndTime, countsDown: true)
+                                .font(.title)
+                                .multilineTextAlignment(.trailing)
+                        }
                     }
-                }
-                DynamicIslandExpandedRegion(.bottom) {
-                    // Empty region
                 }
             } compactLeading: {
                 Image(systemName: "timer")
