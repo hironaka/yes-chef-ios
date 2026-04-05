@@ -307,6 +307,7 @@ struct RecipeVoiceAssistant: View {
         do {
             try conversation.updateSession { session in
                 session.instructions = systemInstruction
+                session.audio.input.turnDetection = .serverVad(threshold: 1.0)
                 session.tools = [
                     .function(.init(
                         name: "start_timer",
