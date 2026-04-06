@@ -11,7 +11,9 @@ import SwiftData
 struct RecipeList: View {
     @Query(sort: \Recipe.name) private var recipes: [Recipe]
     @Environment(\.modelContext) private var modelContext
-    
+    @Binding var selectedTab: Int
+    @Binding var urlToLoad: URL?
+
     enum SheetType: Identifiable {
         case manualAdd
         case imagePicker
@@ -35,6 +37,8 @@ struct RecipeList: View {
     @State private var selectedFileMimeType: String?
     @State private var isExtracting = false
     @State private var showErrorAlert = false
+    @State private var showURLAlert = false
+    @State private var inputURL = ""
     @State private var searchText = ""
 
     var filteredRecipes: [Recipe] {
@@ -127,6 +131,14 @@ struct RecipeList: View {
                             }) {
                                 Label("Files", systemImage: "doc")
                             }
+
+                            Button(action: {
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                                inputURL = ""
+                                showURLAlert = true
+                            }) {
+                                Label("URL", systemImage: "link")
+                            }
                         } label: {
                             Image(systemName: "plus")
                         }
@@ -178,10 +190,17 @@ struct RecipeList: View {
 
             }
         }
-        .alert("Image Processing Failed", isPresented: $showErrorAlert) {
+        .alert("Processing Failed", isPresented: $showErrorAlert) {
             Button("OK", role: .cancel) { }
         } message: {
-            Text("Unable to extract a recipe from the image")
+            Text("Unable to extract a recipe")
+        }
+        .alert("Enter URL", isPresented: $showURLAlert) {
+            TextField("https://...", text: $inputURL)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+            Button("Go") { handleURL() }
+            Button("Cancel", role: .cancel) { }
         }
     }
     
@@ -197,6 +216,29 @@ struct RecipeList: View {
                 UINotificationFeedbackGenerator().notificationOccurred(.error)
                 showErrorAlert = true
             }
+        }
+    }
+
+    private func handleURL() {
+        let trimmed = inputURL.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let url = URL(string: trimmed) else { return }
+
+        if let host = url.host?.lowercased(),
+           host.contains("youtube.com") || host.contains("youtu.be") {
+            isExtracting = true
+            RecipeService.shared.extractRecipe(fromYouTubeURL: trimmed) { recipe in
+                isExtracting = false
+                if let recipe = recipe {
+                    activeSheet = .extractedResult(recipe)
+                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                } else {
+                    UINotificationFeedbackGenerator().notificationOccurred(.error)
+                    showErrorAlert = true
+                }
+            }
+        } else {
+            urlToLoad = url
+            selectedTab = 0
         }
     }
 
@@ -218,5 +260,5 @@ struct RecipeList: View {
 }
 
 #Preview {
-    RecipeList()
+    RecipeList(selectedTab: .constant(1), urlToLoad: .constant(nil))
 }

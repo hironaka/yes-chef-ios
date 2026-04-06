@@ -334,6 +334,7 @@ struct WebView: UIViewRepresentable {
 struct Search: View {
     @Environment(\.modelContext) private var modelContext
     @StateObject private var webViewManager = WebViewManager()
+    @Binding var urlToLoad: URL?
     @State private var showErrorAlert = false
     @State private var isDownloading = false
     @State private var downloadedRecipe: Recipe?
@@ -413,10 +414,16 @@ struct Search: View {
             } message: {
                 Text("Unable to extract a recipe")
             }
+            .onChange(of: urlToLoad) {
+                if let url = urlToLoad {
+                    webViewManager.load(url: url)
+                    urlToLoad = nil
+                }
+            }
         }
     }
 }
 
 #Preview {
-    Search()
+    Search(urlToLoad: .constant(nil))
 }

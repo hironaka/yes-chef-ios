@@ -39,7 +39,8 @@ class RecipeService {
     func extractRecipe(fromYouTubeURL url: String, completion: @escaping (Recipe?) -> Void) {
         let imageContent: [String: Any] = [
             "fileData": [
-                "fileUri": url
+                "fileUri": url,
+                "mimeType": "video/webm"
             ]
         ]
         extractRecipe(imageContent: imageContent, completion: completion)
