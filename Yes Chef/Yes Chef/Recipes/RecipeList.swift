@@ -114,7 +114,7 @@ struct RecipeList: View {
                                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                 activeSheet = .imagePicker
                             }) {
-                                Label("Photo", systemImage: "photo")
+                                Label("Photo Library", systemImage: "photo")
                             }
                         } label: {
                             Image(systemName: "plus")
