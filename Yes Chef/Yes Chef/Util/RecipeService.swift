@@ -18,43 +18,42 @@ class RecipeService {
     private let scaleUrl = URL(string: "https://yes-chef.ai/api/recipe/scale")!
     
     func extractRecipe(from image: UIImage, completion: @escaping (Recipe?) -> Void) {
-        // Convert image to base64
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+        guard let jpegData = image.jpegData(compressionQuality: 0.8) else {
             print("Failed to get JPEG data from image")
             completion(nil)
             return
         }
-        
+        extractRecipe(fromData: jpegData, mimeType: "image/jpeg", completion: completion)
+    }
 
-        let base64Image = imageData.base64EncodedString()
-        // Structure matches Google Vertex AI 'Part' object for inline data
-        let imageContent: [String: Any] = [
-            "inlineData": [
-                "data": base64Image,
-                "mimeType": "image/jpeg"
+    func extractRecipe(fromData data: Data, mimeType: String, completion: @escaping (Recipe?) -> Void) {
+        let body: [String: Any] = [
+            "imageContent": [
+                "inlineData": [
+                    "data": data.base64EncodedString(),
+                    "mimeType": mimeType
+                ]
             ]
         ]
-        
+
         var request = URLRequest(url: extractUrl)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let body: [String: Any] = ["imageContent": imageContent]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
-        
+
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Extraction API request failed: \(error)")
                 DispatchQueue.main.async { completion(nil) }
                 return
             }
-            
+
             guard let data = data else {
                 print("Extraction API returned no data")
                 DispatchQueue.main.async { completion(nil) }
                 return
             }
-            
+
             do {
                 let response = try JSONDecoder().decode(APIRecipeResponse.self, from: data)
                 if let recipe = response.toRecipe() {
@@ -73,7 +72,7 @@ class RecipeService {
             }
         }.resume()
     }
-    
+
     func scaleRecipe(ingredients: [String], scaleFactor: Double) async throws -> [String] {
         var request = URLRequest(url: scaleUrl)
         request.httpMethod = "POST"

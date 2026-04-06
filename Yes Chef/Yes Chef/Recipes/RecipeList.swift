@@ -15,20 +15,24 @@ struct RecipeList: View {
     enum SheetType: Identifiable {
         case manualAdd
         case imagePicker
+        case filePicker
         case extractedResult(Recipe)
-        
+
         var id: String {
             switch self {
             case .manualAdd: return "manualAdd"
             case .imagePicker: return "imagePicker"
+            case .filePicker: return "filePicker"
             case .extractedResult: return "extractedResult"
             }
         }
     }
-    
+
     @State private var activeSheet: SheetType?
     @State private var showCamera = false
     @State private var selectedImage: UIImage?
+    @State private var selectedFileData: Data?
+    @State private var selectedFileMimeType: String?
     @State private var isExtracting = false
     @State private var showErrorAlert = false
     @State private var searchText = ""
@@ -116,6 +120,13 @@ struct RecipeList: View {
                             }) {
                                 Label("Photo Library", systemImage: "photo")
                             }
+
+                            Button(action: {
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                                activeSheet = .filePicker
+                            }) {
+                                Label("Files", systemImage: "doc")
+                            }
                         } label: {
                             Image(systemName: "plus")
                         }
@@ -127,6 +138,8 @@ struct RecipeList: View {
                         EditRecipeView()
                     case .imagePicker:
                         ImagePicker(image: $selectedImage)
+                    case .filePicker:
+                        FilePicker(fileData: $selectedFileData, mimeType: $selectedFileMimeType)
                     case .extractedResult(let recipe):
                         EditRecipeView(recipe: recipe)
                     }
@@ -138,6 +151,11 @@ struct RecipeList: View {
                 .onChange(of: selectedImage) {
                     if let image = selectedImage {
                         extractRecipe(from: image)
+                    }
+                }
+                .onChange(of: selectedFileData) {
+                    if let data = selectedFileData, let mime = selectedFileMimeType {
+                        extractRecipeFromFile(data: data, mimeType: mime)
                     }
                 }
                 
@@ -172,6 +190,22 @@ struct RecipeList: View {
         RecipeService.shared.extractRecipe(from: image) { recipe in
             isExtracting = false
             selectedImage = nil
+            if let recipe = recipe {
+                activeSheet = .extractedResult(recipe)
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+            } else {
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
+                showErrorAlert = true
+            }
+        }
+    }
+
+    private func extractRecipeFromFile(data: Data, mimeType: String) {
+        isExtracting = true
+        RecipeService.shared.extractRecipe(fromData: data, mimeType: mimeType) { recipe in
+            isExtracting = false
+            selectedFileData = nil
+            selectedFileMimeType = nil
             if let recipe = recipe {
                 activeSheet = .extractedResult(recipe)
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
