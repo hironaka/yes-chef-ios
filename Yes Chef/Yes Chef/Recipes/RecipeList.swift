@@ -18,6 +18,7 @@ struct RecipeList: View {
         case manualAdd
         case imagePicker
         case filePicker
+        case pasteText
         case extractedResult(Recipe)
 
         var id: String {
@@ -25,6 +26,7 @@ struct RecipeList: View {
             case .manualAdd: return "manualAdd"
             case .imagePicker: return "imagePicker"
             case .filePicker: return "filePicker"
+            case .pasteText: return "pasteText"
             case .extractedResult: return "extractedResult"
             }
         }
@@ -139,6 +141,13 @@ struct RecipeList: View {
                             }) {
                                 Label("URL", systemImage: "link")
                             }
+
+                            Button(action: {
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                                activeSheet = .pasteText
+                            }) {
+                                Label("Paste Text", systemImage: "doc.on.clipboard")
+                            }
                         } label: {
                             Image(systemName: "plus")
                         }
@@ -152,6 +161,10 @@ struct RecipeList: View {
                         ImagePicker(image: $selectedImage)
                     case .filePicker:
                         FilePicker(fileData: $selectedFileData, mimeType: $selectedFileMimeType)
+                    case .pasteText:
+                        PasteRecipeTextView { text in
+                            extractRecipeFromText(text)
+                        }
                     case .extractedResult(let recipe):
                         EditRecipeView(recipe: recipe)
                     }
@@ -239,6 +252,20 @@ struct RecipeList: View {
         } else {
             urlToLoad = url
             selectedTab = 0
+        }
+    }
+
+    private func extractRecipeFromText(_ text: String) {
+        isExtracting = true
+        RecipeService.shared.extractRecipe(fromText: text) { recipe in
+            isExtracting = false
+            if let recipe = recipe {
+                activeSheet = .extractedResult(recipe)
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+            } else {
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
+                showErrorAlert = true
+            }
         }
     }
 
