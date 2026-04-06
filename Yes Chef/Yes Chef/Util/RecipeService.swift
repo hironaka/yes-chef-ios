@@ -27,19 +27,29 @@ class RecipeService {
     }
 
     func extractRecipe(fromData data: Data, mimeType: String, completion: @escaping (Recipe?) -> Void) {
-        let body: [String: Any] = [
-            "imageContent": [
-                "inlineData": [
-                    "data": data.base64EncodedString(),
-                    "mimeType": mimeType
-                ]
+        let imageContent: [String: Any] = [
+            "inlineData": [
+                "data": data.base64EncodedString(),
+                "mimeType": mimeType
             ]
         ]
+        extractRecipe(imageContent: imageContent, completion: completion)
+    }
 
+    func extractRecipe(fromYouTubeURL url: String, completion: @escaping (Recipe?) -> Void) {
+        let imageContent: [String: Any] = [
+            "fileData": [
+                "fileUri": url
+            ]
+        ]
+        extractRecipe(imageContent: imageContent, completion: completion)
+    }
+
+    private func extractRecipe(imageContent: [String: Any], completion: @escaping (Recipe?) -> Void) {
         var request = URLRequest(url: extractUrl)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        request.httpBody = try? JSONSerialization.data(withJSONObject: ["imageContent": imageContent])
 
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
