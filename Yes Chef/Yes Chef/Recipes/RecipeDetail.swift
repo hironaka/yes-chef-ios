@@ -111,6 +111,13 @@ struct RecipeDetail: View {
             self.displayIngredients = recipe.recipeIngredient ?? []
             self.displayInstructions = extractInstructions(from: recipe)
         }
+        .onChange(of: activeSheet) { oldValue, newValue in
+            if oldValue == .edit && newValue == nil {
+                self.scaleFactor = 1.0
+                self.displayIngredients = recipe.recipeIngredient ?? []
+                self.displayInstructions = extractInstructions(from: recipe)
+            }
+        }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
